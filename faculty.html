@@ -238,12 +238,20 @@
       },
       {
         id: 9,
-        kind: "breaker",
+        kind: "activity",
         eyebrow: "Activity break",
-        title: "Let's do a\n{HIGHLIGHT}.",
-        highlight: "quick activity",
-        instruction: "30 seconds. Pick one step from your syllabus that exists because it always has. Tell your neighbor whether AI would do it faster, wider, or make it unnecessary.",
-        note: "30 sec think + 60 sec pair share. Don't take answers from the room — the pairing IS the lesson. Then advance to the principle that surfaces from the activity."
+        title: "Activity.",
+        steps: 5,
+        items: [
+          { body: "Department-wise group." },
+          { body: "Pick a semester. Pick a subject. Write an assignment brief you'd give to students." },
+          {
+            body: "Write the process steps on individual A4 sheets in big font size.",
+            subtext: "Leave some space at the bottom of each sheet."
+          },
+          { body: "Ask ChatGPT or Claude with the template prompt — how can I leverage AI here?" }
+        ],
+        note: "Reveal one step at a time so the room can land each instruction. Form groups before you advance past step 1. Allow ~15–20 minutes total: 5 for the brief, 5 for writing the steps, 5 for the AI prompt."
       },
       {
         id: 10,
@@ -397,6 +405,7 @@
         case "move-claim":    return <MoveClaimSlide slide={slide} />;
         case "move-practice": return <MovePracticeSlide slide={slide} />;
         case "breaker":       return <BreakerSlide slide={slide} />;
+        case "activity":      return <ActivitySlide slide={slide} subStep={subStep} />;
         case "synthesis":     return <SynthesisSlide slide={slide} />;
         case "intro":         return <IntroSlide />;
         case "cover":         return <CoverSlide slide={slide} />;
@@ -815,6 +824,133 @@
       );
     }
 
+    function ActivitySlide({ slide, subStep = 0 }) {
+      const items = slide.items || [];
+      const showTemplate = subStep >= 4;
+      return (
+        <div className="w-full max-w-[1320px]">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="h-[2px] w-16" style={{ background: "var(--accent)" }} />
+            <span className="font-mono text-[11px] uppercase tracking-[0.22em]"
+                  style={{ color: "var(--accent)" }}>
+              {slide.eyebrow}
+            </span>
+          </div>
+          <h2 className="display-serif font-light leading-[0.92] mb-10"
+              style={{ fontSize: "clamp(56px, 8vw, 120px)", letterSpacing: "-0.04em" }}>
+            {slide.title}
+          </h2>
+          <div className="grid grid-cols-12 gap-12 items-start">
+            <ol className="col-span-7 space-y-8 list-none p-0 m-0">
+              {items.map((item, i) => {
+                const visible = i < subStep;
+                return (
+                  <li key={i}
+                      className="flex gap-6 items-baseline"
+                      style={{
+                        opacity: visible ? 1 : 0,
+                        transform: visible ? "translateY(0)" : "translateY(18px)",
+                        transition: "opacity 500ms ease, transform 500ms ease",
+                        transitionDelay: visible ? "60ms" : "0ms"
+                      }}
+                      aria-hidden={!visible}>
+                    <span className="font-mono tracking-[0.22em] pt-[10px]"
+                          style={{
+                            color: "var(--accent)",
+                            minWidth: "2.8rem",
+                            fontSize: "14px"
+                          }}>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div className="flex-1">
+                      <p style={{
+                           fontSize: "clamp(22px, 2.6vw, 32px)",
+                           lineHeight: 1.32,
+                           color: "var(--ink)",
+                           letterSpacing: "-0.015em"
+                         }}>
+                        {item.body}
+                      </p>
+                      {item.subtext && (
+                        <p className="display-serif italic mt-3"
+                           style={{
+                             fontSize: "clamp(15px, 1.6vw, 20px)",
+                             lineHeight: 1.4,
+                             color: "var(--ink-soft)",
+                             letterSpacing: "-0.01em"
+                           }}>
+                          {item.subtext}
+                        </p>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+
+            <div className="col-span-5"
+                 style={{
+                   opacity: showTemplate ? 1 : 0,
+                   transform: showTemplate ? "translateY(0)" : "translateY(18px)",
+                   transition: "opacity 500ms ease, transform 500ms ease",
+                   transitionDelay: showTemplate ? "120ms" : "0ms"
+                 }}
+                 aria-hidden={!showTemplate}>
+              <PromptTemplateBox />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function PromptTemplateBox() {
+      const lines = [
+        { key: "ROLE",         value: "{{your role + subject you teach}}" },
+        { key: "CONTEXT",      value: "{{semester, students, what they know}}" },
+        { key: "TASK",         value: "{{paste your assignment brief}}" },
+        { key: "INSTRUCTIONS", value: "{{the process steps you wrote down}}" }
+      ];
+      return (
+        <div style={{
+               background: "var(--ink)",
+               color: "var(--paper)",
+               padding: "22px 24px",
+               boxShadow: "0 24px 60px -24px rgba(0,0,0,0.35)"
+             }}>
+          <div className="flex items-center gap-3 mb-5">
+            <span style={{
+                    width: 8, height: 8, borderRadius: "50%",
+                    background: "#E8B45F", display: "inline-block"
+                  }} />
+            <span style={{
+                    width: 8, height: 8, borderRadius: "50%",
+                    background: "#7AB87A", display: "inline-block"
+                  }} />
+            <span className="font-mono uppercase tracking-[0.22em] ml-2"
+                  style={{ fontSize: "10px", opacity: 0.6 }}>
+              Template prompt
+            </span>
+          </div>
+          <div className="font-mono"
+               style={{ fontSize: "13px", lineHeight: 1.75 }}>
+            {lines.map((l) => (
+              <div key={l.key} className="mb-1.5">
+                <span style={{ color: "#E8B45F" }}>{l.key}</span>
+                <span style={{ opacity: 0.5 }}>: </span>
+                <span style={{ opacity: 0.9 }}>{l.value}</span>
+              </div>
+            ))}
+            <div className="mt-4 pt-4" style={{ borderTop: "1px dashed rgba(247,244,236,0.18)" }}>
+              <span style={{ opacity: 0.6 }}>{">"} </span>
+              <span style={{ color: "#A8DDD0" }}>
+                Where can AI help — and where should it stay out?
+              </span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     function MoveClaimSlide({ slide }) {
       return (
         <div className="w-full max-w-[1200px]">
@@ -901,20 +1037,17 @@
         {
           n: "01",
           word: "Judgement",
-          body: "AI is always confident. It will happily generate a beautiful checkout that tanks your conversion.",
-          exercise: "Knowing the answer is wrong requires having designed bad things before. AI skips that step. You can't."
+          body: "AI is always confident. It will happily generate a beautiful checkout that tanks your conversion."
         },
         {
           n: "02",
           word: "Framing",
-          body: "'Design me a banking app' vs 'design for a 55-year-old kirana owner in Jaipur, scammed once, doesn't trust digital payments.'",
-          exercise: "Outputs are galaxies apart. Prompting is problem-framing, not typing."
+          body: "'Design me a banking app' vs 'design for a 55-year-old kirana owner in Jaipur, scammed once, doesn't trust digital payments.'"
         },
         {
           n: "03",
           word: "Taste",
-          body: "AI makes 100 logos. It cannot tell you which is right for this brand, this moment. Taste is accumulated judgment.",
-          exercise: "Show two AI posters. Ask the room to vote. Make the point: the tool made both. You chose."
+          body: "AI makes 100 logos. It cannot tell you which is right for this brand, this moment. Taste is accumulated judgment."
         }
       ];
       return (
@@ -938,8 +1071,7 @@
                      style={{ fontStyle: "italic", color: "var(--ink)" }}>
                   {l.word}.
                 </div>
-                <p className="text-[15px] leading-[1.5] mb-4">{l.body}</p>
-                <p className="text-[13px] leading-[1.5] font-mono" style={{ color: "var(--muted)" }}>→ {l.exercise}</p>
+                <p className="text-[15px] leading-[1.5]">{l.body}</p>
               </div>
             ))}
           </div>

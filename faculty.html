@@ -249,12 +249,20 @@
             body: "Write the process steps on individual A4 sheets in big font size.",
             subtext: "Leave some space at the bottom of each sheet."
           },
-          { body: "Ask ChatGPT or Claude with the template prompt — how can I leverage AI here?" }
+          { body: "Ask ChatGPT or Claude with the template prompt — in the age of AI, how should students approach this assignment and the process differently?" }
         ],
-        note: "Reveal one step at a time so the room can land each instruction. Form groups before you advance past step 1. Allow ~15–20 minutes total: 5 for the brief, 5 for writing the steps, 5 for the AI prompt."
+        note: "Reveal one step at a time so the room can land each instruction. Form groups before you advance past step 1. Allow ~15–20 minutes total: 5 for the brief, 5 for writing the steps, 5 for the AI prompt. The prompt is NOT 'do my assignment' — it's 'rethink how my students should approach this in an AI world.'"
       },
       {
         id: 10,
+        kind: "breaker",
+        eyebrow: "Reflection",
+        title: "What's your\ntakeaway from\n{HIGHLIGHT}",
+        highlight: "this activity?",
+        note: "Don't rush past this. Ask the room — not for a summary, for a shift. What did the AI surface that made them rethink a step? Pick 2–3 voices. ~5 minutes."
+      },
+      {
+        id: 11,
         kind: "move-claim",
         eyebrow: "Section 03 · Move 01 · Challenge the process",
         pillar: "01",
@@ -265,7 +273,7 @@
         note: "Make this feel like permission, not provocation. Faculty are protective of their syllabus — earn the right to challenge it by anchoring on what doesn't change. They just lived this in the activity — point back to it."
       },
       {
-        id: 11,
+        id: 12,
         kind: "synthesis",
         eyebrow: "Close · The whole map",
         title: "Three things you do.\nThree things they get.",
@@ -905,10 +913,10 @@
 
     function PromptTemplateBox() {
       const lines = [
-        { key: "ROLE",         value: "{{your role + subject you teach}}" },
-        { key: "CONTEXT",      value: "{{semester, students, what they know}}" },
-        { key: "TASK",         value: "{{paste your assignment brief}}" },
-        { key: "INSTRUCTIONS", value: "{{the process steps you wrote down}}" }
+        { key: "ROLE",            value: "{{your role + subject you teach}}" },
+        { key: "CONTEXT",         value: "{{semester, students, what they know}}" },
+        { key: "ASSIGNMENT",      value: "{{paste your assignment brief}}" },
+        { key: "CURRENT PROCESS", value: "{{the process steps you wrote down}}" }
       ];
       return (
         <div style={{
@@ -943,7 +951,17 @@
             <div className="mt-4 pt-4" style={{ borderTop: "1px dashed rgba(247,244,236,0.18)" }}>
               <span style={{ opacity: 0.6 }}>{">"} </span>
               <span style={{ color: "#A8DDD0" }}>
-                Where can AI help — and where should it stay out?
+                In the age of AI, how should my students approach
+              </span>
+              <br />
+              <span style={{ opacity: 0.6 }}>{"  "}</span>
+              <span style={{ color: "#A8DDD0" }}>
+                this assignment and rethink the current process?
+              </span>
+              <br />
+              <span style={{ opacity: 0.6 }}>{"  "}</span>
+              <span style={{ color: "#A8DDD0" }}>
+                What should we keep, drop, or replace — and why?
               </span>
             </div>
           </div>

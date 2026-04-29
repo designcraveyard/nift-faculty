@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>AI tools for faculty · NIFT × Info Edge</title>
+  <meta name="description" content="A scan-friendly visual list of the AI tools shown in the NIFT × Info Edge faculty workshop — with embedded tutorial previews for each one." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["'Inter Tight'", "ui-sans-serif", "system-ui"],
+            serif: ["'Fraunces'", "Georgia", "serif"],
+            mono: ["'JetBrains Mono'", "ui-monospace", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --paper:      #F7F4EC;
+      --paper-soft: #EFEADD;
+      --paper-deep: #E6DFCC;
+      --ink:        #0B0B0B;
+      --ink-soft:   #2A2622;
+      --muted:      #6B6158;
+      --muted-soft: #8A7F73;
+      --line:       #E0D9C8;
+      --line-soft:  #ECE5D2;
+      --accent:     #D93A1F;
+      --accent-deep:#A82912;
+      --gold:       #B89556;
+    }
+    html, body { background: var(--paper); color: var(--ink); }
+    body {
+      margin: 0;
+      font-family: 'Inter Tight', -apple-system, system-ui, sans-serif;
+      font-feature-settings: "ss01", "cv11";
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .display-serif {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "SOFT" 30, "opsz" 144;
+    }
+    .display-italic {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "SOFT" 100, "opsz" 144;
+      font-style: italic;
+    }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .label-mono {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    a { color: inherit; text-decoration: none; }
+    button { background: transparent; border: none; padding: 0; font: inherit; color: inherit; cursor: pointer; }
+
+    .accent-underline {
+      background-image: linear-gradient(180deg, transparent 62%, rgba(217, 58, 31, 0.22) 62%);
+      padding: 0 2px;
+    }
+
+    /* ─── Section heading rule ─── */
+    .section-rule {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+    .section-rule::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+      margin-bottom: 4px;
+    }
+
+    /* ─── Tool cards ─── */
+    .tool-card {
+      background: #FBFAF4;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+      height: 100%;
+    }
+    .tool-card:hover {
+      border-color: var(--ink-soft);
+      box-shadow: 0 10px 36px -16px rgba(11, 11, 11, 0.22);
+      transform: translateY(-2px);
+    }
+
+    /* ─── Card header (logo + name) ─── */
+    .tool-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tool-logo-wrap {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      background: #fff;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+    }
+    .tool-logo-wrap.duo {
+      width: auto;
+      min-width: 64px;
+      padding: 0 8px;
+      gap: 6px;
+    }
+    .tool-logo {
+      width: 28px; height: 28px;
+      object-fit: contain;
+      border-radius: 6px;
+      background: transparent;
+    }
+    .tool-logo.fallback-glyph {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 600; color: #fff;
+      font-size: 18px;
+      border-radius: 0;
+    }
+    .tool-title-block {
+      flex: 1;
+      min-width: 0;
+    }
+    .tool-name {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "SOFT" 30, "opsz" 144;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.005em;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tool-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+    .tool-bonus {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(217, 58, 31, 0.08);
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+    .tool-desc {
+      font-size: 14.5px;
+      line-height: 1.5;
+      color: var(--ink-soft);
+    }
+    .tool-note {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "SOFT" 100, "opsz" 144;
+      font-style: italic;
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-top: -6px;
+    }
+
+    /* ─── YouTube thumbnail previews (lite-yt pattern) ─── */
+    .yt-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .yt-grid.two { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 480px) { .yt-grid.two { grid-template-columns: 1fr; } }
+
+    .lite-yt {
+      position: relative;
+      aspect-ratio: 16/9;
+      width: 100%;
+      background: #1A1A1A center / cover no-repeat;
+      border-radius: 11px;
+      overflow: hidden;
+      cursor: pointer;
+      display: block;
+      border: 0;
+      padding: 0;
+      transition: transform 200ms ease;
+    }
+    .lite-yt::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.72));
+    }
+    .lite-yt .play {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+      width: 52px; height: 36px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      transition: transform 200ms ease, background 200ms ease;
+    }
+    .lite-yt:hover .play { transform: translate(-50%,-50%) scale(1.08); background: var(--accent-deep); }
+    .lite-yt .play::after {
+      content: "";
+      width: 0; height: 0;
+      border-left: 12px solid #fff;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      margin-left: 3px;
+    }
+    .lite-yt .yt-caption {
+      position: absolute; left: 10px; right: 10px; bottom: 9px;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.04em;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .lite-yt .yt-caption .yt-icon {
+      width: 16px; height: 11px;
+      background: var(--accent);
+      border-radius: 3px;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .lite-yt .yt-caption .yt-icon::after {
+      content: "";
+      width: 0; height: 0;
+      border-left: 5px solid #fff;
+      border-top: 3px solid transparent;
+      border-bottom: 3px solid transparent;
+      margin-left: 1px;
+    }
+    .yt-frame {
+      aspect-ratio: 16/9;
+      width: 100%;
+      border: 0;
+      border-radius: 11px;
+      background: #000;
+      display: block;
+    }
+
+    /* ─── Pills (site links, playlists) ─── */
+    .link-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 4px;
+    }
+    .link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px 7px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--paper);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.02em;
+      color: var(--ink-soft);
+      transition: all 160ms ease;
+      max-width: 100%;
+    }
+    .link-pill:hover {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+    }
+    .link-pill:hover .arrow { transform: translateX(2px); }
+    .link-pill .label-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .link-pill .arrow {
+      font-size: 12px;
+      transition: transform 160ms ease;
+    }
+    .link-pill.video {
+      border-color: rgba(217, 58, 31, 0.35);
+      background: rgba(217, 58, 31, 0.06);
+      color: var(--accent-deep);
+    }
+    .link-pill.video:hover {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+    .link-pill .pill-fav {
+      width: 14px; height: 14px;
+      border-radius: 3px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .rule-soft { border-top: 1px dashed var(--line); }
+
+    @media (max-width: 640px) {
+      .display-hero { font-size: clamp(38px, 11vw, 60px) !important; }
+      .tool-card { padding: 16px 16px 14px; }
+      .tool-name { font-size: 20px; }
+      .tool-logo-wrap { width: 40px; height: 40px; border-radius: 10px; }
+      .tool-logo { width: 24px; height: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="min-h-screen">
+
+    <!-- ─── Header ─── -->
+    <header class="px-4 sm:px-8 lg:px-12 pt-8 sm:pt-14 pb-8">
+      <div class="max-w-5xl mx-auto">
+        <div class="flex items-center justify-between gap-3 mb-10 sm:mb-14">
+          <div class="label-mono">NIFT × Info Edge · faculty</div>
+          <a href="/" class="label-mono" style="color: var(--accent);">← workshop deck</a>
+        </div>
+
+        <h1 class="display-serif display-hero leading-[0.96]" style="font-size: clamp(40px, 8.4vw, 96px); font-weight: 500; letter-spacing: -0.02em;">
+          AI tools for the<br />
+          <span class="accent-underline">faculty room.</span>
+        </h1>
+
+        <p class="display-italic mt-6 max-w-2xl" style="font-size: clamp(17px, 1.9vw, 22px); line-height: 1.45; color: var(--muted);">
+          Everything we showed today, with the exact tutorials that taught us each one.<br/>
+          Tap any preview to play. Built to be scanned on a phone between classes.
+        </p>
+
+        <div class="mt-6 mono flex flex-wrap items-center gap-x-3 gap-y-1" style="font-size: 12px; color: var(--muted-soft); letter-spacing: 0.04em;">
+          <span>4 categories</span>
+          <span aria-hidden="true">·</span>
+          <span>~20 tools</span>
+          <span aria-hidden="true">·</span>
+          <span>13 video walkthroughs</span>
+          <span aria-hidden="true">·</span>
+          <span>April 2026</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ─── Sections ─── -->
+    <main class="px-4 sm:px-8 lg:px-12 pb-16">
+      <div class="max-w-5xl mx-auto space-y-16 sm:space-y-20">
+
+        <!-- ── Category 1 — Information Processing ─────────────────────── -->
+        <section id="information">
+          <div class="section-rule mb-2">
+            <div class="label-mono" style="color: var(--accent);">01 · Information processing</div>
+          </div>
+          <h2 class="display-serif" style="font-size: clamp(28px, 4.2vw, 44px); font-weight: 500; line-height: 1.05; letter-spacing: -0.012em;">
+            Past files, curriculum research,<br/>
+            <span class="display-italic" style="color: var(--muted);">policy judgement, assignment reviews.</span>
+          </h2>
+          <p class="mt-4 max-w-2xl" style="font-size: 15.5px; line-height: 1.55; color: var(--muted);">
+            For when you have a folder full of PDFs and a question — and you want the answer in two minutes, not two hours.
+          </p>
+
+          <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-5">
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Claude" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=128" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'tool-logo fallback-glyph',style:'background:linear-gradient(135deg,#D97757,#A8431F)',innerText:'C'}))" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Claude Projects</div>
+                  <div class="tool-meta">claude.ai · Anthropic</div>
+                </div>
+              </div>
+              <p class="tool-desc">Drop a semester's worth of files into one space — every chat after has the full context, no re-uploading.</p>
+
+              <div class="yt-grid two">
+                <button class="lite-yt" data-yt="GJ5jTgcbRHA" style="background-image: url('https://img.youtube.com/vi/GJ5jTgcbRHA/hqdefault.jpg')" aria-label="Play: Official intro to Claude Projects">
+                  <span class="play"></span>
+                  <span class="yt-caption"><span class="yt-icon"></span>Official intro</span>
+                </button>
+                <button class="lite-yt" data-yt="fOnKo_Hole8" style="background-image: url('https://img.youtube.com/vi/fOnKo_Hole8/hqdefault.jpg')" aria-label="Play: Full beginner guide">
+                  <span class="play"></span>
+                  <span class="yt-caption"><span class="yt-icon"></span>Full beginner guide</span>
+                </button>
+              </div>
+
+              <div class="link-list">
+                <a href="https://claude.ai" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" alt="" /><span class="label-text">claude.ai/projects</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="ChatGPT" src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=128" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'tool-logo fallback-glyph',style:'background:linear-gradient(135deg,#10A37F,#0B6B53)',innerText:'G'}))" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">ChatGPT Folders</div>
+                  <div class="tool-meta">chatgpt.com · OpenAI</div>
+                </div>
+              </div>
+              <p class="tool-desc">Group chats by class, batch, or research topic so threads don't disappear into the timeline.</p>
+
+              <div class="yt-grid">
+                <button class="lite-yt" data-yt="gVsjjUIbE9k" style="background-image: url('https://img.youtube.com/vi/gVsjjUIbE9k/hqdefault.jpg')" aria-label="Play: How to organise ChatGPT with folders">
+                  <span class="play"></span>
+                  <span class="yt-caption"><span class="yt-icon"></span>How to organise ChatGPT with folders</span>
+                </button>
+              </div>
+
+              <div class="link-list">
+                <a href="https://chatgpt.com" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=64" alt="" /><span class="label-text">chatgpt.com</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="NotebookLM" src="https://www.google.com/s2/favicons?domain=notebooklm.google.com&sz=128" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'tool-logo fallback-glyph',style:'background:linear-gradient(135deg,#4285F4,#1A56C5)',innerText:'N'}))" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">NotebookLM <span class="tool-bonus">Bonus</span></div>
+                  <div class="tool-meta">notebooklm.google.com · Google</div>
+                </div>
+              </div>
+              <p class="tool-desc">Upload PDFs and lecture notes — get a podcast-style audio summary you can listen to on the commute.</p>
+              <p class="tool-note">Two AI hosts discuss your material like a radio show.</p>
+
+              <div class="link-list">
+                <a href="https://notebooklm.google.com" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=notebooklm.google.com&sz=64" alt="" /><span class="label-text">notebooklm.google.com</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- ── Category 2 — Presentations & Sheets ─────────────────────── -->
+        <section id="presentations">
+          <div class="section-rule mb-2">
+            <div class="label-mono" style="color: var(--accent);">02 · Presentations &amp; sheets</div>
+          </div>
+          <h2 class="display-serif" style="font-size: clamp(28px, 4.2vw, 44px); font-weight: 500; line-height: 1.05; letter-spacing: -0.012em;">
+            Lecture decks, grade sheets,<br/>
+            <span class="display-italic" style="color: var(--muted);">reports the dean asked for yesterday.</span>
+          </h2>
+          <p class="mt-4 max-w-2xl" style="font-size: 15.5px; line-height: 1.55; color: var(--muted);">
+            Stop fighting templates and formulas. Type what you want, refine the draft, walk into class.
+          </p>
+
+          <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-5">
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Gamma" src="https://www.google.com/s2/favicons?domain=gamma.app&sz=128" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'tool-logo fallback-glyph',style:'background:linear-gradient(135deg,#9333EA,#5B1A9F)',innerText:'γ'}))" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Gamma</div>
+                  <div class="tool-meta">gamma.app</div>
+                </div>
+              </div>
+              <p class="tool-desc">Type a brief, get a polished deck in minutes. Beats fighting PowerPoint themes for a routine lecture.</p>
+
+              <div class="yt-grid two">
+                <button class="lite-yt" data-yt="aSWDmttan30" style="background-image: url('https://img.youtube.com/vi/aSWDmttan30/hqdefault.jpg')" aria-label="Play: Gamma full tutorial">
+                  <span class="play"></span>
+                  <span class="yt-caption"><span class="yt-icon"></span>Full tutorial</span>
+                </button>
+                <button class="lite-yt" data-yt="eU-CwWbMp5s" style="background-image: url('https://img.youtube.com/vi/eU-CwWbMp5s/hqdefault.jpg')" aria-label="Play: Gamma in under 10 min">
+                  <span class="play"></span>
+                  <span class="yt-caption"><span class="yt-icon"></span>Under 10 min</span>
+                </button>
+              </div>
+
+              <div class="link-list">
+                <a href="https://gamma.app" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=gamma.app&sz=64" alt="" /><span class="label-text">gamma.app</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Claude" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=128" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'tool-logo fallback-glyph',style:'background:linear-gradient(135deg,#D97757,#A8431F)',innerText:'C'}))" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Claude for Excel</div>
+                  <div class="tool-meta">Microsoft Excel add-in</div>
+                </div>
+              </div>
+              <p class="tool-desc">Talk to your spreadsheet. Ask for averages, trend charts, or grade analysis without a single formula.</p>
+
+              <div class="yt-grid two">
+                <button class="lite-yt" data-yt="kaFMhtsrBGQ" style="background-image: url('https://img.youtube.com/vi/kaFMhtsrBGQ/hqdefault.jpg')" aria-label="Play: 12-min install + use">
+                  <span class="play"></span>
+                  <span class="yt-caption"><span class="yt-icon"></span>12-min install + use</span>
+                </button>
+                <button class="lite-yt" data-yt="6T9viwuB20A" style="background-image: url('https://img.youtube.com/vi/6T9viwuB20A/hqdefault.jpg')" aria-label="Play: Beginner scenarios">
+                  <span class="play"></span>
+                  <span class="yt-caption"><span class="yt-icon"></span>Beginner scenarios</span>
+                </button>
+              </div>
+
+              <div class="link-list">
+                <a href="https://www.youtube.com/playlist?list=PLehgj2IY0gZ9CRFWhnkFj3_VJ1M3yrPlr" target="_blank" rel="noopener" class="link-pill video"><span class="label-text">▶ Full playlist</span><span class="arrow">→</span></a>
+                <a href="https://support.claude.com" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" alt="" /><span class="label-text">support.claude.com</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Claude" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=128" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'tool-logo fallback-glyph',style:'background:linear-gradient(135deg,#D97757,#A8431F)',innerText:'C'}))" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Claude for PPT</div>
+                  <div class="tool-meta">PowerPoint add-in · same install</div>
+                </div>
+              </div>
+              <p class="tool-desc">Generate, refine, and clean up slides from inside PowerPoint itself.</p>
+              <p class="tool-note">The Excel add-in handles PowerPoint too — install once, use everywhere.</p>
+
+              <div class="link-list">
+                <a href="https://support.claude.com" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" alt="" /><span class="label-text">support.claude.com</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap duo">
+                  <img class="tool-logo" alt="Claude" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=128" />
+                  <img class="tool-logo" alt="ChatGPT" src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Files inside chat</div>
+                  <div class="tool-meta">claude.ai · chatgpt.com</div>
+                </div>
+              </div>
+              <p class="tool-desc">No add-in. Just drag any Excel or PPT into Claude or ChatGPT and ask questions about it directly.</p>
+              <p class="tool-note">The fastest way in. Works with PDFs and Word docs too.</p>
+
+              <div class="link-list">
+                <a href="https://claude.ai" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" alt="" /><span class="label-text">claude.ai</span><span class="arrow">↗</span></a>
+                <a href="https://chatgpt.com" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=64" alt="" /><span class="label-text">chatgpt.com</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- ── Category 3 — Research ───────────────────────────────────── -->
+        <section id="research">
+          <div class="section-rule mb-2">
+            <div class="label-mono" style="color: var(--accent);">03 · Research</div>
+          </div>
+          <h2 class="display-serif" style="font-size: clamp(28px, 4.2vw, 44px); font-weight: 500; line-height: 1.05; letter-spacing: -0.012em;">
+            Trend research, reading summaries,<br/>
+            <span class="display-italic" style="color: var(--muted);">policy lookup, source-checking.</span>
+          </h2>
+          <p class="mt-4 max-w-2xl" style="font-size: 15.5px; line-height: 1.55; color: var(--muted);">
+            Pick two and switch when one starts to feel boring. The free tiers will take you most of the way.
+          </p>
+
+          <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="ChatGPT" src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">ChatGPT</div>
+                  <div class="tool-meta">OpenAI</div>
+                </div>
+              </div>
+              <p class="tool-desc">The starter chatbot. Free tier handles most lookups, drafts, and lesson-planning.</p>
+              <div class="link-list">
+                <a href="https://chatgpt.com" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=64" alt="" /><span class="label-text">chatgpt.com</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Claude" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Claude</div>
+                  <div class="tool-meta">Anthropic</div>
+                </div>
+              </div>
+              <p class="tool-desc">Strongest for long documents and nuanced writing. The free tier is generous.</p>
+              <div class="link-list">
+                <a href="https://claude.ai" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" alt="" /><span class="label-text">claude.ai</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Gemini" src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Gemini Deep Research</div>
+                  <div class="tool-meta">gemini.google.com</div>
+                </div>
+              </div>
+              <p class="tool-desc">Spend ten minutes on a prompt, get a full sourced research brief back. The closest thing to a research assistant.</p>
+              <div class="link-list">
+                <a href="https://gemini.google.com" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=64" alt="" /><span class="label-text">gemini.google.com</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="OpenAI Codex" src="https://www.google.com/s2/favicons?domain=openai.com&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Codex Browser</div>
+                  <div class="tool-meta">openai.com/codex</div>
+                </div>
+              </div>
+              <p class="tool-desc">An OpenAI agent that browses the web and runs tasks for you while you do something else.</p>
+              <div class="link-list">
+                <a href="https://openai.com" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" alt="" /><span class="label-text">openai.com/codex</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Claude" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Claude for Chrome</div>
+                  <div class="tool-meta">Browser sidebar · beta</div>
+                </div>
+              </div>
+              <p class="tool-desc">A Claude sidebar inside Chrome that reads, summarises and answers questions about whatever page you're on.</p>
+              <p class="tool-note">In beta — sign up and wait for access.</p>
+              <div class="link-list">
+                <a href="https://claude.ai" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" alt="" /><span class="label-text">claude.ai</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Chrome" src="https://www.google.com/s2/favicons?domain=chrome.google.com&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Gemini in Chrome</div>
+                  <div class="tool-meta">Built into Chrome</div>
+                </div>
+              </div>
+              <p class="tool-desc">Built-in Gemini help right next to your browser tabs. Already shipped — turn it on in Chrome settings.</p>
+              <div class="link-list">
+                <a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=chrome.google.com&sz=64" alt="" /><span class="label-text">Chrome Web Store</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Perplexity" src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Perplexity <span class="tool-bonus">Bonus</span></div>
+                  <div class="tool-meta">perplexity.ai</div>
+                </div>
+              </div>
+              <p class="tool-desc">Every answer comes with citations. Best when you're writing a paper and the source matters as much as the claim.</p>
+              <div class="link-list">
+                <a href="https://perplexity.ai" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=64" alt="" /><span class="label-text">perplexity.ai</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- ── Category 4 — Posters, Videos, Images, Infographics ─────── -->
+        <section id="visuals">
+          <div class="section-rule mb-2">
+            <div class="label-mono" style="color: var(--accent);">04 · Posters, videos, images, infographics</div>
+          </div>
+          <h2 class="display-serif" style="font-size: clamp(28px, 4.2vw, 44px); font-weight: 500; line-height: 1.05; letter-spacing: -0.012em;">
+            Teaching material, campaign visuals,<br/>
+            <span class="display-italic" style="color: var(--muted);">concept demos, diagrams in seconds.</span>
+          </h2>
+          <p class="mt-4 max-w-2xl" style="font-size: 15.5px; line-height: 1.55; color: var(--muted);">
+            For when a wall of text would lose the room and you need a picture by Monday morning.
+          </p>
+
+          <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-5">
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="ChatGPT" src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">ChatGPT Image</div>
+                  <div class="tool-meta">Native image generation</div>
+                </div>
+              </div>
+              <p class="tool-desc">Generate diagrams, posters and visual explainers without leaving ChatGPT. Native image editing now too.</p>
+
+              <div class="yt-grid two">
+                <button class="lite-yt" data-yt="9eKAokXaBTw" style="background-image: url('https://img.youtube.com/vi/9eKAokXaBTw/hqdefault.jpg')" aria-label="Play: Educational diagrams tutorial">
+                  <span class="play"></span>
+                  <span class="yt-caption"><span class="yt-icon"></span>Educational diagrams</span>
+                </button>
+                <button class="lite-yt" data-yt="6ml8QXCGrkI" style="background-image: url('https://img.youtube.com/vi/6ml8QXCGrkI/hqdefault.jpg')" aria-label="Play: Infographic with 4o">
+                  <span class="play"></span>
+                  <span class="yt-caption"><span class="yt-icon"></span>Infographic with 4o</span>
+                </button>
+              </div>
+
+              <div class="link-list">
+                <a href="https://chatgpt.com" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=64" alt="" /><span class="label-text">chatgpt.com</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Google Flow" src="https://www.google.com/s2/favicons?domain=labs.google&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Google Flow <span style="font-size:13px; color: var(--muted); font-style: italic; font-variation-settings: 'SOFT' 100, 'opsz' 144;">(Veo)</span></div>
+                  <div class="tool-meta">labs.google/fx/tools/flow</div>
+                </div>
+              </div>
+              <p class="tool-desc">Type a scene description, get a short film clip. Surprisingly capable for concept demos and lecture intros.</p>
+
+              <div class="yt-grid two">
+                <button class="lite-yt" data-yt="oKjDeMtBZ4g" style="background-image: url('https://img.youtube.com/vi/oKjDeMtBZ4g/hqdefault.jpg')" aria-label="Play: Official Google tutorial">
+                  <span class="play"></span>
+                  <span class="yt-caption"><span class="yt-icon"></span>Official Google tutorial</span>
+                </button>
+                <button class="lite-yt" data-yt="ETZexiibz2I" style="background-image: url('https://img.youtube.com/vi/ETZexiibz2I/hqdefault.jpg')" aria-label="Play: No-cost full features">
+                  <span class="play"></span>
+                  <span class="yt-caption"><span class="yt-icon"></span>No-cost full features</span>
+                </button>
+              </div>
+
+              <div class="link-list">
+                <a href="https://labs.google/fx/tools/flow" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=labs.google&sz=64" alt="" /><span class="label-text">labs.google/fx/tools/flow</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Gemini" src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Gemini Nano Banana</div>
+                  <div class="tool-meta">Inside Google Flow</div>
+                </div>
+              </div>
+              <p class="tool-desc">The fast image model behind Flow. Edit, blend, or restyle a photo in seconds — keep faces, change backgrounds.</p>
+              <p class="tool-note">Lives inside Google Flow. No separate sign-up.</p>
+
+              <div class="link-list">
+                <a href="https://labs.google" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=labs.google&sz=64" alt="" /><span class="label-text">labs.google</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Napkin" src="https://www.google.com/s2/favicons?domain=napkin.ai&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Napkin.ai <span class="tool-bonus">Bonus</span></div>
+                  <div class="tool-meta">napkin.ai</div>
+                </div>
+              </div>
+              <p class="tool-desc">Paste any text, get instant flowcharts and diagrams back. Zero effort, zero design skill required.</p>
+
+              <div class="link-list">
+                <a href="https://napkin.ai" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=napkin.ai&sz=64" alt="" /><span class="label-text">napkin.ai</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+            <article class="tool-card">
+              <div class="tool-head">
+                <div class="tool-logo-wrap">
+                  <img class="tool-logo" alt="Canva" src="https://www.google.com/s2/favicons?domain=canva.com&sz=128" />
+                </div>
+                <div class="tool-title-block">
+                  <div class="tool-name">Canva AI</div>
+                  <div class="tool-meta">canva.com</div>
+                </div>
+              </div>
+              <p class="tool-desc">Familiar Canva, now AI-powered. Get a first draft of a poster, deck or social post in one prompt — then refine by hand.</p>
+
+              <div class="link-list">
+                <a href="https://canva.com" target="_blank" rel="noopener" class="link-pill"><img class="pill-fav" src="https://www.google.com/s2/favicons?domain=canva.com&sz=64" alt="" /><span class="label-text">canva.com</span><span class="arrow">↗</span></a>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- ─── Footer ─── -->
+    <footer class="px-4 sm:px-8 lg:px-12 py-16" style="border-top: 1px solid var(--line);">
+      <div class="max-w-5xl mx-auto">
+        <div class="display-serif" style="font-size: clamp(28px, 4.4vw, 52px); font-weight: 500; line-height: 1.05;">
+          The tool is the easy part.<br />
+          <span style="color: var(--accent);">Your taste is the hard part.</span>
+        </div>
+        <p class="display-italic mt-4 max-w-xl" style="font-size: clamp(15px, 1.7vw, 19px); color: var(--muted); line-height: 1.5;">
+          Pick one tool from each category. Use it for a week with real classwork.
+          The rest will make sense after that.
+        </p>
+
+        <div class="mt-10 rule-soft pt-6 grid sm:grid-cols-2 gap-4 sm:items-center">
+          <div class="label-mono">NIFT × Info Edge · faculty edition · April 2026</div>
+          <div class="sm:text-right flex sm:justify-end gap-x-5 gap-y-2 flex-wrap">
+            <a href="/" class="label-mono" style="color: var(--accent);">Workshop deck →</a>
+            <a href="/resources.html" class="label-mono" style="color: var(--accent);">Student field guide →</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // Click-to-play YouTube embeds — keeps the page light until a user actually wants the video.
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.lite-yt');
+      if (!btn) return;
+      const id = btn.dataset.yt;
+      if (!id) return;
+      const iframe = document.createElement('iframe');
+      iframe.className = 'yt-frame';
+      iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+      iframe.title = btn.getAttribute('aria-label') || 'YouTube video';
+      iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+      iframe.setAttribute('allowfullscreen', '');
+      btn.replaceWith(iframe);
+    });
+
+    // Graceful favicon fallback — hides the <img> if the favicon 404s, so cards still look clean.
+    document.querySelectorAll('img.tool-logo, img.pill-fav').forEach(img => {
+      img.addEventListener('error', () => { img.style.opacity = '0.25'; });
+    });
+  </script>
+</body>
+</html>

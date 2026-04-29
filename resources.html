@@ -1,0 +1,2561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>The AI field guide · NIFT × Info Edge</title>
+  <meta name="description" content="A hand-picked, India-first directory of AI creators, channels, tools, and quick wins for design students. Companion to the NIFT × Info Edge workshop." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["'Inter Tight'", "ui-sans-serif", "system-ui"],
+            serif: ["'Fraunces'", "Georgia", "serif"],
+            mono: ["'JetBrains Mono'", "ui-monospace", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --paper:      #F7F4EC;
+      --paper-soft: #EFEADD;
+      --paper-deep: #E6DFCC;
+      --ink:        #0B0B0B;
+      --ink-soft:   #2A2622;
+      --muted:      #6B6158;
+      --muted-soft: #8A7F73;
+      --line:       #E0D9C8;
+      --line-soft:  #ECE5D2;
+      --accent:     #D93A1F;
+      --accent-deep:#A82912;
+      --gold:       #B89556;
+    }
+    html, body { background: var(--paper); color: var(--ink); }
+    body {
+      margin: 0;
+      font-family: 'Inter Tight', -apple-system, system-ui, sans-serif;
+      font-feature-settings: "ss01", "cv11";
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .display-serif {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "SOFT" 30, "opsz" 144;
+    }
+    .display-soft {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "SOFT" 60, "opsz" 144;
+    }
+    .display-italic {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "SOFT" 100, "opsz" 144;
+      font-style: italic;
+    }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+    .label-mono {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    a { color: inherit; text-decoration: none; }
+    button { background: transparent; border: none; padding: 0; font: inherit; color: inherit; cursor: pointer; }
+    input { font: inherit; color: inherit; }
+
+    /* ─── Filter bar ─── */
+    .filter-bar {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: rgba(247, 244, 236, 0.93);
+      border-bottom: 1px solid var(--line);
+    }
+    .scroll-x { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+    .scroll-x::-webkit-scrollbar { display: none; }
+    .scroll-y { overflow-y: auto; }
+
+    /* ─── Drawer ─── */
+    .drawer-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(11, 11, 11, 0.45);
+      backdrop-filter: blur(2px);
+      z-index: 60;
+    }
+    .drawer {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 100%;
+      max-width: 440px;
+      background: var(--paper);
+      z-index: 70;
+      overflow-y: auto;
+      animation: drawer-in 280ms cubic-bezier(0.2,0.7,0.2,1);
+    }
+    @keyframes drawer-in {
+      from { transform: translateX(8%); opacity: 0; }
+      to   { transform: translateX(0); opacity: 1; }
+    }
+    .drawer.drawer-left {
+      right: auto;
+      left: 0;
+      animation: drawer-in-left 280ms cubic-bezier(0.2,0.7,0.2,1);
+    }
+    @keyframes drawer-in-left {
+      from { transform: translateX(-8%); opacity: 0; }
+      to   { transform: translateX(0); opacity: 1; }
+    }
+    .nav-row {
+      width: 100%;
+      padding: 12px 16px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      border-radius: 10px;
+      transition: background 160ms ease;
+      text-align: left;
+    }
+    .nav-row:hover { background: var(--paper-soft); }
+    .ham-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px; height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #FBFAF4;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: border-color 160ms ease;
+    }
+    .ham-btn:hover { border-color: var(--ink-soft); }
+    .ham-btn .bars { display: flex; flex-direction: column; gap: 4px; }
+    .ham-btn .bars span {
+      display: block;
+      width: 16px; height: 1.5px;
+      background: var(--ink-soft);
+      border-radius: 2px;
+    }
+
+    /* ─── Chips ─── */
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #FBFAF4;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--ink-soft);
+      white-space: nowrap;
+      transition: all 160ms ease;
+      cursor: pointer;
+    }
+    .chip:hover { border-color: var(--ink-soft); }
+    .chip.active {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--ink);
+    }
+    .chip.accent.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #FFF;
+    }
+
+    /* ─── Cards ─── */
+    .card {
+      background: #FBFAF4;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+    }
+    .card:hover {
+      border-color: var(--ink-soft);
+      box-shadow: 0 8px 30px -12px rgba(11, 11, 11, 0.18);
+      transform: translateY(-2px);
+    }
+    .card.flat:hover { transform: none; box-shadow: none; }
+    .card.hero {
+      background: linear-gradient(180deg, #FBFAF4 0%, #F4EFE0 100%);
+    }
+
+    /* type tag */
+    .ttag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .ttag.accent { color: var(--accent); }
+
+    /* lite YT */
+    .lite-yt {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: #1A1A1A center / cover no-repeat;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .lite-yt::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.55));
+    }
+    .lite-yt .play {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+      width: 64px; height: 44px;
+      background: var(--accent);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 200ms ease, background 200ms ease;
+    }
+    .lite-yt:hover .play { transform: translate(-50%,-50%) scale(1.06); background: var(--accent-deep); }
+    .lite-yt .play::after {
+      content: "";
+      width: 0; height: 0;
+      border-left: 14px solid #FFF;
+      border-top: 9px solid transparent;
+      border-bottom: 9px solid transparent;
+      margin-left: 4px;
+    }
+    .lite-yt .duration {
+      position: absolute; bottom: 10px; right: 10px;
+      background: rgba(0,0,0,0.75); color: #fff;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      padding: 3px 7px; border-radius: 4px;
+    }
+    .yt-frame { aspect-ratio: 16/9; width: 100%; border: 0; border-radius: 12px; background: #000; }
+
+    /* vertical (shorts/reels) */
+    .vlite {
+      position: relative;
+      aspect-ratio: 9/16;
+      background: #1A1A1A center / cover no-repeat;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .vlite::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.6));
+    }
+    .vlite .play {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+      width: 56px; height: 56px; border-radius: 999px;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .vlite .play::after {
+      content: "";
+      width: 0; height: 0;
+      border-left: 14px solid #FFF;
+      border-top: 9px solid transparent;
+      border-bottom: 9px solid transparent;
+      margin-left: 4px;
+    }
+    .vlite .label {
+      position: absolute; bottom: 12px; left: 12px; right: 12px;
+      color: #fff;
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "SOFT" 30, "opsz" 144;
+      font-size: 17px;
+      line-height: 1.15;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
+    .vlite .creator {
+      position: absolute; top: 12px; left: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,255,255,0.92);
+      background: rgba(0,0,0,0.42);
+      padding: 4px 9px;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+    }
+    .v-frame {
+      aspect-ratio: 9/16;
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      background: #000;
+      display: block;
+    }
+    .v-frame.ig { aspect-ratio: auto; height: 720px; max-height: 86vh; background: #fff; }
+
+    /* gradient avatar (channels/people without thumb) */
+    .av {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .av .glyph {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "SOFT" 30, "opsz" 144;
+      font-weight: 600;
+      color: #FFF;
+      font-size: clamp(28px, 5vw, 56px);
+      letter-spacing: 0.01em;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.25);
+    }
+    .av .photo {
+      width: 34%;
+      max-width: 104px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.94);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.34);
+      background: rgba(0, 0, 0, 0.1);
+    }
+    .av-circle {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.18);
+      border: 1.5px solid rgba(255,255,255,0.7);
+    }
+    .av .ptag {
+      position: absolute; bottom: 10px; right: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.92);
+      background: rgba(0,0,0,0.32);
+      padding: 4px 9px;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* tiny inline avatar/favicon for compact cards */
+    .av-tiny {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 600; color: #fff;
+      font-size: 12px;
+    }
+    .fav-tiny {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      object-fit: contain;
+      background: var(--paper-deep);
+      flex-shrink: 0;
+      padding: 4px;
+    }
+
+    .accent-underline {
+      background-image: linear-gradient(180deg, transparent 62%, rgba(217, 58, 31, 0.22) 62%);
+      padding: 0 2px;
+    }
+    .rule-soft { border-top: 1px dashed var(--line); }
+
+    .fade-in { animation: fade-up 360ms ease both; }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .boot {
+      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: var(--paper); color: var(--muted);
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em;
+      text-transform: uppercase; z-index: 100;
+      transition: opacity 300ms ease;
+    }
+    .boot.hidden { opacity: 0; pointer-events: none; }
+
+    @media (max-width: 640px) {
+      .display-hero { font-size: clamp(40px, 11vw, 60px); }
+    }
+  </style>
+</head>
+<body>
+  <div id="boot" class="boot">Loading the field guide…</div>
+  <div id="root"></div>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel" data-presets="typescript,react">
+    const { useCallback, useEffect, useMemo, useRef, useState } = React;
+
+    // ─── Constants ───────────────────────────────────────────────────────────
+    const TYPE_LABEL = {
+      video: 'Video', short: 'Short', reel: 'Reel', channel: 'Channel',
+      tool: 'Tool', course: 'Course', article: 'Read', newsletter: 'Newsletter',
+      community: 'Community', post: 'Thread', tip: 'Tip',
+    };
+
+    const PLATFORM_LABEL = {
+      youtube: 'YouTube', instagram: 'Instagram', x: 'X', web: 'Web',
+      github: 'GitHub', substack: 'Substack', reddit: 'Reddit',
+      discord: 'Discord', podcast: 'Podcast', blog: 'Blog',
+    };
+
+    const SECTIONS = [
+      { id: 'start',         title: 'If you only have an hour',        intro: 'A seven-step path. Do these in order. By the end, you will have done more AI homework than 95 percent of your batch.' },
+      { id: 'daily',         title: 'The daily drivers',                intro: 'The chatbots you will actually use every day. Pick two. Switch when one starts to feel boring.' },
+      { id: 'india',         title: 'From India, for builders',         intro: 'The Indian AI internet has its own gravity. These are the channels that are doing real work — not the ones with AI in the bio.' },
+      { id: 'reels',         title: 'Reels & shorts to watch on the bus', intro: 'Lazy-loaded so the page stays fast. Tap to play, scroll to skip. India-leaning, mixed in with the global heavyweights.' },
+      { id: 'fundamentals',  title: 'Learn how the magic works',        intro: 'The Karpathy curriculum, plus the gentlest detours. None of this requires writing code. All of it changes how you talk about AI.' },
+      { id: 'code',          title: 'Vibe coding',                      intro: 'Type what you want, watch software appear. NIFT students with zero coding background are shipping live apps in an afternoon. You can too.' },
+      { id: 'design',        title: 'Designing with AI',                intro: 'Tools that turn a prompt into a real, editable interface — plus the three best designers on the internet to follow while you learn.' },
+      { id: 'image',         title: 'Make an image',                    intro: 'After three years, this is no longer a novelty. Pick one to learn deeply. Switch when you outgrow it.' },
+      { id: 'photo',         title: 'Make a better photo',              intro: 'Restoration, upscaling, headshots, retouching. Everything except the click of the shutter.' },
+      { id: 'film',          title: 'Make a film',                      intro: 'You will need three things to make a real AI short: a video model, a voice tool, and the discipline to throw out 90 percent of what you generate.' },
+      { id: 'sound',         title: 'Make a sound',                     intro: 'Suno will write you a full song with vocals in 90 seconds. Whether that is a good idea is a different question.' },
+      { id: '3d',            title: 'Spatial & 3D',                     intro: 'Still early. The tools are improving fast. If you want to be the person who is fluent here in two years, start now.' },
+      { id: 'game',          title: 'Make a game',                      intro: 'Mostly asset generators and NPC tools today. The "prompt-to-playable-game" pitch is real but rough. Try, expect to be patient.' },
+      { id: 'agent',         title: 'The agentic web',                  intro: 'The plumbing being laid right now for software that does work for you. Read the MCP article, even if you only build one agent.' },
+      { id: 'research',      title: 'For your research papers',         intro: 'Use these instead of Google Scholar. NotebookLM in particular will change how you study.' },
+      { id: 'lectures',      title: 'Long lectures for the weekend',    intro: 'Two-to-five hours each. Watch on the laptop with notes open. These are the conversations that will be cited for the next decade.' },
+      { id: 'inbox',         title: 'Five things to put in your inbox', intro: 'You cannot keep up with AI by checking Twitter. You can keep up by reading two newsletters, slowly, in the morning.' },
+      { id: 'follow',        title: 'Worth following',                  intro: 'X is still the AI town square. These are the accounts I would import to a fresh login.' },
+      { id: 'tips',          title: 'Quick wins',                       intro: 'Five things you can do in five minutes that will permanently raise the ceiling of what AI does for you.' },
+    ];
+
+    // Filter dimensions
+    const TOPICS = [
+      { id: 'all',          label: 'All' },
+      { id: 'general',      label: 'Daily drivers' },
+      { id: 'fundamentals', label: 'Fundamentals' },
+      { id: 'india',        label: 'India' },
+      { id: 'vibe-coding',  label: 'Vibe coding' },
+      { id: 'ui-design',    label: 'UI / UX' },
+      { id: 'illustration', label: 'Illustration' },
+      { id: 'photography',  label: 'Photography' },
+      { id: 'video',        label: 'Video' },
+      { id: 'music',        label: 'Music & audio' },
+      { id: '3d',           label: '3D' },
+      { id: 'game',         label: 'Games' },
+      { id: 'agentic',      label: 'Agentic' },
+      { id: 'research',     label: 'Research' },
+    ];
+    const TYPES = [
+      { id: 'all',        label: 'All formats' },
+      { id: 'video',      label: 'Videos' },
+      { id: 'short',      label: 'Shorts' },
+      { id: 'reel',       label: 'Reels' },
+      { id: 'channel',    label: 'Channels' },
+      { id: 'tool',       label: 'Tools' },
+      { id: 'course',     label: 'Courses' },
+      { id: 'article',    label: 'Reads' },
+      { id: 'newsletter', label: 'Newsletters' },
+      { id: 'community',  label: 'Communities' },
+      { id: 'tip',        label: 'Tips' },
+    ];
+    const REGIONS = [
+      { id: 'all',    label: 'All' },
+      { id: 'in',     label: 'India' },
+      { id: 'global', label: 'Global' },
+    ];
+
+    // Gradient palette (deterministic)
+    const GRADIENTS = [
+      'linear-gradient(135deg, #E07A5F 0%, #D93A1F 100%)',
+      'linear-gradient(135deg, #3D405B 0%, #1A1B2E 100%)',
+      'linear-gradient(135deg, #81B29A 0%, #355C4D 100%)',
+      'linear-gradient(135deg, #F2CC8F 0%, #B89556 100%)',
+      'linear-gradient(135deg, #2A9D8F 0%, #14463F 100%)',
+      'linear-gradient(135deg, #E63946 0%, #761A23 100%)',
+      'linear-gradient(135deg, #6D597A 0%, #311F3A 100%)',
+      'linear-gradient(135deg, #355070 0%, #14213D 100%)',
+      'linear-gradient(135deg, #B5838D 0%, #6D464E 100%)',
+      'linear-gradient(135deg, #8D6A9F 0%, #4A2D5F 100%)',
+      'linear-gradient(135deg, #006D77 0%, #023135 100%)',
+      'linear-gradient(135deg, #D62828 0%, #5C0F0F 100%)',
+      'linear-gradient(135deg, #457B9D 0%, #1D3557 100%)',
+      'linear-gradient(135deg, #BC6C25 0%, #5C3413 100%)',
+    ];
+    const hashStr = (s) => { let h = 0; for (let i = 0; i < s.length; i++) h = (h << 5) - h + s.charCodeAt(i); return Math.abs(h); };
+    const gradientFor = (id) => GRADIENTS[hashStr(id) % GRADIENTS.length];
+    const initialsFor = (name) => {
+      if (!name) return '?';
+      const w = name.replace(/[^A-Za-z0-9 &]/g, '').split(/\s+/).filter(Boolean);
+      if (w.length === 1) return w[0].slice(0, 2).toUpperCase();
+      return (w[0][0] + w[w.length - 1][0]).toUpperCase();
+    };
+    const domainOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; } };
+    const faviconFor = (url) => { const d = domainOf(url); return d ? `https://www.google.com/s2/favicons?domain=${d}&sz=128` : ''; };
+    const ytThumb = (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+
+    // Hand-verified handle map for creators whose name doesn't appear in the URL
+    // (e.g. video lectures where the URL is the video, not the channel).
+    // Each value is a stable unavatar.io URL — the right face per right name.
+    const CREATOR_HANDLES = {
+      'Andrej Karpathy':       'https://unavatar.io/x/karpathy',
+      '3Blue1Brown':           'https://unavatar.io/youtube/3blue1brown',
+      'Ethan Mollick':         'https://unavatar.io/x/emollick',
+      'Lex Fridman Podcast':   'https://unavatar.io/x/lexfridman',
+      'Varun Mayya':           'https://unavatar.io/instagram/thevarunmayya',
+      '100x Engineers':        'https://unavatar.io/instagram/100xengineers',
+      'Brian Lovin':           'https://unavatar.io/x/brian_lovin',
+      'Simon Willison':        'https://unavatar.io/x/simonw',
+    };
+
+    // Resolve a creator profile image. Order: explicit avatar field →
+    // URL handle extraction → name dictionary → @handle in creator field.
+    // Falls back to gradient + initials when nothing resolves.
+    function avatarFor(item) {
+      if (item && item.avatar) return item.avatar;
+      const url = (item && item.url) || '';
+
+      // X / Twitter
+      let m = url.match(/(?:x\.com|twitter\.com)\/([A-Za-z0-9_]+)/i);
+      if (m && m[1] && !['home', 'search', 'i', 'explore'].includes(m[1].toLowerCase())) {
+        return `https://unavatar.io/x/${m[1]}`;
+      }
+      // YouTube /@handle
+      m = url.match(/youtube\.com\/@([A-Za-z0-9_.-]+)/i);
+      if (m) return `https://unavatar.io/youtube/${m[1]}`;
+      // YouTube /c/HANDLE or /channel/UC...
+      m = url.match(/youtube\.com\/(?:c\/|channel\/)([A-Za-z0-9_-]+)/i);
+      if (m) return `https://unavatar.io/youtube/${m[1]}`;
+      // Instagram (could be /USERNAME/ or /USERNAME/reel/CODE/)
+      m = url.match(/instagram\.com\/([A-Za-z0-9_.]+)/i);
+      if (m && m[1] && !['reel', 'p', 'explore', 'tv', 'stories'].includes(m[1].toLowerCase())) {
+        return `https://unavatar.io/instagram/${m[1]}`;
+      }
+      // GitHub user
+      m = url.match(/github\.com\/([A-Za-z0-9_-]+)(?:\/|$|\?|#)/i);
+      if (m && m[1] && !['orgs', 'about', 'features'].includes(m[1].toLowerCase())) {
+        return `https://github.com/${m[1]}.png?size=200`;
+      }
+      // Hand-verified name lookup (for video entries whose URL is the video,
+      // not the channel — Karpathy lectures, 3Blue1Brown, Mollick talk, etc.)
+      if (item && item.creator && CREATOR_HANDLES[item.creator]) {
+        return CREATOR_HANDLES[item.creator];
+      }
+      // Fallback: pull @HANDLE from creator field
+      if (item && item.creator) {
+        const cm = item.creator.match(/@([A-Za-z0-9_.]+)/);
+        if (cm && item.platform) {
+          const platformKey = item.platform === 'x' ? 'x' : item.platform;
+          return `https://unavatar.io/${platformKey}/${cm[1]}`;
+        }
+      }
+      return null;
+    }
+
+    // ─── DATA (curated, opinionated) ─────────────────────────────────────────
+    // Voice: first-person, sharp, no marketing copy. Each entry has a primary `section`
+    // for the magazine layout, and `topics` for the filter view.
+    const DATA = [
+
+      // ── START HERE ─────────────────────────────────────────────────────
+      {
+        id: 'karpathy-intro-llms', section: 'start', startOrder: 1,
+        type: 'video', topics: ['fundamentals'], region: 'global', platform: 'youtube',
+        title: 'Intro to Large Language Models',
+        creator: 'Andrej Karpathy',
+        embedId: 'zjkBMFhNj_g', duration: '1h',
+        url: 'https://www.youtube.com/watch?v=zjkBMFhNj_g',
+        summary: 'Block off an hour. No coffee, no phone. By the end, the language people use about AI will stop being magic — you will see what is actually happening underneath. The single most valuable hour you will spend this year.',
+      },
+      {
+        id: 'overpowered', section: 'start', startOrder: 2,
+        type: 'channel', topics: ['india', 'general'], region: 'in', platform: 'youtube',
+        title: 'Overpowered',
+        creator: 'Varun Mayya × Tanmay Bhat',
+        url: 'https://www.youtube.com/@AI.Overpowered',
+        summary: 'Their AI-only podcast. Comedy, takedowns, live demos with the Indian context baked in. Forget the solo channels — start here. Half-hour episodes that actually teach you something between the jokes.',
+      },
+      {
+        id: 'anthropic-prompting', section: 'start', startOrder: 3,
+        type: 'article', topics: ['fundamentals'], region: 'global', platform: 'web',
+        title: 'Anthropic\'s prompt engineering overview',
+        creator: 'Anthropic Docs',
+        url: 'https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview',
+        summary: 'The official guide. Read it once now, again in three months. 90 percent of "AI does not work for me" complaints turn out to be prompting problems this guide already solved.',
+      },
+      {
+        id: 'chatgpt', section: 'start', startOrder: 4,
+        type: 'tool', topics: ['general'], region: 'global', platform: 'web',
+        title: 'ChatGPT',
+        creator: 'OpenAI',
+        url: 'https://chatgpt.com',
+        summary: 'You probably already have it. Free tier is plenty. Worth keeping for image gen, voice mode, and Atlas (their browser agent). For everything else, switch to Claude.',
+      },
+      {
+        id: 'claude', section: 'start', startOrder: 5,
+        type: 'tool', topics: ['general', 'vibe-coding'], region: 'global', platform: 'web',
+        title: 'Claude',
+        creator: 'Anthropic',
+        url: 'https://claude.ai',
+        summary: 'My default. Best prose of any model and the only one that does not sound like AI when it writes for you. Sonnet for everyday, Opus when the stakes are high. Free tier works.',
+      },
+      {
+        id: 'cursor', section: 'start', startOrder: 6,
+        type: 'tool', topics: ['vibe-coding'], region: 'global', platform: 'web',
+        title: 'Cursor',
+        creator: 'Anysphere',
+        url: 'https://cursor.com',
+        summary: 'This is what "vibe coding" means in practice. Open the editor, describe what you want, watch the file appear. Zero coding background required to ship something real this weekend.',
+      },
+      {
+        id: 'rundown-ai', section: 'start', startOrder: 7,
+        type: 'newsletter', topics: ['general'], region: 'global', platform: 'web',
+        title: 'The Rundown AI',
+        creator: 'Rowan Cheung',
+        url: 'https://www.therundown.ai',
+        summary: 'Daily five-minute email. New tools, what shipped, what changed. The fastest way to stay current without becoming an AI nerd online.',
+      },
+
+      // ── DAILY DRIVERS ──────────────────────────────────────────────────
+      {
+        id: 'gemini', section: 'daily',
+        type: 'tool', topics: ['general', 'research'], region: 'global', platform: 'web',
+        title: 'Gemini',
+        creator: 'Google DeepMind',
+        url: 'https://gemini.google.com',
+        summary: 'Massive context window, native image and audio in/out, free tier you cannot exhaust. Use it when you need to dump a 200-page PDF and ask questions.',
+      },
+      {
+        id: 'perplexity', section: 'daily',
+        type: 'tool', topics: ['general', 'research'], region: 'global', platform: 'web',
+        title: 'Perplexity',
+        creator: 'Aravind Srinivas',
+        url: 'https://www.perplexity.ai',
+        summary: 'Use this instead of Google for any question that needs sources. India-built leadership, free tier is fine, paid tier unlocks deep research that runs for minutes and writes you a real report.',
+      },
+      {
+        id: 'notebooklm', section: 'daily',
+        type: 'tool', topics: ['general', 'research'], region: 'global', platform: 'web',
+        title: 'NotebookLM',
+        creator: 'Google',
+        url: 'https://notebooklm.google.com',
+        summary: 'Drop in your textbook PDFs and class notes — get a personal study buddy grounded in YOUR sources. The "audio overview" feature generates a 15-minute podcast of two hosts discussing your notes. Magical, free, no excuse.',
+      },
+      {
+        id: 'grok', section: 'daily',
+        type: 'tool', topics: ['general'], region: 'global', platform: 'web',
+        title: 'Grok',
+        creator: 'xAI',
+        url: 'https://grok.com',
+        summary: 'Native to X, real-time access to the timeline, fewer guardrails. Worth keeping around for "what is the internet currently arguing about" questions and surprisingly good at code.',
+      },
+      {
+        id: 'deepseek', section: 'daily',
+        type: 'tool', topics: ['general', 'vibe-coding'], region: 'global', platform: 'web',
+        title: 'DeepSeek',
+        creator: 'DeepSeek AI',
+        url: 'https://chat.deepseek.com',
+        summary: 'Chinese open-weight lab punching well above its weight. Free, surprisingly capable for code and reasoning. A second opinion when ChatGPT or Claude is being stubborn.',
+      },
+      {
+        id: 'mistral', section: 'daily',
+        type: 'tool', topics: ['general'], region: 'global', platform: 'web',
+        title: 'Le Chat',
+        creator: 'Mistral',
+        url: 'https://chat.mistral.ai',
+        summary: 'European, fast, free. A different "voice" on the same prompt — useful when ChatGPT is overloaded or you want to compare outputs.',
+      },
+      {
+        id: 'reel-varun-humane', section: 'daily',
+        type: 'reel', topics: ['general', 'india'], region: 'in', platform: 'instagram',
+        title: 'The Humane AI Pin looks cool — here\'s why I won\'t buy it',
+        creator: 'Varun Mayya · @thevarunmayya',
+        embedUrl: 'https://www.instagram.com/thevarunmayya/reel/Czq5c71LS2J/',
+        url: 'https://www.instagram.com/thevarunmayya/reel/Czq5c71LS2J/',
+        summary: '60 seconds of Varun cutting through hardware-AI hype. The kind of skepticism worth practicing every time a new "magical" device drops.',
+      },
+
+      // ── FROM INDIA, FOR BUILDERS ───────────────────────────────────────
+      {
+        id: 'varun-mayya', section: 'india',
+        type: 'channel', topics: ['india', 'vibe-coding'], region: 'in', platform: 'youtube',
+        title: 'Varun Mayya',
+        creator: '@VarunMayya',
+        url: 'https://www.youtube.com/@VarunMayya',
+        summary: 'The single loudest, most consistent voice on AI for normal Indian people. Vibe-coded apps, startup teardowns, the occasional rant. If you watch one solo channel in this list, watch this.',
+      },
+      {
+        id: '100x-engineers', section: 'india',
+        type: 'channel', topics: ['india', 'vibe-coding'], region: 'in', platform: 'youtube',
+        title: '100x Engineers',
+        creator: '@100xEngineers',
+        url: 'https://www.youtube.com/@100xEngineers',
+        summary: 'India\'s noisiest AI engineering school. Most content is free on YouTube before you decide whether to enrol. Strong on the build-in-public energy.',
+      },
+      {
+        id: 'harkirat', section: 'india',
+        type: 'channel', topics: ['india', 'vibe-coding'], region: 'in', platform: 'youtube',
+        title: 'Harkirat Singh',
+        creator: '@harkirat1 · 100xDevs',
+        url: 'https://www.youtube.com/@harkirat1',
+        summary: 'Cohort-based, project-based, brutally hands-on. His free YouTube classes alone could turn you into a full-stack-plus-AI dev if you actually finish them. Most won\'t.',
+      },
+      {
+        id: 'krish-naik', section: 'india',
+        type: 'channel', topics: ['india', 'fundamentals', 'research'], region: 'in', platform: 'youtube',
+        title: 'Krish Naik',
+        creator: '@krishnaik06 · 1.3M subs',
+        url: 'https://www.youtube.com/@krishnaik06',
+        summary: 'India\'s most-watched ML educator for a reason. Long, technical, free. Watch when you have decided you want to actually understand transformers, not just use them.',
+      },
+      {
+        id: 'sunny-savita', section: 'india',
+        type: 'channel', topics: ['india', 'fundamentals', 'agentic'], region: 'in', platform: 'youtube',
+        title: 'Sunny Savita',
+        creator: 'Generative AI Engineer @ PwC India',
+        url: 'https://www.youtube.com/@sunnysavita10',
+        summary: 'His "Generative AI from Basic to Advance" playlist is one of the most thorough free GenAI roadmaps on YouTube — LLMs, RAG, agents — explained without dumbing it down.',
+      },
+      {
+        id: 'codewithharry', section: 'india',
+        type: 'channel', topics: ['india', 'vibe-coding'], region: 'in', platform: 'youtube',
+        title: 'CodeWithHarry',
+        creator: '@CodeWithHarry · 7.9M subs',
+        url: 'https://www.youtube.com/@CodeWithHarry',
+        summary: 'Harry Jain trained an entire generation of Indian developers in Hindi. Recently leaning into AI tools and vibe coding. The friendliest entry point for India\'s tier-2 and tier-3 students.',
+      },
+      {
+        id: 'decode-ai', section: 'india',
+        type: 'channel', topics: ['india', 'fundamentals'], region: 'in', platform: 'youtube',
+        title: 'DecodeAI',
+        creator: 'Analytics Vidhya · Hindi + English',
+        url: 'https://www.youtube.com/@DecodeAIwithAnalyticsVidhya',
+        summary: 'Distills AI concepts and trends into under-a-minute clips, mostly in Hindi. The shorts feed is gold for the metro commute.',
+      },
+      {
+        id: 'aishwarya-srinivasan', section: 'india',
+        type: 'channel', topics: ['india', 'general'], region: 'in', platform: 'youtube',
+        title: 'Aishwarya Srinivasan',
+        creator: 'AI educator + investor',
+        url: 'https://www.youtube.com/@AishwaryaSrinivasan',
+        summary: 'Most-followed Indian woman in AI. Posts on AI concepts, careers, building with modern tools. Worth following on LinkedIn too — that is where most of her writing lives.',
+      },
+      {
+        id: '1littlecoder', section: 'india',
+        type: 'channel', topics: ['india', 'general', 'agentic'], region: 'in', platform: 'youtube',
+        title: '1littlecoder',
+        creator: '@1littlecoder',
+        url: 'https://www.youtube.com/@1littlecoder',
+        summary: 'Indian-origin creator with a global audience. Daily GenAI tool reviews and quick tutorials. Useful for keeping up without watching the news-cycle channels.',
+      },
+      {
+        id: 'ai-anytime', section: 'india',
+        type: 'channel', topics: ['india', 'agentic', 'vibe-coding'], region: 'in', platform: 'youtube',
+        title: 'AI Anytime',
+        creator: '@AIAnytime',
+        url: 'https://www.youtube.com/@AIAnytime',
+        summary: 'Sonu\'s GenAI tutorials. Hands-on, project-based, very current. Great for the leap from "I tried ChatGPT" to "I shipped a working agent."',
+      },
+      {
+        id: 'codebasics', section: 'india',
+        type: 'channel', topics: ['india', 'fundamentals'], region: 'in', platform: 'youtube',
+        title: 'Codebasics',
+        creator: 'Dhaval Patel',
+        url: 'https://www.youtube.com/@codebasics',
+        summary: 'Beautifully paced for absolute beginners. Hindi+English. The kindest entry point if Krish Naik feels too dense.',
+      },
+      {
+        id: 'prateek-arora', section: 'india',
+        type: 'channel', topics: ['india', 'illustration'], region: 'in', platform: 'instagram',
+        title: 'Prateek Arora',
+        creator: '@_prateekarora',
+        url: 'https://www.instagram.com/_prateekarora/',
+        summary: 'India\'s most striking AI artist. Indofuturist sci-fi via Midjourney — surreal Mumbai alleys, steampunk South Asian futures. His work is the proof that AI image tools are not levellers; taste still wins.',
+      },
+      {
+        id: 'shael-ai', section: 'india',
+        type: 'channel', topics: ['india', 'illustration', 'ui-design'], region: 'in', platform: 'instagram',
+        title: 'Shail Patel',
+        creator: '@shael.ai',
+        url: 'https://www.instagram.com/shael.ai/',
+        summary: 'Indian architect using Midjourney to imagine impossible buildings — bubble homes, surreal storefronts, vehicles you wish existed. The clearest demonstration that architectural training transfers directly to AI image work.',
+      },
+      {
+        id: 'aravind-srinivas', section: 'india',
+        type: 'channel', topics: ['india', 'general'], region: 'in', platform: 'x',
+        title: 'Aravind Srinivas',
+        creator: '@AravSrinivas',
+        url: 'https://x.com/AravSrinivas',
+        summary: 'CEO of Perplexity, Chennai-born. Posts product updates and thinking-out-loud in public. One of the few Indian-origin tech CEOs who replies in your DMs.',
+      },
+      {
+        id: 'emergent', section: 'india',
+        type: 'tool', topics: ['india', 'vibe-coding'], region: 'in', platform: 'web',
+        title: 'Emergent',
+        creator: 'Bengaluru · 8M users',
+        url: 'https://emergent.sh',
+        summary: 'Bengaluru-built vibe coding platform. Natural language → full-stack app. Has crossed 8M builders and 1.5M monthly actives — the rare Indian AI product winning on the global leaderboard.',
+      },
+
+      // ── REELS & SHORTS (embedded inline) ──────────────────────────────
+      {
+        id: 'short-varun-advice', section: 'reels',
+        type: 'short', topics: ['india', 'vibe-coding'], region: 'in', platform: 'youtube',
+        title: 'Varun Mayya\'s advice for engineers',
+        creator: 'Varun Mayya',
+        embedId: '2vkY4WPOPkw',
+        url: 'https://www.youtube.com/shorts/2vkY4WPOPkw',
+        summary: '60 seconds. The hard part is not the tools.',
+      },
+      {
+        id: 'short-100x-masterclass', section: 'reels',
+        type: 'short', topics: ['india', 'vibe-coding'], region: 'in', platform: 'youtube',
+        title: 'Free 100x masterclass intro',
+        creator: '100x Engineers',
+        embedId: 'LFCdvo19QfA',
+        url: 'https://www.youtube.com/shorts/LFCdvo19QfA',
+        summary: 'A taste of what their cohort delivers. Watch before you decide whether to spend.',
+      },
+      {
+        id: 'short-tanmay-ai', section: 'reels',
+        type: 'short', topics: ['india', 'general'], region: 'in', platform: 'youtube',
+        title: 'Embrace AI\'s power',
+        creator: 'Tanmay Bhat',
+        embedId: 'tfPXQCMRhk4',
+        url: 'https://www.youtube.com/shorts/tfPXQCMRhk4',
+        summary: 'The comedian-turned-AI-evangelist in his most-shared minute.',
+      },
+      {
+        id: 'short-karpathy-stop-humans', section: 'reels',
+        type: 'short', topics: ['fundamentals', 'agentic'], region: 'global', platform: 'youtube',
+        title: 'Stop building for humans',
+        creator: 'Andrej Karpathy',
+        embedId: 'k4RaBtlPpAg',
+        url: 'https://www.youtube.com/shorts/k4RaBtlPpAg',
+        summary: 'A minute of Karpathy on why every interface needs to be designed for agents now.',
+      },
+      {
+        id: 'short-karpathy-learn', section: 'reels',
+        type: 'short', topics: ['fundamentals'], region: 'global', platform: 'youtube',
+        title: 'How Karpathy learns complex topics',
+        creator: 'Andrej Karpathy',
+        embedId: 'LkDudOBai_8',
+        url: 'https://www.youtube.com/shorts/LkDudOBai_8',
+        summary: 'Steal the method. Works for design too.',
+      },
+      {
+        id: 'short-karpathy-rule', section: 'reels',
+        type: 'short', topics: ['fundamentals', 'agentic'], region: 'global', platform: 'youtube',
+        title: 'Karpathy\'s #1 rule for AI research',
+        creator: 'Andrej Karpathy',
+        embedId: 'PT2xu9_HrVI',
+        url: 'https://www.youtube.com/shorts/PT2xu9_HrVI',
+        summary: 'Remove yourself from the loop. Easier said than learned.',
+      },
+      {
+        id: 'reel-varun-vibe', section: 'reels',
+        type: 'reel', topics: ['india', 'vibe-coding'], region: 'in', platform: 'instagram',
+        title: 'Vibe code from anywhere',
+        creator: '@thevarunmayya',
+        embedUrl: 'https://www.instagram.com/reel/DLnKg-OBT8B/',
+        url: 'https://www.instagram.com/reel/DLnKg-OBT8B/',
+        summary: 'Even your phone. The point of the demo is that the bar to "I can build software" has collapsed.',
+      },
+      {
+        id: 'short-varun-overrated', section: 'reels',
+        type: 'short', topics: ['india', 'general'], region: 'in', platform: 'youtube',
+        title: 'What\'s overrated about AI?',
+        creator: 'Varun Mayya',
+        embedId: 'XvVWlkIxz-M',
+        url: 'https://www.youtube.com/shorts/XvVWlkIxz-M',
+        summary: 'A minute of cold water. Most useful follow if you are doom-scrolling AI hype on the timeline.',
+      },
+
+      // ── FUNDAMENTALS ────────────────────────────────────────────────────
+      {
+        id: 'karpathy-deep-dive', section: 'fundamentals',
+        type: 'video', topics: ['fundamentals'], region: 'global', platform: 'youtube',
+        title: 'Deep Dive into LLMs like ChatGPT',
+        creator: 'Andrej Karpathy',
+        embedId: '7xTGNNLPyMI', duration: '3h 31m',
+        url: 'https://www.youtube.com/watch?v=7xTGNNLPyMI',
+        summary: 'The 3.5-hour follow-up that goes from "what is a token" to "why does it hallucinate." Watch on weekends, in chunks. Better than any paid course.',
+      },
+      {
+        id: '3b1b-llm-brief', section: 'fundamentals',
+        type: 'video', topics: ['fundamentals'], region: 'global', platform: 'youtube',
+        title: 'Large Language Models, briefly',
+        creator: '3Blue1Brown',
+        embedId: 'LPZh9BOjkQs', duration: '8m',
+        url: 'https://www.youtube.com/watch?v=LPZh9BOjkQs',
+        summary: 'Eight minutes. The most beautifully animated LLM explainer ever made. Show this to anyone who says "I do not understand AI" and watch them get it in one sitting.',
+      },
+      {
+        id: '3b1b-neural-net', section: 'fundamentals',
+        type: 'video', topics: ['fundamentals'], region: 'global', platform: 'youtube',
+        title: 'But what is a neural network?',
+        creator: '3Blue1Brown',
+        embedId: 'aircAruvnKk', duration: '19m',
+        url: 'https://www.youtube.com/watch?v=aircAruvnKk',
+        summary: 'The visual canon. Pause often. The four-part series this opens is worth your evening.',
+      },
+      {
+        id: 'karpathy-build-gpt', section: 'fundamentals',
+        type: 'video', topics: ['fundamentals', 'vibe-coding'], region: 'global', platform: 'youtube',
+        title: 'Let\'s build GPT, from scratch',
+        creator: 'Andrej Karpathy',
+        embedId: 'kCc8FmEb1nY', duration: '1h 56m',
+        url: 'https://www.youtube.com/watch?v=kCc8FmEb1nY',
+        summary: 'Builds a tiny ChatGPT in front of you. Even if you do not code, the first 30 minutes will permanently change how you imagine these things working.',
+      },
+      {
+        id: 'karpathy-zero-hero', section: 'fundamentals',
+        type: 'course', topics: ['fundamentals', 'vibe-coding'], region: 'global', platform: 'youtube',
+        title: 'Neural Networks: Zero to Hero',
+        creator: 'Andrej Karpathy',
+        url: 'https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ',
+        summary: 'A free 10-video YouTube course. By the end, you will have built a tiny ChatGPT yourself. Genuinely the best free AI course on the internet.',
+      },
+      {
+        id: 'fastai', section: 'fundamentals',
+        type: 'course', topics: ['fundamentals', 'research'], region: 'global', platform: 'web',
+        title: 'Practical Deep Learning',
+        creator: 'fast.ai · Jeremy Howard',
+        url: 'https://course.fast.ai',
+        summary: 'Top-down, code-first. The kindest entry point to "real" ML. Free, no fluff, maintained for years.',
+      },
+      {
+        id: 'deeplearning-ai', section: 'fundamentals',
+        type: 'course', topics: ['fundamentals', 'agentic', 'vibe-coding'], region: 'global', platform: 'web',
+        title: 'DeepLearning.AI short courses',
+        creator: 'Andrew Ng et al.',
+        url: 'https://www.deeplearning.ai/short-courses/',
+        summary: 'Dozens of free 1-hour courses on prompting, agents, RAG. Co-taught with the actual companies (OpenAI, Anthropic) so you are learning current practice, not someone\'s blog post.',
+      },
+      {
+        id: 'anthropic-academy', section: 'fundamentals',
+        type: 'course', topics: ['fundamentals'], region: 'global', platform: 'web',
+        title: 'Anthropic courses',
+        creator: 'Anthropic',
+        url: 'https://www.anthropic.com/learn',
+        summary: 'Free, official, well-paced. The "Real-World Prompting" course alone will save you a hundred hours of trial and error.',
+      },
+
+      // ── VIBE CODING ────────────────────────────────────────────────────
+      {
+        id: 'claude-code', section: 'code',
+        type: 'tool', topics: ['vibe-coding', 'agentic', 'fundamentals'], region: 'global', platform: 'web',
+        title: 'Claude Code',
+        creator: 'Anthropic',
+        url: 'https://www.anthropic.com/claude-code',
+        summary: 'The serious one. Claude in your terminal, your IDE, your repo — with a 1M-token context (Opus 4.7) that actually reads your codebase before it touches anything. Subagents you can spawn for parallel work, hooks that fire on lifecycle events, slash commands you author yourself, a plugin marketplace with skills for everything from iOS work to design systems. Cursor is the gentler start; Claude Code is what professional engineers switch to. (Yes — this entire directory was built with it.)',
+      },
+      {
+        id: 'claude-skills', section: 'code',
+        type: 'article', topics: ['vibe-coding', 'agentic'], region: 'global', platform: 'web',
+        title: 'Claude Skills + Agent SDK',
+        creator: 'Anthropic',
+        url: 'https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview',
+        summary: 'Skills are reusable expertise modules — drop a `SKILL.md` in a folder, Claude Code will load and follow it. The Agent SDK lets you build the same loop into your own apps. Read this once you have used Claude Code for a week and want to extend it. The plugin marketplace already has skills for iOS, design, security audit, even slide-deck creation.',
+      },
+      {
+        id: 'windsurf', section: 'code',
+        type: 'tool', topics: ['vibe-coding'], region: 'global', platform: 'web',
+        title: 'Windsurf',
+        creator: 'Cognition · was Codeium',
+        url: 'https://windsurf.com',
+        summary: 'OpenAI tried to buy this for $3B in 2025. The deal collapsed; Cognition (Devin\'s parent) bought it for $250M instead. Now sister product to Devin. Still Cursor\'s biggest rival. Try both for an afternoon, keep the one that feels less in your way.',
+      },
+      {
+        id: 'bolt', section: 'code',
+        type: 'tool', topics: ['vibe-coding', 'ui-design'], region: 'global', platform: 'web',
+        title: 'Bolt.new',
+        creator: 'StackBlitz',
+        url: 'https://bolt.new',
+        summary: 'Prompt-to-app, runs the entire stack in your browser. Fastest iteration loop on the market. Use this for a one-day prototype that you will throw away on Monday.',
+      },
+      {
+        id: 'lovable', section: 'code',
+        type: 'tool', topics: ['vibe-coding', 'ui-design'], region: 'global', platform: 'web',
+        title: 'Lovable',
+        creator: 'Lovable',
+        url: 'https://lovable.dev',
+        summary: 'Closest to "I described a habit tracker, the habit tracker exists." Higher quality output than Bolt for most tasks. Pay tier is real, free tier is enough to validate an idea.',
+      },
+      {
+        id: 'v0', section: 'code',
+        type: 'tool', topics: ['vibe-coding', 'ui-design'], region: 'global', platform: 'web',
+        title: 'v0',
+        creator: 'Vercel',
+        url: 'https://v0.app',
+        summary: 'Type a prompt, get a real React + Tailwind UI you can deploy. The cleanest output of any "design-to-code" tool. Pairs naturally with Cursor for the next step.',
+      },
+      {
+        id: 'replit-agent', section: 'code',
+        type: 'tool', topics: ['vibe-coding'], region: 'global', platform: 'web',
+        title: 'Replit Agent',
+        creator: 'Replit',
+        url: 'https://replit.com/agent',
+        summary: 'Browser-only, end-to-end. Hosting, auth, database — all wired up for you. The shortest distance between "I have an idea" and a live URL you can text to your friends.',
+      },
+      {
+        id: 'aider', section: 'code',
+        type: 'tool', topics: ['vibe-coding'], region: 'global', platform: 'github',
+        title: 'Aider',
+        creator: 'Paul Gauthier',
+        url: 'https://aider.chat',
+        summary: 'Terminal-native, fast, predictable, free. Beloved by people who outgrew Cursor\'s magic and want explicit control.',
+      },
+      {
+        id: 'cline', section: 'code',
+        type: 'tool', topics: ['vibe-coding', 'agentic'], region: 'global', platform: 'github',
+        title: 'Cline',
+        creator: 'Cline · open source',
+        url: 'https://github.com/cline/cline',
+        summary: 'Open-source autonomous coding agent that lives in VS Code. Bring your own model. The hacker\'s pick when you want to know exactly what it is doing.',
+      },
+      {
+        id: 'theo-tggg', section: 'code',
+        type: 'channel', topics: ['vibe-coding', 'ui-design'], region: 'global', platform: 'youtube',
+        title: 'Theo · t3.gg',
+        creator: '@t3dotgg',
+        url: 'https://www.youtube.com/@t3dotgg',
+        summary: 'Caffeinated, opinionated, scarily good at explaining web dev. The best follow if you want to be a vibe coder who actually understands what is happening on screen.',
+      },
+      {
+        id: 'fireship', section: 'code',
+        type: 'channel', topics: ['vibe-coding', 'general'], region: 'global', platform: 'youtube',
+        title: 'Fireship',
+        creator: '@Fireship',
+        url: 'https://www.youtube.com/@Fireship',
+        summary: '100-second tech explainers. Funny, brisk, accurate. A foundational follow — not strictly AI, but every video helps you triangulate the rest.',
+      },
+      {
+        id: 'riley-brown', section: 'code',
+        type: 'channel', topics: ['vibe-coding', 'video'], region: 'global', platform: 'youtube',
+        title: 'Riley Brown',
+        creator: '@rileybrown_ai',
+        url: 'https://www.youtube.com/@rileybrown_ai',
+        summary: 'Builds in public, mostly on TikTok and YouTube. App demos in days, video AI tests, no fluff. Great for the "you can do this too" feeling.',
+      },
+      {
+        id: 'logan-kilpatrick', section: 'code',
+        type: 'channel', topics: ['vibe-coding', 'agentic', 'general'], region: 'global', platform: 'x',
+        title: 'Logan Kilpatrick',
+        creator: '@OfficialLoganK',
+        url: 'https://x.com/OfficialLoganK',
+        summary: 'Lead at Google AI Studio. Daily posts about what is shipping and how to use it. Best signal-to-noise for AI dev news on X.',
+      },
+      {
+        id: 'short-100x-automation', section: 'code',
+        type: 'short', topics: ['vibe-coding', 'agentic', 'india'], region: 'in', platform: 'youtube',
+        title: '100x AI Automation Masterclass',
+        creator: '100x Engineers',
+        embedId: '5h2sqqya_hU',
+        url: 'https://www.youtube.com/shorts/5h2sqqya_hU',
+        summary: 'A minute of "this is what they teach you" — automation pipelines built with AI agents. Watch before you decide whether to enrol or self-teach.',
+      },
+
+      // ── DESIGNING WITH AI ──────────────────────────────────────────────
+      {
+        id: 'stitch', section: 'design',
+        type: 'tool', topics: ['ui-design'], region: 'global', platform: 'web',
+        title: 'Google Stitch',
+        creator: 'Google · was Galileo AI',
+        url: 'https://stitch.withgoogle.com',
+        summary: 'Google bought Galileo AI in May 2025, made it free, and turned it into a five-screen multi-page generator with an infinite canvas. Figma\'s share price dropped 4% the day they shipped it. The clearest sign yet that AI design tools are no longer a side experiment.',
+      },
+      {
+        id: 'subframe', section: 'design',
+        type: 'tool', topics: ['ui-design', 'vibe-coding'], region: 'global', platform: 'web',
+        title: 'Subframe',
+        creator: 'Subframe',
+        url: 'https://www.subframe.com',
+        summary: 'Visual editor + AI, designs in components, exports working code. The hybrid sweet spot between Figma and a code editor.',
+      },
+      {
+        id: 'magic-patterns', section: 'design',
+        type: 'tool', topics: ['ui-design', 'vibe-coding'], region: 'global', platform: 'web',
+        title: 'Magic Patterns',
+        creator: 'Magic Patterns',
+        url: 'https://www.magicpatterns.com',
+        summary: 'Prompt → UI components. Strong with Tailwind, exports clean code. Useful when you know the system you want and just want fewer rectangles to draw.',
+      },
+      {
+        id: 'visily', section: 'design',
+        type: 'tool', topics: ['ui-design'], region: 'global', platform: 'web',
+        title: 'Visily',
+        creator: 'Visily',
+        url: 'https://www.visily.ai',
+        summary: 'Wireframe-first AI. Imports a screenshot and gives you back an editable mockup. Generous free tier.',
+      },
+      {
+        id: 'figma-make', section: 'design',
+        type: 'tool', topics: ['ui-design', 'vibe-coding'], region: 'global', platform: 'web',
+        title: 'Figma Make',
+        creator: 'Figma',
+        url: 'https://www.figma.com/make',
+        summary: 'Native to a tool you already use, generates real interactive prototypes from your designs. Free if your school gives you Figma.',
+      },
+      {
+        id: 'krea', section: 'design',
+        type: 'tool', topics: ['ui-design', 'illustration'], region: 'global', platform: 'web',
+        title: 'Krea',
+        creator: 'Krea AI',
+        url: 'https://www.krea.ai',
+        summary: 'Real-time image, video, 3D playground. The "creative scratchpad" of AI tools. Worth a paid month when you are sketching ideas every day.',
+      },
+      {
+        id: 'spline-ai', section: 'design',
+        type: 'tool', topics: ['ui-design', '3d'], region: 'global', platform: 'web',
+        title: 'Spline',
+        creator: 'Spline',
+        url: 'https://spline.design',
+        summary: 'Browser-native 3D editor with AI features for objects, materials, animations. Used in every design-y portfolio you have admired in the last two years.',
+      },
+      {
+        id: 'mariana-castilho', section: 'design',
+        type: 'channel', topics: ['ui-design'], region: 'global', platform: 'x',
+        title: 'Mariana Castilho',
+        creator: '@mscastilho',
+        url: 'https://x.com/mscastilho',
+        summary: 'Design lead at Vercel. Best feed on X for taste in motion, type, and product detail. A scroll calibrator.',
+      },
+      {
+        id: 'rauno', section: 'design',
+        type: 'channel', topics: ['ui-design'], region: 'global', platform: 'x',
+        title: 'Rauno Freiberg',
+        creator: '@raunofreiberg',
+        url: 'https://x.com/raunofreiberg',
+        summary: 'Linear / Vercel design alumni. Posts the most precise interaction-design demos on X. Watch slowly.',
+      },
+      {
+        id: 'brian-lovin', section: 'design',
+        type: 'channel', topics: ['ui-design'], region: 'global', platform: 'web',
+        title: 'Design Details',
+        creator: 'Brian Lovin',
+        url: 'https://brianlovin.com',
+        summary: 'Long-running mobile UX teardown blog. Pre-AI, but still the gold standard for thinking about interfaces. Aged better than most "best of" design lists.',
+      },
+
+      // ── MAKE AN IMAGE ──────────────────────────────────────────────────
+      {
+        id: 'figma-weave', section: 'image',
+        type: 'tool', topics: ['illustration', 'ui-design', 'video'], region: 'global', platform: 'web',
+        title: 'Figma Weave',
+        creator: 'Figma · was Weavy',
+        url: 'https://weave.figma.com',
+        summary: 'Figma bought Weavy in October 2025 and turned it into the most ambitious AI media platform shipping. Node-based pipeline, multi-model orchestration — Seedance / Sora / Veo for video; Flux / Ideogram / Nano-Banana for image — and professional editing tools layered on top. DoorDash, Lyft, NVIDIA already use it in production. If you only learn one new tool this year, learn this.',
+      },
+      {
+        id: 'midjourney', section: 'image',
+        type: 'tool', topics: ['illustration'], region: 'global', platform: 'web',
+        title: 'Midjourney',
+        creator: 'Midjourney',
+        url: 'https://www.midjourney.com',
+        summary: 'Still queen of aesthetic. v7 in early 2026 was a generational leap — the level of detail and compositional sophistication is borderline absurd. Worth every rupee for moodboards and concept art. The web app finally removed the Discord-only friction.',
+      },
+      {
+        id: 'flux', section: 'image',
+        type: 'tool', topics: ['illustration'], region: 'global', platform: 'web',
+        title: 'Flux',
+        creator: 'Black Forest Labs',
+        url: 'https://blackforestlabs.ai',
+        summary: 'Open-weight model that rivals Midjourney on realism and beats it on typography. Use through Krea or fal.ai instead of self-hosting unless you enjoy the pain.',
+      },
+      {
+        id: 'ideogram', section: 'image',
+        type: 'tool', topics: ['illustration', 'ui-design'], region: 'global', platform: 'web',
+        title: 'Ideogram',
+        creator: 'Ideogram',
+        url: 'https://ideogram.ai',
+        summary: 'The image model that can finally do legible text. Posters, packaging, logos with real type — Midjourney still cannot match it here.',
+      },
+      {
+        id: 'recraft', section: 'image',
+        type: 'tool', topics: ['illustration', 'ui-design'], region: 'global', platform: 'web',
+        title: 'Recraft',
+        creator: 'Recraft',
+        url: 'https://www.recraft.ai',
+        summary: 'The only major AI image generator that produces native vector — actual SVGs you can edit in Illustrator or Figma. V3 is genuinely state-of-the-art for photorealism and text rendering on top of that. The best AI illustrator for designers. Underrated; do not skip.',
+      },
+      {
+        id: 'nano-banana', section: 'image',
+        type: 'tool', topics: ['illustration', 'photography'], region: 'global', platform: 'web',
+        title: 'Gemini Image (Nano Banana)',
+        creator: 'Google',
+        url: 'https://gemini.google.com',
+        summary: 'Edit by chatting. "Make her hair longer", "remove the lamp", "change the wallpaper to teal." Comes free with Gemini and changed how everyone retouches.',
+      },
+      {
+        id: 'firefly', section: 'image',
+        type: 'tool', topics: ['illustration', 'photography'], region: 'global', platform: 'web',
+        title: 'Adobe Firefly',
+        creator: 'Adobe',
+        url: 'https://firefly.adobe.com',
+        summary: 'The reason to use it: trained on commercially-safe data. Use this when you are billing a client. Skip it for personal moodboards — Midjourney is more fun.',
+      },
+      {
+        id: 'civitai', section: 'image',
+        type: 'community', topics: ['illustration'], region: 'global', platform: 'web',
+        title: 'Civitai',
+        creator: 'Civitai',
+        url: 'https://civitai.com',
+        summary: 'The community for Stable Diffusion. Thousands of fine-tuned models, LoRAs, prompts to remix. NSFW heavy — set your filters.',
+      },
+      {
+        id: 'comfyui', section: 'image',
+        type: 'tool', topics: ['illustration', 'video'], region: 'global', platform: 'github',
+        title: 'ComfyUI',
+        creator: 'ComfyAnonymous',
+        url: 'https://github.com/comfyanonymous/ComfyUI',
+        summary: 'Node-based workflow builder for image and video models. The pro tool. Steep curve, deep ceiling. Once you commit, you can replicate any AI artwork you see.',
+      },
+      {
+        id: 'tristan-rei', section: 'image',
+        type: 'channel', topics: ['illustration', 'video'], region: 'global', platform: 'x',
+        title: 'Tristan Reidford',
+        creator: '@tristan_rei',
+        url: 'https://x.com/tristan_rei',
+        summary: 'Daily AI experiments, generous in sharing prompts. The follow for "what is possible right now" rather than hot takes.',
+      },
+      {
+        id: 'heather-cooper', section: 'image',
+        type: 'channel', topics: ['illustration', 'video'], region: 'global', platform: 'x',
+        title: 'Heather Cooper',
+        creator: '@HBCoop_',
+        url: 'https://x.com/HBCoop_',
+        summary: 'Curator of the visual AI scene. Posts the best generations daily. If you only follow one AI X account, follow this.',
+      },
+      {
+        id: 'reel-varun-krea', section: 'image',
+        type: 'reel', topics: ['illustration', 'india'], region: 'in', platform: 'instagram',
+        title: 'Krea.ai is great for artists who want finer control',
+        creator: 'Varun Mayya · @thevarunmayya',
+        embedUrl: 'https://www.instagram.com/thevarunmayya/reel/C0BuVlkrZNh/',
+        url: 'https://www.instagram.com/thevarunmayya/reel/C0BuVlkrZNh/',
+        summary: 'A 60-second tour of Krea — the same tool listed elsewhere on this page. Watch this before you sign up; you\'ll know if it\'s for you.',
+      },
+      {
+        id: 'reel-varun-aimodels', section: 'image',
+        type: 'reel', topics: ['illustration', 'india'], region: 'in', platform: 'instagram',
+        title: 'Make your own AI image model with just text',
+        creator: 'Varun Mayya · @thevarunmayya',
+        embedUrl: 'https://www.instagram.com/thevarunmayya/reel/Cwc7GWXrCzf/',
+        url: 'https://www.instagram.com/thevarunmayya/reel/Cwc7GWXrCzf/',
+        summary: 'Train a custom image model from text alone — the workflow Varun walks through is a starting point for character-consistent illustration.',
+      },
+
+      // ── PHOTOGRAPHY ────────────────────────────────────────────────────
+      {
+        id: 'magnific', section: 'photo',
+        type: 'tool', topics: ['photography', 'illustration'], region: 'global', platform: 'web',
+        title: 'Magnific',
+        creator: 'Magnific AI',
+        url: 'https://magnific.ai',
+        summary: 'AI upscaler that adds plausible detail rather than just enlarging. Industry standard for hero images. Worth one paid month before the next portfolio review.',
+      },
+      {
+        id: 'topaz', section: 'photo',
+        type: 'tool', topics: ['photography', 'video'], region: 'global', platform: 'web',
+        title: 'Topaz Photo / Video AI',
+        creator: 'Topaz Labs',
+        url: 'https://www.topazlabs.com',
+        summary: 'The classics: denoising, upscaling, frame interpolation. Pay once, use forever. Boring on purpose, indispensable in practice.',
+      },
+      {
+        id: 'photoroom', section: 'photo',
+        type: 'tool', topics: ['photography', 'ui-design'], region: 'global', platform: 'web',
+        title: 'Photoroom',
+        creator: 'Photoroom',
+        url: 'https://www.photoroom.com',
+        summary: 'Mobile-first background remover and product shot generator. Used by every Instagram seller in India already — for good reason.',
+      },
+      {
+        id: 'photoai', section: 'photo',
+        type: 'tool', topics: ['photography'], region: 'global', platform: 'web',
+        title: 'PhotoAI',
+        creator: 'Pieter Levels',
+        url: 'https://photoai.com',
+        summary: 'Train your own face → unlimited AI photos. Built solo by Pieter Levels in public. The iconic indie product, half tutorial, half tool.',
+      },
+      {
+        id: 'remini', section: 'photo',
+        type: 'tool', topics: ['photography'], region: 'global', platform: 'web',
+        title: 'Remini',
+        creator: 'Bending Spoons',
+        url: 'https://remini.ai',
+        summary: 'Restore old, blurry photos to sharpness. Mobile-first. The best app for grandparent\'s wedding album in any family WhatsApp.',
+      },
+
+      // ── MAKE A FILM ────────────────────────────────────────────────────
+      {
+        id: 'higgsfield', section: 'film',
+        type: 'tool', topics: ['video'], region: 'global', platform: 'web',
+        title: 'Higgsfield',
+        creator: 'Higgsfield AI',
+        url: 'https://higgsfield.ai',
+        summary: 'The aggregator. Access Veo 3.1, Kling 3.0, Seedance 2.0, Sora through one interface, plus 70+ cinematic camera presets — Bullet Time, Crash Zoom, 360 Rotation — motion control, character locking, Vibe Motion, Mixed Media. Their Creator Program has paid out $1M+ to 10K+ creators for posting AI-generated reels. If you are serious about AI video, start here.',
+      },
+      {
+        id: 'runway', section: 'film',
+        type: 'tool', topics: ['video'], region: 'global', platform: 'web',
+        title: 'Runway',
+        creator: 'Runway',
+        url: 'https://runwayml.com',
+        summary: 'The OG, still on top. Gen-4.5 is state of the art for control — director tools, camera moves, real Hollywood pipelines. Pick this if your goal is a deliverable, not a TikTok.',
+      },
+      {
+        id: 'sora-rip', section: 'film',
+        type: 'tool', topics: ['video'], region: 'global', platform: 'web',
+        title: 'Sora — RIP',
+        creator: 'OpenAI · shut down 26 April 2026',
+        url: 'https://help.openai.com/en/articles/20001152-what-to-know-about-the-sora-discontinuation',
+        summary: 'OpenAI killed the Sora app on April 26, 2026. The API follows in September. Video generation was supposed to fold into ChatGPT but ChatGPT lost video gen during the migration. For now: use Runway or Kling. Listed here so you recognise the name when older tutorials reference it.',
+      },
+      {
+        id: 'kling', section: 'film',
+        type: 'tool', topics: ['video'], region: 'global', platform: 'web',
+        title: 'Kling 3.0',
+        creator: 'Kuaishou',
+        url: 'https://klingai.com',
+        summary: 'The best Runway alternative when you need volume and speed without paying premium prices. v3 is a real step up on physical realism — water, fabric, hair, fast motion. Free tier exists; also accessible inside Higgsfield.',
+      },
+      {
+        id: 'hailuo', section: 'film',
+        type: 'tool', topics: ['video'], region: 'global', platform: 'web',
+        title: 'Hailuo',
+        creator: 'MiniMax',
+        url: 'https://hailuoai.video',
+        summary: 'Chinese model, fastest in its class — full-quality generations in under 30 seconds. Best of breed for human subjects: body movement and micro-expressions look right where other models drop the ball. Use this when you need a person on screen who has to convince.',
+      },
+      {
+        id: 'seedance', section: 'film',
+        type: 'tool', topics: ['video'], region: 'global', platform: 'web',
+        title: 'Seedance',
+        creator: 'ByteDance',
+        url: 'https://www.volcengine.com/product/seedance',
+        summary: 'ByteDance\'s flagship. v2.0 launched February 2026 with unified audio-video joint generation and 12-file multimodal input. The current best image-to-video model on the leaderboards. Easiest to access via Figma Weave or Higgsfield.',
+      },
+      {
+        id: 'pika', section: 'film',
+        type: 'tool', topics: ['video'], region: 'global', platform: 'web',
+        title: 'Pika',
+        creator: 'Pika Labs',
+        url: 'https://pika.art',
+        summary: 'Goofy, charming, fast. Best for stylised reels and short-form social. Whole Instagram accounts have been built on the free tier.',
+      },
+      {
+        id: 'luma-dream', section: 'film',
+        type: 'tool', topics: ['video', '3d'], region: 'global', platform: 'web',
+        title: 'Luma Dream Machine',
+        creator: 'Luma AI',
+        url: 'https://lumalabs.ai/dream-machine',
+        summary: 'Image-to-video and text-to-video, gorgeous camera moves. The 2026 niche: action realism — sports, dance, motion-heavy shots.',
+      },
+      {
+        id: 'wan', section: 'film',
+        type: 'tool', topics: ['video', 'vibe-coding'], region: 'global', platform: 'github',
+        title: 'Wan',
+        creator: 'Alibaba · open source',
+        url: 'https://wan.video',
+        summary: 'The serious open-source video model. Wan 2.7 ships as a four-model production suite. Use this if you want to self-host, build a pipeline around open weights, or stop paying for credits. ComfyUI integration is excellent.',
+      },
+      {
+        id: 'hedra', section: 'film',
+        type: 'tool', topics: ['video'], region: 'global', platform: 'web',
+        title: 'Hedra',
+        creator: 'Hedra',
+        url: 'https://www.hedra.com',
+        summary: 'Best-in-class for talking-head video from a still photo plus voice. Used for AI music videos and "deepfake" personas your professors will warn you about.',
+      },
+      {
+        id: 'heygen', section: 'film',
+        type: 'tool', topics: ['video'], region: 'global', platform: 'web',
+        title: 'HeyGen',
+        creator: 'HeyGen',
+        url: 'https://www.heygen.com',
+        summary: 'AI presenter videos. Translate yourself into 30+ languages with mouth-matched lip sync. Wedding speeches in Mandarin, easy.',
+      },
+      {
+        id: 'descript', section: 'film',
+        type: 'tool', topics: ['video', 'general'], region: 'global', platform: 'web',
+        title: 'Descript',
+        creator: 'Descript',
+        url: 'https://www.descript.com',
+        summary: 'Edit video by editing the transcript. Remove ums, type new words, regenerate audio. The single biggest unlock for podcast / interview work.',
+      },
+      {
+        id: 'capcut', section: 'film',
+        type: 'tool', topics: ['video'], region: 'global', platform: 'web',
+        title: 'CapCut',
+        creator: 'ByteDance',
+        url: 'https://www.capcut.com',
+        summary: 'Already on every Indian creator\'s phone. AI background remover, auto-captions, auto-edit. Free, full-featured, hard to outgrow.',
+      },
+      {
+        id: 'elevenlabs', section: 'film',
+        type: 'tool', topics: ['video', 'music'], region: 'global', platform: 'web',
+        title: 'ElevenLabs',
+        creator: 'ElevenLabs',
+        url: 'https://elevenlabs.io',
+        summary: 'The voice gen standard. Clone your voice, dub anything, narrate without recording. Generous free tier — start there.',
+      },
+      {
+        id: 'curious-refuge', section: 'film',
+        type: 'channel', topics: ['video'], region: 'global', platform: 'youtube',
+        title: 'Curious Refuge',
+        creator: 'Caleb & Shelby Ward',
+        url: 'https://www.youtube.com/@curiousrefuge',
+        summary: 'AI filmmaking school as a YouTube channel. Tutorials, breakdowns, course offers. The single best place to learn the AI video craft end-to-end.',
+      },
+      {
+        id: 'pj-ace', section: 'film',
+        type: 'channel', topics: ['video'], region: 'global', platform: 'x',
+        title: 'PJ Ace',
+        creator: '@PJaccetturo',
+        url: 'https://x.com/PJaccetturo',
+        summary: 'AI filmmaker, posts daily process and breakdowns. Read the threads where he shows the prompt next to the shot — that is where the learning is.',
+      },
+      {
+        id: 'short-varun-replace', section: 'film',
+        type: 'short', topics: ['video', 'india'], region: 'in', platform: 'youtube',
+        title: 'I can completely replace myself with AI',
+        creator: 'Varun Mayya',
+        embedId: 'FNcj8zqeX1M',
+        url: 'https://www.youtube.com/shorts/FNcj8zqeX1M',
+        summary: 'Varun ran the experiment everyone else jokes about: AI face, AI voice, AI hand movements. The result is uncanny. Watch as a preview of where AI presenter video is heading.',
+      },
+      {
+        id: 'reel-varun-voice', section: 'film',
+        type: 'reel', topics: ['video', 'india'], region: 'in', platform: 'instagram',
+        title: 'Prank-call your friends with voice.ai',
+        creator: 'Varun Mayya · @thevarunmayya',
+        embedUrl: 'https://www.instagram.com/thevarunmayya/reel/CxniX-xyihq/',
+        url: 'https://www.instagram.com/thevarunmayya/reel/CxniX-xyihq/',
+        summary: 'Voice cloning is now a phone-friendly feature. The pranks are fun; the implication for trust is not. A minute that makes both points.',
+      },
+
+      // ── MAKE A SOUND ───────────────────────────────────────────────────
+      {
+        id: 'suno', section: 'sound',
+        type: 'tool', topics: ['music'], region: 'global', platform: 'web',
+        title: 'Suno',
+        creator: 'Suno',
+        url: 'https://suno.com',
+        summary: 'Type a prompt → full song with vocals, instruments, structure. The viral one, now on v5 — noticeably better sound quality and lyric coherence than the early-2025 versions. Free credits weekly. Try once and you will get it.',
+      },
+      {
+        id: 'lyria', section: 'sound',
+        type: 'tool', topics: ['music'], region: 'global', platform: 'web',
+        title: 'Lyria 3 Pro · Producer.ai',
+        creator: 'Google DeepMind',
+        url: 'https://producer.ai',
+        summary: 'Google\'s flagship music model, launched March 25, 2026. Generates full songs up to 3 minutes with explicit structural awareness — describe verses, choruses, bridges and the model respects them. Lives behind Producer.ai (formerly Riffusion, Google acquired). The most musically literate option.',
+      },
+      {
+        id: 'udio', section: 'sound',
+        type: 'tool', topics: ['music'], region: 'global', platform: 'web',
+        title: 'Udio',
+        creator: 'Udio',
+        url: 'https://www.udio.com',
+        summary: 'Suno\'s rival. Often wins on instrumentals and gives you more vocal variety. Worth A/B-ing for any specific track.',
+      },
+      {
+        id: 'eleven-music', section: 'sound',
+        type: 'tool', topics: ['music'], region: 'global', platform: 'web',
+        title: 'ElevenLabs Music',
+        creator: 'ElevenLabs',
+        url: 'https://elevenlabs.io/music',
+        summary: 'Same makers as the voice tool. Generates full songs with high-quality vocals and instrumentation. Late entrant, fast catch-up.',
+      },
+      {
+        id: 'beatoven', section: 'sound',
+        type: 'tool', topics: ['music', 'india'], region: 'in', platform: 'web',
+        title: 'Beatoven.ai',
+        creator: 'Bengaluru, India',
+        url: 'https://www.beatoven.ai',
+        summary: 'India-built. Emotionally-tagged, royalty-free background music for videos. Lower ceiling than Suno but the use-case is different — designed for creators who need music *in* their work, not as the work.',
+      },
+      {
+        id: 'reel-varun-suno', section: 'sound',
+        type: 'reel', topics: ['music', 'india'], region: 'in', platform: 'instagram',
+        title: 'Suno text-to-song is mind-blowing',
+        creator: 'Varun Mayya · @thevarunmayya',
+        embedUrl: 'https://www.instagram.com/thevarunmayya/reel/C1M4D5qSXlL/',
+        url: 'https://www.instagram.com/thevarunmayya/reel/C1M4D5qSXlL/',
+        summary: 'Watch Varun react to Suno in real time. The "ok this is actually wild" moment most people have on their first try, captured in a minute.',
+      },
+
+      // ── 3D & SPATIAL ───────────────────────────────────────────────────
+      {
+        id: 'meshy', section: '3d',
+        type: 'tool', topics: ['3d', 'game'], region: 'global', platform: 'web',
+        title: 'Meshy',
+        creator: 'Meshy',
+        url: 'https://www.meshy.ai',
+        summary: 'Text or image → 3D model with PBR textures. Production-ready meshes for games and AR. The most reliable today.',
+      },
+      {
+        id: 'tripo', section: '3d',
+        type: 'tool', topics: ['3d', 'game'], region: 'global', platform: 'web',
+        title: 'Tripo AI',
+        creator: 'VAST',
+        url: 'https://www.tripo3d.ai',
+        summary: 'Often picked over Meshy for character work. Stronger geometric quality at the cost of slower iteration.',
+      },
+      {
+        id: 'luma-genie', section: '3d',
+        type: 'tool', topics: ['3d', 'game'], region: 'global', platform: 'web',
+        title: 'Luma Genie',
+        creator: 'Luma AI',
+        url: 'https://lumalabs.ai/genie',
+        summary: 'Sister to Dream Machine. Text → 3D mesh in under a minute. Best for fast concept-stage assets where quality is "good enough."',
+      },
+      {
+        id: 'world-labs', section: '3d',
+        type: 'tool', topics: ['3d'], region: 'global', platform: 'web',
+        title: 'World Labs',
+        creator: 'Fei-Fei Li',
+        url: 'https://www.worldlabs.ai',
+        summary: 'Image → fully explorable 3D world. Frontier research, limited access. Worth an aspirational bookmark — this is where 2027 is heading.',
+      },
+
+      // ── MAKE A GAME ────────────────────────────────────────────────────
+      {
+        id: 'rosebud', section: 'game',
+        type: 'tool', topics: ['game', 'vibe-coding'], region: 'global', platform: 'web',
+        title: 'Rosebud AI',
+        creator: 'Rosebud',
+        url: 'https://rosebud.ai',
+        summary: 'Make games with prompts, browser-playable, shareable. The "vibe-code a game" platform. Output is rough; the joy is in the loop.',
+      },
+      {
+        id: 'scenario', section: 'game',
+        type: 'tool', topics: ['game', 'illustration'], region: 'global', platform: 'web',
+        title: 'Scenario',
+        creator: 'Scenario',
+        url: 'https://www.scenario.com',
+        summary: 'Train custom models on your art style → consistent game assets at scale. Used by indie studios in production.',
+      },
+      {
+        id: 'inworld', section: 'game',
+        type: 'tool', topics: ['game'], region: 'global', platform: 'web',
+        title: 'Inworld AI',
+        creator: 'Inworld',
+        url: 'https://inworld.ai',
+        summary: 'AI characters for games — personalities, memory, emotions. Drops into Unity / Unreal. Where "talk to the NPC" stops being a punchline.',
+      },
+      {
+        id: 'convai', section: 'game',
+        type: 'tool', topics: ['game'], region: 'global', platform: 'web',
+        title: 'Convai',
+        creator: 'Convai',
+        url: 'https://convai.com',
+        summary: 'Conversational AI characters for games. Voice-first. The cheaper, more accessible alternative to Inworld.',
+      },
+      {
+        id: 'layer-ai', section: 'game',
+        type: 'tool', topics: ['game', 'illustration'], region: 'global', platform: 'web',
+        title: 'Layer AI',
+        creator: 'Layer',
+        url: 'https://layer.ai',
+        summary: 'AI for game art teams. Generate variations, maintain style, ship faster. Built for teams, expensive solo.',
+      },
+
+      // ── AGENTIC ────────────────────────────────────────────────────────
+      {
+        id: 'mcp', section: 'agent',
+        type: 'article', topics: ['agentic', 'vibe-coding'], region: 'global', platform: 'web',
+        title: 'Model Context Protocol',
+        creator: 'Anthropic',
+        url: 'https://modelcontextprotocol.io',
+        summary: 'The standard that lets AI agents talk to your tools — Notion, GitHub, your filesystem, anything. Read this once. It is the plumbing of the agentic web.',
+      },
+      {
+        id: 'building-effective-agents', section: 'agent',
+        type: 'article', topics: ['agentic', 'vibe-coding'], region: 'global', platform: 'web',
+        title: 'Building Effective Agents',
+        creator: 'Anthropic Engineering',
+        url: 'https://www.anthropic.com/engineering/building-effective-agents',
+        summary: 'The most-quoted engineering article of the past year. How to actually structure agentic workflows. Required reading if you build anything beyond chat.',
+      },
+      {
+        id: 'atlas', section: 'agent',
+        type: 'tool', topics: ['agentic'], region: 'global', platform: 'web',
+        title: 'ChatGPT Atlas',
+        creator: 'OpenAI · replaces Operator',
+        url: 'https://chatgpt.com/atlas/',
+        summary: 'OpenAI shut Operator down in August 2025 and put its capabilities into Atlas — their AI browser. Logs in for you, fills forms, books things. Eventually being merged into a single ChatGPT + Codex + Atlas desktop app. Rough but useful.',
+      },
+      {
+        id: 'manus', section: 'agent',
+        type: 'tool', topics: ['agentic', 'vibe-coding'], region: 'global', platform: 'web',
+        title: 'Manus',
+        creator: 'Manus AI · invite-only',
+        url: 'https://manus.im',
+        summary: 'Chinese autonomous agent — the 2025 viral one. Still invite-only with a 500K-person waitlist. Meta tried to buy it for $2B in April 2026; China\'s government blocked the deal a week later. Worth knowing the name; not worth waiting for the invite.',
+      },
+      {
+        id: 'crew-ai', section: 'agent',
+        type: 'tool', topics: ['agentic', 'vibe-coding'], region: 'global', platform: 'web',
+        title: 'CrewAI',
+        creator: 'CrewAI',
+        url: 'https://www.crewai.com',
+        summary: 'Build teams of agents that work together. Open-source framework + paid cloud. Good if you have outgrown single-agent prompts.',
+      },
+      {
+        id: 'n8n', section: 'agent',
+        type: 'tool', topics: ['agentic', 'general'], region: 'global', platform: 'web',
+        title: 'n8n',
+        creator: 'n8n',
+        url: 'https://n8n.io',
+        summary: 'Open-source Zapier with native AI nodes. Visual workflows. The favourite of anyone who outgrew Zapier\'s pricing.',
+      },
+      {
+        id: 'autogen', section: 'agent',
+        type: 'tool', topics: ['agentic', 'vibe-coding'], region: 'global', platform: 'github',
+        title: 'AutoGen',
+        creator: 'Microsoft',
+        url: 'https://github.com/microsoft/autogen',
+        summary: 'Microsoft\'s multi-agent framework. Production-grade, well-documented, free. The "boring enterprise" pick that turns out to be solid.',
+      },
+
+      // ── RESEARCH ───────────────────────────────────────────────────────
+      {
+        id: 'elicit', section: 'research',
+        type: 'tool', topics: ['research'], region: 'global', platform: 'web',
+        title: 'Elicit',
+        creator: 'Elicit',
+        url: 'https://elicit.com',
+        summary: 'Search 200M+ academic papers, summarise findings, extract data. Built for actual research, not vibes. Free tier covers a thesis.',
+      },
+      {
+        id: 'consensus', section: 'research',
+        type: 'tool', topics: ['research'], region: 'global', platform: 'web',
+        title: 'Consensus',
+        creator: 'Consensus',
+        url: 'https://consensus.app',
+        summary: 'Ask any research question, get an AI-generated answer with a "consensus meter" across studies. Useful for "is this actually known to be true."',
+      },
+      {
+        id: 'scispace', section: 'research',
+        type: 'tool', topics: ['research', 'india'], region: 'in', platform: 'web',
+        title: 'SciSpace',
+        creator: 'India-built · 10M users',
+        url: 'https://typeset.io',
+        summary: 'India-built research assistant. Chat with PDFs, find papers, generate literature reviews. Used by 10M+ researchers globally — proper Indian export.',
+      },
+      {
+        id: 'research-rabbit', section: 'research',
+        type: 'tool', topics: ['research'], region: 'global', platform: 'web',
+        title: 'ResearchRabbit',
+        creator: 'ResearchRabbit',
+        url: 'https://researchrabbitapp.com',
+        summary: 'Visualise paper citation graphs. Find related work via "more like this." Free. Best companion to Elicit.',
+      },
+      {
+        id: 'connected-papers', section: 'research',
+        type: 'tool', topics: ['research'], region: 'global', platform: 'web',
+        title: 'Connected Papers',
+        creator: 'Connected Papers',
+        url: 'https://www.connectedpapers.com',
+        summary: 'Drop in one paper, see its neighbourhood as a graph. The fastest way to know what to read next.',
+      },
+
+      // ── LONG LECTURES ──────────────────────────────────────────────────
+      {
+        id: 'altman-lex', section: 'lectures',
+        type: 'video', topics: ['general', 'fundamentals'], region: 'global', platform: 'youtube',
+        title: 'Sam Altman × Lex Fridman',
+        creator: 'Lex Fridman Podcast',
+        embedId: 'jvqFAi7vkBc', duration: '2h',
+        url: 'https://www.youtube.com/watch?v=jvqFAi7vkBc',
+        summary: 'The most-watched founder interview in AI. Useful as a vibes-check — what the OpenAI CEO is actually thinking, in his own words.',
+      },
+      {
+        id: 'amodei-lex', section: 'lectures',
+        type: 'video', topics: ['general', 'fundamentals', 'research'], region: 'global', platform: 'youtube',
+        title: 'Dario Amodei × Lex Fridman',
+        creator: 'Lex Fridman Podcast',
+        embedId: 'ugvHCXCOmm4', duration: '5h',
+        url: 'https://www.youtube.com/watch?v=ugvHCXCOmm4',
+        summary: 'Five hours, Anthropic CEO. The richest single AI interview ever recorded. Watch in three sittings. Take notes the third time.',
+      },
+      {
+        id: 'karpathy-software-3', section: 'lectures',
+        type: 'video', topics: ['vibe-coding', 'fundamentals'], region: 'global', platform: 'youtube',
+        title: 'Software Is Changing (Again)',
+        creator: 'Andrej Karpathy',
+        embedId: 'LCEmiRjPEtQ', duration: '40m',
+        url: 'https://www.youtube.com/watch?v=LCEmiRjPEtQ',
+        summary: 'Karpathy\'s YC talk. Why programming in English is the most important shift in software in 50 years. Forty minutes you will quote forever.',
+      },
+      {
+        id: 'mollick-talk', section: 'lectures',
+        type: 'video', topics: ['general', 'fundamentals'], region: 'global', platform: 'youtube',
+        title: 'How to use AI to get smarter at your job',
+        creator: 'Ethan Mollick',
+        embedId: 'UqjYIsgT_Fg', duration: '35m',
+        url: 'https://www.youtube.com/watch?v=UqjYIsgT_Fg',
+        summary: 'Wharton professor, grounded talk. The most useful "what should I actually do at work" lecture in this list.',
+      },
+
+      // ── INBOX ──────────────────────────────────────────────────────────
+      {
+        id: 'bens-bites', section: 'inbox',
+        type: 'newsletter', topics: ['general'], region: 'global', platform: 'web',
+        title: 'Ben\'s Bites',
+        creator: 'Ben Tossell',
+        url: 'https://www.bensbites.com',
+        summary: 'Daily AI news for non-engineers. Builders\' angle, no hype. One of the most-read AI newsletters for a reason.',
+      },
+      {
+        id: 'mollick-newsletter', section: 'inbox',
+        type: 'newsletter', topics: ['general', 'fundamentals'], region: 'global', platform: 'substack',
+        title: 'One Useful Thing',
+        creator: 'Ethan Mollick',
+        url: 'https://www.oneusefulthing.org',
+        summary: 'Wharton professor who actually uses AI for real work. The most useful, least breathless writer about AI. Free Substack — subscribe today.',
+      },
+      {
+        id: 'import-ai', section: 'inbox',
+        type: 'newsletter', topics: ['research'], region: 'global', platform: 'substack',
+        title: 'Import AI',
+        creator: 'Jack Clark · Anthropic co-founder',
+        url: 'https://importai.substack.com',
+        summary: 'Weekly research roundup by an Anthropic co-founder. Includes a haunting AI sci-fi story at the end of each issue. Worth subscribing for the stories alone.',
+      },
+      {
+        id: 'the-batch', section: 'inbox',
+        type: 'newsletter', topics: ['research', 'general'], region: 'global', platform: 'web',
+        title: 'The Batch',
+        creator: 'Andrew Ng · DeepLearning.AI',
+        url: 'https://www.deeplearning.ai/the-batch/',
+        summary: 'Weekly. Andrew Ng\'s curated take on AI news. Educational tone, beginner-friendly. The grown-up\'s digest.',
+      },
+      {
+        id: 'latent-space', section: 'inbox',
+        type: 'newsletter', topics: ['vibe-coding', 'agentic'], region: 'global', platform: 'web',
+        title: 'Latent Space',
+        creator: 'swyx',
+        url: 'https://www.latent.space',
+        summary: 'The AI Engineer\'s digest. Newsletter + podcast. Written for builders, not consumers. Required if you are vibe coding seriously.',
+      },
+      {
+        id: 'analytics-india', section: 'inbox',
+        type: 'newsletter', topics: ['india', 'general'], region: 'in', platform: 'web',
+        title: 'Analytics India Magazine',
+        creator: 'AIM',
+        url: 'https://analyticsindiamag.com',
+        summary: 'Indian AI news, hiring, business reporting. The closest thing to an industry trade paper for Indian AI.',
+      },
+      {
+        id: 'inc42', section: 'inbox',
+        type: 'newsletter', topics: ['india', 'general'], region: 'in', platform: 'web',
+        title: 'Inc42 — AI section',
+        creator: 'Inc42',
+        url: 'https://inc42.com/topics/artificial-intelligence/',
+        summary: 'Indian startup tech with a strong AI vertical. Free. The mainstream Indian source if AIM feels too niche.',
+      },
+      {
+        id: 'ai-snake-oil', section: 'inbox',
+        type: 'newsletter', topics: ['research', 'general'], region: 'global', platform: 'web',
+        title: 'AI Snake Oil',
+        creator: 'Arvind Narayanan & Sayash Kapoor',
+        url: 'https://www.aisnakeoil.com',
+        summary: 'Princeton researchers. Skeptical, evidence-based. The antidote to the hype-cycle. Read alongside The Rundown for balance.',
+      },
+
+      // ── FOLLOW ─────────────────────────────────────────────────────────
+      {
+        id: 'andrej-x', section: 'follow',
+        type: 'channel', topics: ['fundamentals', 'vibe-coding'], region: 'global', platform: 'x',
+        title: 'Andrej Karpathy',
+        creator: '@karpathy',
+        url: 'https://x.com/karpathy',
+        summary: 'Threads as good as essays. Highest signal-to-noise on the platform. Hard follow.',
+      },
+      {
+        id: 'simon-willison', section: 'follow',
+        type: 'channel', topics: ['vibe-coding', 'agentic', 'general'], region: 'global', platform: 'web',
+        title: 'Simon Willison\'s Weblog',
+        creator: 'Simon Willison',
+        url: 'https://simonwillison.net',
+        summary: 'Daily blog by the co-creator of Django. The single most useful place on the internet to track LLM progress with a builder\'s eye.',
+      },
+      {
+        id: 'ethan-mollick-x', section: 'follow',
+        type: 'channel', topics: ['general', 'fundamentals'], region: 'global', platform: 'x',
+        title: 'Ethan Mollick',
+        creator: '@emollick',
+        url: 'https://x.com/emollick',
+        summary: 'Wharton professor. The most pragmatic voice on AI for normal people in normal jobs. His thread → essay pipeline is gold.',
+      },
+      {
+        id: 'pieter-levels', section: 'follow',
+        type: 'channel', topics: ['vibe-coding'], region: 'global', platform: 'x',
+        title: 'Pieter Levels',
+        creator: '@levelsio',
+        url: 'https://x.com/levelsio',
+        summary: 'Solo builder of PhotoAI. Makes seven-figure-ARR products alone in cafes. Indispensable for would-be Indian indie hackers.',
+      },
+      {
+        id: 'r-locallllama', section: 'follow',
+        type: 'community', topics: ['research', 'vibe-coding'], region: 'global', platform: 'reddit',
+        title: 'r/LocalLLaMA',
+        creator: 'Reddit',
+        url: 'https://www.reddit.com/r/LocalLLaMA/',
+        summary: 'For running models on your own hardware. Sharp, technical, current. The most useful subreddit for AI engineers.',
+      },
+      {
+        id: 'r-stable-diffusion', section: 'follow',
+        type: 'community', topics: ['illustration'], region: 'global', platform: 'reddit',
+        title: 'r/StableDiffusion',
+        creator: 'Reddit · 600k+',
+        url: 'https://www.reddit.com/r/StableDiffusion/',
+        summary: 'The hub for open-source image AI. Workflows, models, prompts, Flux-vs-SDXL fights. Set your filters; some posts are NSFW.',
+      },
+      {
+        id: 'huggingface', section: 'follow',
+        type: 'community', topics: ['research', 'illustration', 'vibe-coding'], region: 'global', platform: 'web',
+        title: 'Hugging Face',
+        creator: 'Hugging Face',
+        url: 'https://huggingface.co',
+        summary: 'GitHub for AI models. Spaces lets you try them in-browser. Foundational. Make an account.',
+      },
+      {
+        id: 'product-hunt-ai', section: 'follow',
+        type: 'community', topics: ['general', 'ui-design'], region: 'global', platform: 'web',
+        title: 'Product Hunt — AI',
+        creator: 'Product Hunt',
+        url: 'https://www.producthunt.com/topics/artificial-intelligence',
+        summary: 'Daily new AI tools. The fastest way to discover what just shipped. Free.',
+      },
+
+      // ── QUICK WINS ─────────────────────────────────────────────────────
+      {
+        id: 'tip-projects', section: 'tips',
+        type: 'tip', topics: ['general', 'fundamentals'], region: 'global', platform: 'web',
+        title: 'Use Projects in ChatGPT and Claude',
+        creator: 'Workflow tip',
+        url: 'https://help.openai.com/en/articles/10169521-using-projects-in-chatgpt',
+        summary: 'Both apps let you create Projects with persistent files plus custom instructions. Set up one Project per assignment / class. Stops you re-pasting context. Five-minute setup, infinite return.',
+      },
+      {
+        id: 'tip-paste-image', section: 'tips',
+        type: 'tip', topics: ['general', 'ui-design', 'illustration'], region: 'global', platform: 'web',
+        title: 'Paste a screenshot, do not type',
+        creator: 'Workflow tip',
+        url: 'https://www.anthropic.com',
+        summary: 'Most people still type. Just paste an image of your reference, your wireframe, your textbook page. The conversation moves five times faster and the AI guesses what you meant.',
+      },
+      {
+        id: 'tip-voice', section: 'tips',
+        type: 'tip', topics: ['general'], region: 'global', platform: 'web',
+        title: 'Use voice mode while walking',
+        creator: 'Workflow tip',
+        url: 'https://chatgpt.com',
+        summary: 'ChatGPT and Gemini both have voice. The best way to brainstorm a brief, debug an idea, draft a script — out of your head, into your ears. Try once, you will use it weekly.',
+      },
+      {
+        id: 'tip-system-prompt', section: 'tips',
+        type: 'tip', topics: ['fundamentals'], region: 'global', platform: 'web',
+        title: 'Always set a system prompt',
+        creator: 'Workflow tip',
+        url: 'https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags',
+        summary: '"You are a senior brand designer at Pentagram. You speak like Massimo Vignelli." Two lines that change every output. Set one in custom instructions and stop re-typing.',
+      },
+      {
+        id: 'tip-show-not-tell', section: 'tips',
+        type: 'tip', topics: ['fundamentals', 'illustration', 'ui-design'], region: 'global', platform: 'web',
+        title: 'Show, do not describe',
+        creator: 'Workflow tip',
+        url: 'https://docs.midjourney.com/hc/en-us/articles/32859204029709-Prompts',
+        summary: 'For visual work, three reference images beat 300 words. The AI is a visual creature. Feed it visuals. Same trick works in Claude — drop in screenshots of UIs you like.',
+      },
+    ];
+
+    // ─── Helpers / lazy embed ───────────────────────────────────────────────
+    function useInView(rootMargin = '300px') {
+      const ref = useRef(null);
+      const [inView, setInView] = useState(false);
+      useEffect(() => {
+        if (inView || !ref.current) return;
+        const el = ref.current;
+        const obs = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) { setInView(true); obs.disconnect(); }
+        }, { rootMargin });
+        obs.observe(el);
+        return () => obs.disconnect();
+      }, [inView, rootMargin]);
+      return [ref, inView];
+    }
+
+    // ─── Tiny inline avatar (creator dot) ──────────────────────────────────
+    function MiniAvatar({ item, size }) {
+      const url = avatarFor(item);
+      const [failed, setFailed] = useState(false);
+      if (!url || failed) return null;
+      const sz = size || 22;
+      return (
+        <img
+          src={url}
+          alt=""
+          className="av-circle"
+          style={{ width: sz, height: sz }}
+          loading="lazy"
+          onError={() => setFailed(true)}
+        />
+      );
+    }
+
+    // ─── Card variants ──────────────────────────────────────────────────────
+    function YTLite({ item, big }) {
+      const [playing, setPlaying] = useState(false);
+      if (playing) {
+        return (
+          <iframe
+            className="yt-frame"
+            src={`https://www.youtube.com/embed/${item.embedId}?autoplay=1&rel=0`}
+            title={item.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allowFullScreen
+          />
+        );
+      }
+      return (
+        <button
+          className="lite-yt w-full"
+          onClick={(e) => { e.stopPropagation(); setPlaying(true); }}
+          aria-label={`Play ${item.title}`}
+          style={{ backgroundImage: `url(${ytThumb(item.embedId)})` }}
+        >
+          <span className="play" aria-hidden="true" />
+          {item.duration && <span className="duration">{item.duration}</span>}
+        </button>
+      );
+    }
+
+    // Lazy YT short — vertical, only loads embed when in view AND user clicks play
+    function YTShortCard({ item }) {
+      const [holderRef, inView] = useInView();
+      const [playing, setPlaying] = useState(false);
+      return (
+        <article className="card flat p-3 fade-in" ref={holderRef}>
+          <div className="vlite" style={inView ? { backgroundImage: `url(${ytThumb(item.embedId)})` } : { background: gradientFor(item.id) }}>
+            {playing ? (
+              <iframe
+                className="v-frame"
+                src={`https://www.youtube.com/embed/${item.embedId}?autoplay=1&rel=0&playsinline=1`}
+                title={item.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                allowFullScreen
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+              />
+            ) : (
+              <button onClick={() => setPlaying(true)} aria-label={`Play ${item.title}`} className="absolute inset-0 w-full h-full">
+                <span className="creator" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  <MiniAvatar item={item} size={16} />
+                  {item.creator}
+                </span>
+                <span className="play" aria-hidden="true" />
+                <span className="label">{item.title}</span>
+              </button>
+            )}
+          </div>
+          <div className="mt-3 px-1">
+            <div className="ttag">YT Short {item.region === 'in' ? '· India' : ''}</div>
+            {item.summary && <p className="mt-1.5" style={{ fontSize: 13, lineHeight: 1.5, color: 'var(--ink-soft)' }}>{item.summary}</p>}
+          </div>
+        </article>
+      );
+    }
+
+    // Instagram reel — uses the public /embed/ iframe URL, no script required
+    function IGReelCard({ item }) {
+      const [holderRef, inView] = useInView();
+      const [active, setActive] = useState(false);
+      // Extract the path /reel/CODE/ from the URL
+      const embedSrc = useMemo(() => {
+        try {
+          const u = new URL(item.embedUrl || item.url);
+          const cleanPath = u.pathname.endsWith('/') ? u.pathname : u.pathname + '/';
+          return `https://www.instagram.com${cleanPath}embed/`;
+        } catch { return ''; }
+      }, [item.embedUrl, item.url]);
+      return (
+        <article className="card flat p-3 fade-in" ref={holderRef}>
+          {active && inView ? (
+            <iframe
+              className="v-frame ig"
+              src={embedSrc}
+              title={item.title}
+              scrolling="no"
+              allow="encrypted-media; picture-in-picture; web-share"
+              allowtransparency="true"
+            />
+          ) : (
+            <button
+              className="vlite w-full"
+              onClick={() => setActive(true)}
+              aria-label={`Play ${item.title}`}
+              style={{ background: gradientFor(item.id) }}
+            >
+              <span className="creator">{item.creator}</span>
+              <span className="play" aria-hidden="true" />
+              <span className="label">{item.title}</span>
+            </button>
+          )}
+          <div className="mt-3 px-1">
+            <div className="ttag">Instagram Reel {item.region === 'in' ? '· India' : ''}</div>
+            {item.summary && <p className="mt-1.5" style={{ fontSize: 13, lineHeight: 1.5, color: 'var(--ink-soft)' }}>{item.summary}</p>}
+          </div>
+        </article>
+      );
+    }
+
+    // Compact tool/article/community card — favicon led, minimal chrome
+    function CompactCard({ item }) {
+      const fav = faviconFor(item.url);
+      const isOpen = (e) => { e.stopPropagation(); window.open(item.url, '_blank', 'noopener,noreferrer'); };
+      return (
+        <a href={item.url} target="_blank" rel="noopener noreferrer" className="card p-4 sm:p-5 fade-in flex flex-col" style={{ minHeight: 0 }}>
+          <div className="flex items-start gap-3 mb-3">
+            <img src={fav} alt="" className="fav-tiny" onError={(e) => { e.target.style.background = gradientFor(item.id); e.target.src = ''; }} />
+            <div className="flex-1 min-w-0">
+              <div className="ttag">{TYPE_LABEL[item.type]}{item.region === 'in' ? ' · India' : ''}</div>
+              <h3 className="display-soft leading-tight mt-0.5" style={{ fontSize: 19, fontWeight: 500 }}>{item.title}</h3>
+              {item.creator && <div className="mono mt-0.5" style={{ fontSize: 11, color: 'var(--muted)' }}>{item.creator}</div>}
+            </div>
+          </div>
+          {item.summary && <p style={{ fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-soft)' }}>{item.summary}</p>}
+          <div className="mt-3 pt-2 rule-soft flex items-center justify-between">
+            <span className="mono" style={{ fontSize: 10, color: 'var(--muted-soft)', letterSpacing: '0.04em' }}>{domainOf(item.url)}</span>
+            <span className="mono" style={{ fontSize: 10, color: 'var(--accent)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Open ↗</span>
+          </div>
+        </a>
+      );
+    }
+
+    // Channel / creator card — gradient + circular profile photo
+    function ChannelCard({ item }) {
+      const grad = gradientFor(item.id);
+      const initials = initialsFor(item.title);
+      const avatarUrl = avatarFor(item);
+      const [imgFailed, setImgFailed] = useState(false);
+      return (
+        <a href={item.url} target="_blank" rel="noopener noreferrer" className="card p-4 sm:p-5 fade-in flex flex-col" style={{ minHeight: 0 }}>
+          <div className="av" style={{ background: grad }}>
+            {avatarUrl && !imgFailed ? (
+              <img
+                src={avatarUrl}
+                alt={item.title}
+                className="photo"
+                loading="lazy"
+                onError={() => setImgFailed(true)}
+              />
+            ) : (
+              <span className="glyph">{initials}</span>
+            )}
+            <span className="ptag">{PLATFORM_LABEL[item.platform] || ''}</span>
+          </div>
+          <div className="mt-3">
+            <div className="ttag">{TYPE_LABEL[item.type]}{item.region === 'in' ? ' · India' : ''}</div>
+            <h3 className="display-soft leading-tight mt-0.5" style={{ fontSize: 21, fontWeight: 500 }}>{item.title}</h3>
+            {item.creator && <div className="mono mt-0.5" style={{ fontSize: 12, color: 'var(--muted)' }}>{item.creator}</div>}
+          </div>
+          {item.summary && <p className="mt-3" style={{ fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-soft)' }}>{item.summary}</p>}
+        </a>
+      );
+    }
+
+    // Standard YT video card with click-to-play
+    function VideoCard({ item }) {
+      return (
+        <article className="card p-4 sm:p-5 fade-in flex flex-col" style={{ minHeight: 0 }}>
+          <YTLite item={item} />
+          <div className="mt-3">
+            <div className="ttag">{TYPE_LABEL[item.type]}{item.duration ? ' · ' + item.duration : ''}</div>
+            <h3 className="display-soft leading-tight mt-0.5" style={{ fontSize: 21, fontWeight: 500 }}>{item.title}</h3>
+            {item.creator && (
+              <div className="flex items-center gap-2 mt-1.5">
+                <MiniAvatar item={item} size={22} />
+                <span className="mono" style={{ fontSize: 12, color: 'var(--muted)' }}>{item.creator}</span>
+              </div>
+            )}
+          </div>
+          {item.summary && <p className="mt-3" style={{ fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-soft)' }}>{item.summary}</p>}
+        </article>
+      );
+    }
+
+    // Hero version — bigger, more breathing room
+    function HeroCard({ item }) {
+      if (item.type === 'video' && item.embedId) {
+        return (
+          <article className="card hero p-5 sm:p-7 fade-in">
+            <div className="grid sm:grid-cols-5 gap-5 sm:gap-7 items-center">
+              <div className="sm:col-span-3">
+                <YTLite item={item} big />
+              </div>
+              <div className="sm:col-span-2">
+                <div className="ttag accent">If you only do one thing</div>
+                <h3 className="display-serif leading-[1.05] mt-2" style={{ fontSize: 'clamp(28px, 3.4vw, 38px)', fontWeight: 500 }}>{item.title}</h3>
+                {item.creator && (
+                  <div className="flex items-center gap-2 mt-2">
+                    <MiniAvatar item={item} size={26} />
+                    <span className="mono" style={{ fontSize: 12, color: 'var(--muted)' }}>{item.creator}{item.duration ? ' · ' + item.duration : ''}</span>
+                  </div>
+                )}
+                {item.summary && <p className="mt-3" style={{ fontSize: 14.5, lineHeight: 1.55, color: 'var(--ink-soft)' }}>{item.summary}</p>}
+              </div>
+            </div>
+          </article>
+        );
+      }
+      // Tool/channel hero
+      const fav = faviconFor(item.url);
+      const grad = gradientFor(item.id);
+      return (
+        <a href={item.url} target="_blank" rel="noopener noreferrer" className="card hero p-5 sm:p-7 fade-in block">
+          <div className="grid sm:grid-cols-5 gap-5 sm:gap-7 items-center">
+            <div className="sm:col-span-2">
+              <div className="av" style={{ background: grad, aspectRatio: '4/3' }}>
+                {item.type === 'tool' ? (
+                  <img src={fav} alt="" style={{ width: 80, height: 80, borderRadius: 18, background: 'rgba(255,255,255,0.94)', padding: 14, filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.18))' }} onError={(e) => { e.target.style.display = 'none'; }} />
+                ) : (
+                  <span className="glyph" style={{ fontSize: 'clamp(36px, 6vw, 72px)' }}>{initialsFor(item.title)}</span>
+                )}
+                <span className="ptag">{PLATFORM_LABEL[item.platform] || ''}</span>
+              </div>
+            </div>
+            <div className="sm:col-span-3">
+              <div className="ttag accent">If you only do one thing</div>
+              <h3 className="display-serif leading-[1.05] mt-2" style={{ fontSize: 'clamp(28px, 3.4vw, 40px)', fontWeight: 500 }}>{item.title}</h3>
+              {item.creator && <div className="mono mt-2" style={{ fontSize: 12, color: 'var(--muted)' }}>{item.creator}</div>}
+              {item.summary && <p className="mt-3" style={{ fontSize: 14.5, lineHeight: 1.55, color: 'var(--ink-soft)' }}>{item.summary}</p>}
+              <div className="mt-4 mono" style={{ fontSize: 11, color: 'var(--accent)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Open {domainOf(item.url)} ↗</div>
+            </div>
+          </div>
+        </a>
+      );
+    }
+
+    // Card dispatcher
+    function Card({ item, hero }) {
+      if (hero) return <HeroCard item={item} />;
+      if (item.type === 'short') return <YTShortCard item={item} />;
+      if (item.type === 'reel')  return <IGReelCard item={item} />;
+      if (item.type === 'video' && item.embedId) return <VideoCard item={item} />;
+      if (item.type === 'channel') return <ChannelCard item={item} />;
+      // tool / article / newsletter / community / course / tip
+      return <CompactCard item={item} />;
+    }
+
+    // ─── Section component ──────────────────────────────────────────────────
+    function Section({ section, items }) {
+      if (!items || items.length === 0) return null;
+      // Pick a hero: first 'video' if exists, else first item
+      const heroIndex = items.findIndex(it => it.type === 'video' && it.embedId);
+      const heroIdx = heroIndex >= 0 ? heroIndex : -1;
+      const hero = heroIdx >= 0 ? items[heroIdx] : null;
+      const rest = heroIdx >= 0 ? items.filter((_, i) => i !== heroIdx) : items;
+
+      // For 'reels' section, render in a horizontal scroll (vertical cards)
+      const isReels = section.id === 'reels';
+      const isStart = section.id === 'start';
+
+      return (
+        <section id={section.id} className="px-4 sm:px-8 lg:px-12 py-12 sm:py-16" style={{ scrollMarginTop: '76px' }}>
+          <div className="max-w-6xl mx-auto">
+            <div className="mb-7 sm:mb-9 max-w-3xl">
+              <div className="label-mono mb-3" style={{ color: 'var(--accent)' }}>§ {SECTIONS.findIndex(s => s.id === section.id) + 1}</div>
+              <h2 className="display-serif leading-[1.05]" style={{ fontSize: 'clamp(30px, 4.4vw, 52px)', fontWeight: 500 }}>
+                {section.title}
+              </h2>
+              <p className="display-italic mt-3" style={{ fontSize: 'clamp(15px, 1.7vw, 19px)', lineHeight: 1.5, color: 'var(--muted)' }}>
+                {section.intro}
+              </p>
+            </div>
+
+            {isStart ? (
+              // Horizontal numbered scroll
+              <div className="scroll-x -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12">
+                <div className="flex gap-3 sm:gap-4 pb-3" style={{ minWidth: 'min-content' }}>
+                  {items.map((item, i) => (
+                    <a
+                      key={item.id}
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="card flat p-4 sm:p-5 flex-shrink-0 fade-in"
+                      style={{ width: '300px' }}
+                    >
+                      <div className="flex items-center gap-3 mb-3">
+                        <div style={{
+                          width: 34, height: 34, borderRadius: 9,
+                          background: 'var(--ink)', color: 'var(--paper)',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontFamily: "'Fraunces', serif", fontSize: 17, fontWeight: 500,
+                        }}>{i + 1}</div>
+                        <div className="ttag">{TYPE_LABEL[item.type]}{item.duration ? ' · ' + item.duration : ''}</div>
+                      </div>
+                      <div className="display-soft leading-[1.15]" style={{ fontSize: 19, fontWeight: 500 }}>{item.title}</div>
+                      {item.creator && (
+                        <div className="flex items-center gap-2 mt-1">
+                          <MiniAvatar item={item} size={20} />
+                          <span className="mono" style={{ fontSize: 11, color: 'var(--muted)' }}>{item.creator}</span>
+                        </div>
+                      )}
+                      {item.summary && <p className="mt-2" style={{ fontSize: 12.5, lineHeight: 1.5, color: 'var(--ink-soft)' }}>{item.summary}</p>}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : isReels ? (
+              <div className="scroll-x -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12">
+                <div className="flex gap-3 sm:gap-4 pb-3" style={{ minWidth: 'min-content' }}>
+                  {items.map(item => (
+                    <div key={item.id} style={{ width: '260px', flexShrink: 0 }}>
+                      <Card item={item} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <>
+                {hero && (
+                  <div className="mb-5">
+                    <Card item={hero} hero />
+                  </div>
+                )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                  {rest.map(item => (
+                    <Card key={item.id} item={item} />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+      );
+    }
+
+    // ─── Filter Drawer ──────────────────────────────────────────────────────
+    function FilterDrawer({ open, onClose, topic, setTopic, type, setType, region, setRegion, onClear }) {
+      useEffect(() => {
+        if (!open) return;
+        const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+        document.addEventListener('keydown', onKey);
+        document.body.style.overflow = 'hidden';
+        return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+      }, [open, onClose]);
+      if (!open) return null;
+      return (
+        <>
+          <div className="drawer-backdrop fade-in" onClick={onClose} />
+          <aside className="drawer">
+            <div className="px-6 py-6 flex items-center justify-between" style={{ borderBottom: '1px solid var(--line)' }}>
+              <div>
+                <div className="label-mono">Filters</div>
+                <div className="display-soft mt-1" style={{ fontSize: 22, fontWeight: 500 }}>Narrow it down</div>
+              </div>
+              <button onClick={onClose} className="mono" style={{
+                fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase',
+                padding: '6px 12px', border: '1px solid var(--line)', borderRadius: 999, color: 'var(--muted)'
+              }}>Close ×</button>
+            </div>
+            <div className="px-6 py-6">
+              <div className="label-mono mb-3">Region</div>
+              <div className="flex flex-wrap gap-2 mb-7">
+                {REGIONS.map(r => (
+                  <button key={r.id} onClick={() => setRegion(r.id)} className={`chip accent ${region === r.id ? 'active' : ''}`}>{r.label}</button>
+                ))}
+              </div>
+              <div className="label-mono mb-3">Topic</div>
+              <div className="flex flex-wrap gap-2 mb-7">
+                {TOPICS.map(t => (
+                  <button key={t.id} onClick={() => setTopic(t.id)} className={`chip ${topic === t.id ? 'active' : ''}`}>{t.label}</button>
+                ))}
+              </div>
+              <div className="label-mono mb-3">Format</div>
+              <div className="flex flex-wrap gap-2 mb-7">
+                {TYPES.map(t => (
+                  <button key={t.id} onClick={() => setType(t.id)} className={`chip ${type === t.id ? 'active' : ''}`}>{t.label}</button>
+                ))}
+              </div>
+              <div className="rule-soft pt-5 mt-5 flex items-center justify-between">
+                <button onClick={onClear} className="mono" style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--muted)' }}>Clear all</button>
+                <button onClick={onClose} style={{
+                  background: 'var(--ink)', color: 'var(--paper)',
+                  padding: '10px 18px', borderRadius: 999,
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase'
+                }}>Done</button>
+              </div>
+            </div>
+          </aside>
+        </>
+      );
+    }
+
+    // ─── Section Navigation Drawer ──────────────────────────────────────────
+    function SectionNav({ open, onClose, sectionData, onJump }) {
+      useEffect(() => {
+        if (!open) return;
+        const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+        document.addEventListener('keydown', onKey);
+        document.body.style.overflow = 'hidden';
+        return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+      }, [open, onClose]);
+      if (!open) return null;
+      const total = SECTIONS.reduce((acc, s) => acc + (sectionData[s.id] || []).length, 0);
+      return (
+        <>
+          <div className="drawer-backdrop fade-in" onClick={onClose} />
+          <aside className="drawer drawer-left">
+            <div className="px-6 py-6 flex items-center justify-between" style={{ borderBottom: '1px solid var(--line)' }}>
+              <div>
+                <div className="label-mono">Sections</div>
+                <div className="display-soft mt-1" style={{ fontSize: 22, fontWeight: 500 }}>Jump to</div>
+              </div>
+              <button onClick={onClose} className="mono" style={{
+                fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase',
+                padding: '6px 12px', border: '1px solid var(--line)', borderRadius: 999, color: 'var(--muted)'
+              }}>Close ×</button>
+            </div>
+            <nav className="px-3 py-4">
+              {SECTIONS.map((s, i) => {
+                const count = (sectionData[s.id] || []).length;
+                return (
+                  <button key={s.id} onClick={() => onJump(s.id)} className="nav-row">
+                    <span className="flex items-baseline gap-3 min-w-0">
+                      <span className="mono" style={{ fontSize: 11, color: 'var(--muted)', letterSpacing: '0.04em', flexShrink: 0 }}>
+                        §{String(i + 1).padStart(2, '0')}
+                      </span>
+                      <span className="display-soft" style={{ fontSize: 17, fontWeight: 500, lineHeight: 1.2 }}>
+                        {s.title}
+                      </span>
+                    </span>
+                    <span className="mono" style={{ fontSize: 11, color: 'var(--muted-soft)', flexShrink: 0 }}>{count}</span>
+                  </button>
+                );
+              })}
+            </nav>
+            <div className="px-6 py-4 mt-2" style={{ borderTop: '1px solid var(--line)' }}>
+              <div className="label-mono">{total} resources across {SECTIONS.length} sections</div>
+            </div>
+          </aside>
+        </>
+      );
+    }
+
+    // ─── Main App ───────────────────────────────────────────────────────────
+    function App() {
+      const [search, setSearch] = useState('');
+      const [topic, setTopic] = useState('all');
+      const [type, setType] = useState('all');
+      const [region, setRegion] = useState('all');
+      const [drawer, setDrawer] = useState(false);
+      const [nav, setNav] = useState(false);
+
+      useEffect(() => {
+        const boot = document.getElementById('boot');
+        if (boot) { boot.classList.add('hidden'); setTimeout(() => boot.remove(), 350); }
+      }, []);
+
+      const filtersActive = (topic !== 'all') || (type !== 'all') || (region !== 'all') || !!search.trim();
+
+      const filtered = useMemo(() => {
+        if (!filtersActive) return DATA;
+        const q = search.trim().toLowerCase();
+        return DATA.filter(item => {
+          if (topic !== 'all' && !(item.topics || []).includes(topic) && item.section !== topic) return false;
+          if (type !== 'all' && item.type !== type) return false;
+          if (region !== 'all' && item.region !== region) return false;
+          if (!q) return true;
+          const hay = [
+            item.title, item.creator, item.summary,
+            ...(item.topics || []),
+            item.type, item.platform
+          ].join(' ').toLowerCase();
+          return hay.includes(q);
+        });
+      }, [filtersActive, search, topic, type, region]);
+
+      const sectionData = useMemo(() => {
+        const map = {};
+        for (const s of SECTIONS) map[s.id] = [];
+        for (const item of DATA) {
+          if (map[item.section]) map[item.section].push(item);
+        }
+        // order start strip by startOrder
+        if (map.start) map.start.sort((a, b) => (a.startOrder || 99) - (b.startOrder || 99));
+        return map;
+      }, []);
+
+      function clearFilters() { setSearch(''); setTopic('all'); setType('all'); setRegion('all'); }
+
+      function jumpToSection(id) {
+        const wasFiltered = filtersActive;
+        if (wasFiltered) clearFilters();
+        setNav(false);
+        // Defer scroll until after the magazine view re-renders
+        setTimeout(() => {
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, wasFiltered ? 80 : 0);
+      }
+
+      return (
+        <div className="min-h-screen" style={{ background: 'var(--paper)' }}>
+          {/* ─── Header / Hero ─── */}
+          <header className="px-4 sm:px-8 lg:px-12 pt-8 sm:pt-14 pb-6">
+            <div className="max-w-6xl mx-auto">
+              <div className="flex items-center justify-between gap-3 mb-10 sm:mb-14">
+                <div className="label-mono">NIFT × Info Edge</div>
+                <a href="/" className="label-mono" style={{ color: 'var(--accent)' }}>← workshop deck</a>
+              </div>
+
+              <h1 className="display-serif display-hero leading-[0.96]" style={{
+                fontSize: 'clamp(46px, 9vw, 110px)', fontWeight: 500, letterSpacing: '-0.02em',
+              }}>
+                The AI <span className="accent-underline">field guide</span><br />
+                for design students.
+              </h1>
+
+              <p className="display-italic mt-6 max-w-2xl" style={{
+                fontSize: 'clamp(17px, 1.9vw, 22px)', lineHeight: 1.45, color: 'var(--muted)',
+              }}>
+                A hand-picked, India-first list of creators, channels, tools, and quick wins.<br/>
+                Made for the workshop. Meant to outlive it.
+              </p>
+              <div className="mt-6 mono" style={{ fontSize: 12, color: 'var(--muted-soft)', letterSpacing: '0.04em' }}>
+                {DATA.length} entries · curated April 2026 · not comprehensive on purpose
+              </div>
+            </div>
+          </header>
+
+          {/* ─── Sticky thin filter bar ─── */}
+          <div className="filter-bar sticky top-0 z-40">
+            <div className="max-w-6xl mx-auto px-4 sm:px-8 lg:px-12 py-3">
+              <div className="flex items-center gap-3">
+                <button onClick={() => setNav(true)} className="ham-btn" aria-label="Open section menu">
+                  <span className="bars" aria-hidden="true">
+                    <span></span><span></span><span></span>
+                  </span>
+                </button>
+                <div className="flex-1 relative">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       strokeWidth="2" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)' }}>
+                    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search creators, tools, topics…"
+                    className="w-full"
+                    style={{
+                      padding: '10px 14px 10px 38px',
+                      border: '1px solid var(--line)', borderRadius: 999,
+                      background: '#FBFAF4', fontSize: 14, outline: 'none',
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = 'var(--ink-soft)'}
+                    onBlur={(e) => e.target.style.borderColor = 'var(--line)'}
+                  />
+                </div>
+                <button onClick={() => setDrawer(true)} className={`chip ${filtersActive ? 'active' : ''}`} style={{ padding: '8px 16px' }}>
+                  Filter ▾{filtersActive ? ` · ${filtered.length}` : ''}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* ─── Body ─── */}
+          {filtersActive ? (
+            // Flat grid view
+            <main className="px-4 sm:px-8 lg:px-12 pt-10 pb-24">
+              <div className="max-w-6xl mx-auto">
+                <div className="mb-6 flex items-baseline justify-between">
+                  <div>
+                    <div className="label-mono mb-2">Filtered</div>
+                    <div className="display-serif" style={{ fontSize: 'clamp(26px, 3.4vw, 36px)', fontWeight: 500 }}>
+                      {filtered.length} of {DATA.length} resources
+                    </div>
+                  </div>
+                  <button onClick={clearFilters} className="mono" style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)' }}>
+                    Clear ×
+                  </button>
+                </div>
+                {filtered.length === 0 ? (
+                  <div className="text-center py-20">
+                    <div className="display-serif" style={{ fontSize: 32, color: 'var(--muted)' }}>Nothing matches that.</div>
+                    <p className="mt-3 mono" style={{ color: 'var(--muted)' }}>Try a broader search.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                    {filtered.map(item => <Card key={item.id} item={item} />)}
+                  </div>
+                )}
+              </div>
+            </main>
+          ) : (
+            // Magazine view
+            <>
+              {SECTIONS.map(section => (
+                <Section key={section.id} section={section} items={sectionData[section.id]} />
+              ))}
+            </>
+          )}
+
+          {/* ─── Footer ─── */}
+          <footer className="px-4 sm:px-8 lg:px-12 py-16" style={{ borderTop: '1px solid var(--line)' }}>
+            <div className="max-w-6xl mx-auto">
+              <div className="display-serif" style={{ fontSize: 'clamp(28px, 4.4vw, 52px)', fontWeight: 500, lineHeight: 1.05 }}>
+                AI makes the hands faster.<br />
+                <span style={{ color: 'var(--accent)' }}>It does not make the eyes better.</span>
+              </div>
+              <p className="display-italic mt-4 max-w-xl" style={{ fontSize: 'clamp(15px, 1.7vw, 19px)', color: 'var(--muted)', lineHeight: 1.5 }}>
+                Your eyes are what NIFT is teaching you. This list is for the hands.
+              </p>
+              <div className="mt-10 rule-soft pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="label-mono">NIFT × Info Edge · v2 · April 2026</div>
+                <div className="label-mono">Spotted something missing? Tell the team.</div>
+              </div>
+            </div>
+          </footer>
+
+          <FilterDrawer
+            open={drawer}
+            onClose={() => setDrawer(false)}
+            topic={topic} setTopic={setTopic}
+            type={type} setType={setType}
+            region={region} setRegion={setRegion}
+            onClear={() => { clearFilters(); }}
+          />
+
+          <SectionNav
+            open={nav}
+            onClose={() => setNav(false)}
+            sectionData={sectionData}
+            onJump={jumpToSection}
+          />
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

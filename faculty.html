@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NIFT Faculty Session · Info Edge × NIFT</title>
+  <meta name="description" content="Internal facilitator cheat-sheet for the 25-minute hands-on exercise at the NIFT × Info Edge workshop." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["'Inter Tight'", "ui-sans-serif", "system-ui"],
+            serif: ["'Fraunces'", "Georgia", "serif"],
+            mono: ["'JetBrains Mono'", "ui-monospace", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html, body, #root { height: 100%; }
+    body {
+      margin: 0;
+      background: #F7F4EC;
+      color: #0B0B0B;
+      font-family: 'Inter Tight', -apple-system, system-ui, sans-serif;
+      overflow: hidden;
+    }
+    .deck-root {
+      --paper: #F7F4EC;
+      --paper-2: #EFEAD9;
+      --ink: #0B0B0B;
+      --ink-soft: #2A2622;
+      --muted: #6B6158;
+      --line: #D9D2C0;
+      --line-strong: #B5AC97;
+      --accent: #B0341E;
+      --accent-soft: #F2DAD2;
+    }
+    .display-serif {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: "SOFT" 30, "opsz" 144;
+    }
+    button { background: transparent; border: none; padding: 0; font: inherit; color: inherit; cursor: pointer; }
+    .slide-fade { animation: slide-in 280ms cubic-bezier(0.2, 0.6, 0.2, 1); }
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    /* Verbatim script block */
+    .script {
+      background: #FFF;
+      border-left: 4px solid var(--accent);
+      padding: 18px 22px;
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 20px;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+    .script.lg { font-size: 22px; }
+    /* Comparison table */
+    table.compare {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+    table.compare th, table.compare td {
+      text-align: left;
+      vertical-align: top;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    table.compare th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      border-bottom: 2px solid var(--ink);
+    }
+    table.compare th:first-child, table.compare td:first-child {
+      font-weight: 600;
+    }
+    table.compare tr.recommend td { background: var(--accent-soft); }
+    .boot {
+      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: #F7F4EC; color: #6B6158;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em;
+      text-transform: uppercase; z-index: 100;
+      transition: opacity 300ms ease;
+    }
+    .boot.hidden { opacity: 0; pointer-events: none; }
+    /* Scrollable content area for dense slides */
+    .scroll-y { overflow-y: auto; max-height: 100%; }
+    .scroll-y::-webkit-scrollbar { width: 6px; }
+    .scroll-y::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div id="boot" class="boot">Loading facilitator deck…</div>
+  <div id="root"></div>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel" data-presets="typescript,react">
+    /**
+     * FacilitatorDeck — internal cheat-sheet for the NIFT × Info Edge workshop.
+     * Keyboard: → / Space / click  advance · ←  back · F  toggle margin notes · 1–9  jump
+     */
+    const { useCallback, useEffect, useState } = React;
+
+    // ─── Content ─────────────────────────────────────────────────────────────
+    const IB = "Icebreaker · Broken Telephone, Drawn";
+    const E1 = "Exercise 1 · Mess Queue";
+    const E2 = "Exercise 2 · Open Day";
+
+    const SLIDES = [
+      {
+        id: 1,
+        kind: "cover",
+        eyebrow: "From the Info Edge design team",
+        team: [
+          { name: "Abhishek Verma",  title: "Vice President",            department: "UI / UX Design",  photo: "Abhishek.png" },
+          { name: "Divyansh Nigam",  title: "Associate Vice President",  department: "UI / UX Design",  photo: "Divyansh.png" },
+          { name: "Kamini",          title: "Talent Acquisition Manager", department: "Human Resources", photo: "Kamini.png"  }
+        ],
+        note: "60 seconds. Names, roles, why you're here. Then advance to the quick check — don't explain it, just ask the four questions verbally."
+      },
+      {
+        id: 2,
+        kind: "quick-check",
+        eyebrow: "Quick check",
+        question: "How many of you are leveraging {HIGHLIGHT}\nin your workflow?",
+        highlight: "AI",
+        note: "Hands up. Count slowly. Whatever the number, that's the launchpad — high count means we go deeper, low count means the next slides are gold for them. Don't editorialise; just acknowledge and move on."
+      },
+      {
+        id: 3,
+        kind: "hook",
+        eyebrow: "Section 01 · Buy yourself time",
+        title: "Let's get your\n{HIGHLIGHT} hours back\nthis week.",
+        highlight: "5",
+        subtitle: "Before we talk about teaching with AI — let's get you AI for you.",
+        note: "Land this as a promise, not a claim. The next slide is the demo. Pace: 30 seconds on this slide."
+      },
+      {
+        id: 4,
+        kind: "breaker",
+        eyebrow: "Live demos",
+        title: "Let's see some\n{HIGHLIGHT}.",
+        highlight: "real use cases",
+        instruction: "How we're leveraging AI to buy back some more exploration time.",
+        note: "Switch to your laptop / browser tab here. Three short demos: lesson plan outline, attendance/Excel cleanup, quick PPT. ~2 min each. Have screen recordings queued in another tab as a fallback if WiFi or the model flakes."
+      },
+      {
+        id: 5,
+        kind: "faculty-resources",
+        eyebrow: "Section 01 · Take it home",
+        title: "Tools by what\nyou actually do.",
+        subtitle: "Scan the code. Bookmark the page. Pick one tool from one row and try it before Friday.",
+        url: "https://nift-workshop.vercel.app/faculty-resources.html",
+        categories: [
+          {
+            label: "Information processing",
+            hint: "Past files, curriculum research, policy judgment, assignment reviews",
+            tools: [
+              { name: "ChatGPT folders",  domain: "chatgpt.com", fallback: "C" },
+              { name: "Claude Projects",  domain: "claude.ai",   fallback: "C" }
+            ]
+          },
+          {
+            label: "Presentations & sheets",
+            hint: "Decks, formulas, summaries, working on files inside chat",
+            tools: [
+              { name: "Gamma",                  domain: "gamma.app", fallback: "G" },
+              { name: "Claude for Excel & PPT", domain: "claude.ai", fallback: "C" }
+            ]
+          },
+          {
+            label: "Research",
+            hint: "Reading at scale, browsing-as-an-agent, deep dives",
+            tools: [
+              { name: "ChatGPT",              domain: "chatgpt.com",       fallback: "C" },
+              { name: "Claude",               domain: "claude.ai",         fallback: "C" },
+              { name: "Gemini Deep Research", domain: "gemini.google.com", fallback: "G" },
+              { name: "Codex Browser",        domain: "openai.com",        fallback: "C" },
+              { name: "Claude for Chrome",    domain: "claude.ai",         fallback: "C" },
+              { name: "Gemini in Chrome",     domain: "chrome.google.com", fallback: "G" }
+            ]
+          },
+          {
+            label: "Posters, videos, images, infographics",
+            hint: "Anything visual — quick or polished",
+            tools: [
+              { name: "ChatGPT image",       domain: "chatgpt.com", fallback: "C" },
+              { name: "Gemini Nano Banana",  domain: "labs.google", fallback: "G" },
+              { name: "Gemini Veo",          domain: "labs.google", fallback: "G" }
+            ]
+          }
+        ],
+        note: "Don't read the table aloud. Point at the QR. Tell them: 'Pick one tool from one row, try it on real work this week. That's all I'm asking.'"
+      },
+      {
+        id: 6,
+        kind: "pivot",
+        eyebrow: "Section 02 · Pivot",
+        title: "AI is the\nnew-age pencil.",
+        subtitle: "That was AI for you. Now let's talk about why your students need to learn the pencil itself.",
+        note: "Pause for two beats after the title. Don't fill the silence. Let them feel the pivot."
+      },
+      {
+        id: 7,
+        kind: "demo-stage",
+        eyebrow: "Section 02 · What this pencil can do",
+        title: "Let's have a quick look\nat what this {HIGHLIGHT}\ncan do.",
+        highlight: "pencil",
+        note: "Switch to the student deck (index.html) here. Show the master-prompt slide and a couple of student outputs. ~3 minutes. Then come back to this deck and advance to the trap slide."
+      },
+      {
+        id: 8,
+        kind: "ai-limits",
+        eyebrow: "Section 02 · The trap",
+        title: "Anyone can wield\nthe pencil. So what's\n{HIGHLIGHT}?",
+        highlight: "left for designers",
+        note: "Three things. Read the heading first, then reveal the trio. Land each definition slowly. The room should feel: 'oh, that's actually the job now.'"
+      },
+      {
+        id: 9,
+        kind: "breaker",
+        eyebrow: "Activity break",
+        title: "Let's do a\n{HIGHLIGHT}.",
+        highlight: "quick activity",
+        instruction: "30 seconds. Pick one step from your syllabus that exists because it always has. Tell your neighbor whether AI would do it faster, wider, or make it unnecessary.",
+        note: "30 sec think + 60 sec pair share. Don't take answers from the room — the pairing IS the lesson. Then advance to the principle that surfaces from the activity."
+      },
+      {
+        id: 10,
+        kind: "move-claim",
+        eyebrow: "Section 03 · Move 01 · Challenge the process",
+        pillar: "01",
+        unlock: "Unlocks Judgement",
+        title: "Principles are\npermanent.\n{HIGHLIGHT}",
+        highlight: "Methods are not.",
+        body: "Understanding the product, the consumer, the market — that hasn't changed. The 12-step process you teach? Built for a pre-AI world. Some steps are now optional. Some are unnecessary. Some are actively wrong.",
+        note: "Make this feel like permission, not provocation. Faculty are protective of their syllabus — earn the right to challenge it by anchoring on what doesn't change. They just lived this in the activity — point back to it."
+      },
+      {
+        id: 11,
+        kind: "synthesis",
+        eyebrow: "Close · The whole map",
+        title: "Three things you do.\nThree things they get.",
+        pairs: [
+          { n: "01", faculty: "Challenge the process", arrow: "→", student: "Judgement" },
+          { n: "02", faculty: "AI as thinking partner", arrow: "→", student: "Framing" },
+          { n: "03", faculty: "Buy your own time",     arrow: "→", student: "Taste"     }
+        ],
+        reveal: "The productivity stuff at the start? That was already Pillar 3. You can't shape a student's taste if you have no time to develop your own. We started there because you've already begun.",
+        cta: "Pick one row. Try it before Friday. Then bring questions.",
+        note: "This is the structural payoff. Read the three rows first. Then deliver the reveal — slowly. Let the room realize they've been doing it for the last 28 minutes. End on the CTA, then open Q&A."
+      }
+    ];
+
+    // ─── Root component ──────────────────────────────────────────────────────
+    function Faculty() {
+      const total = SLIDES.length;
+      const initialIndex = (() => {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const s = parseInt(params.get("slide"), 10);
+          if (!isNaN(s) && s >= 1 && s <= total) return s - 1;
+        } catch (_) {}
+        return 0;
+      })();
+      const [index, setIndex] = useState(initialIndex);
+      const [subStep, setSubStep] = useState(0);
+      const [showNotes, setShowNotes] = useState(false);
+      const slide = SLIDES[index];
+      const slideSteps = slide.steps || 1;
+
+      // Reset subStep when slide index changes
+      useEffect(() => { setSubStep(0); }, [index]);
+
+      const next = useCallback(() => {
+        if (subStep < slideSteps - 1) {
+          setSubStep((s) => s + 1);
+        } else {
+          setIndex((i) => Math.min(total - 1, i + 1));
+        }
+      }, [subStep, slideSteps, total]);
+
+      const prev = useCallback(() => {
+        if (subStep > 0) {
+          setSubStep((s) => s - 1);
+        } else {
+          setIndex((i) => Math.max(0, i - 1));
+        }
+      }, [subStep]);
+
+      useEffect(() => {
+        const onKey = (e) => {
+          if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); next(); }
+          else if (e.key === "ArrowLeft") { prev(); }
+          else if (e.key.toLowerCase() === "f") { setShowNotes((s) => !s); }
+          else if (/^[1-9]$/.test(e.key)) {
+            const t = parseInt(e.key, 10) - 1;
+            if (t < total) setIndex(t);
+          }
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+      }, [next, prev, total]);
+
+      const exColor = slide.ex === IB ? "#5C7A3A" : slide.ex === E1 ? "#B0341E" : slide.ex === E2 ? "#1F4E8C" : "#0B0B0B";
+
+      return (
+        <div className="deck-root">
+          <main
+            onClick={next}
+            className="relative h-screen w-screen overflow-hidden cursor-pointer select-none"
+            style={{ background: "var(--paper)", color: "var(--ink)" }}
+          >
+            {/* Header */}
+            <header className="absolute top-0 inset-x-0 z-10 flex items-center justify-between px-8 pt-5 font-mono text-[11px] uppercase tracking-[0.18em]"
+                    style={{ color: "var(--muted)" }}>
+              <span style={{ color: "var(--muted)", fontWeight: 600 }}>
+                Info Edge × NIFT · Faculty
+              </span>
+              <span>{slide.segment || ""}</span>
+              <span>{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
+            </header>
+
+            {/* Slide body */}
+            <div key={slide.id} className="slide-fade h-full w-full flex items-start justify-center px-8 pt-16 pb-14 overflow-hidden">
+              <div className="w-full max-w-[1240px] h-full scroll-y pr-2">
+                <SlideRenderer slide={slide} subStep={subStep} exColor={exColor} />
+              </div>
+            </div>
+
+            {/* Progress */}
+            <div className="absolute bottom-0 left-0 h-[3px] transition-all duration-300"
+                 style={{ width: `${((index + 1) / total) * 100}%`, background: exColor }} />
+
+            {/* Footer */}
+            <footer className="absolute bottom-0 inset-x-0 z-10 flex items-center justify-between px-8 pb-4 font-mono text-[11px] uppercase tracking-[0.18em]"
+                    style={{ color: "var(--muted)" }}>
+              <div className="flex gap-5">
+                <button onClick={(e) => { e.stopPropagation(); prev(); }} className="hover:text-black transition">← Prev</button>
+                <button onClick={(e) => { e.stopPropagation(); next(); }} className="hover:text-black transition">Next →</button>
+                <a href="/" onClick={(e) => e.stopPropagation()} className="hover:text-black transition">↗ Student deck</a>
+              </div>
+              <div className="flex gap-5">
+                {slide.note && (
+                  <button onClick={(e) => { e.stopPropagation(); setShowNotes((s) => !s); }} className="hover:text-black transition">
+                    {showNotes ? "Hide notes [F]" : "Notes [F]"}
+                  </button>
+                )}
+              </div>
+            </footer>
+
+            {showNotes && slide.note && (
+              <aside
+                onClick={(e) => e.stopPropagation()}
+                className="absolute right-5 bottom-12 z-20 w-[340px] p-4 cursor-auto"
+                style={{ background: "var(--ink)", color: "var(--paper)", boxShadow: "0 20px 60px -20px rgba(0,0,0,0.4)" }}
+              >
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2 opacity-60">Margin note</div>
+                <p className="text-[14px] leading-[1.55]">{slide.note}</p>
+              </aside>
+            )}
+          </main>
+        </div>
+      );
+    }
+
+    function SlideRenderer({ slide, subStep, exColor }) {
+      switch (slide.kind) {
+        case "hands-up":      return <HandsUpSlide slide={slide} subStep={subStep} />;
+        case "quick-check":   return <QuickCheckSlide slide={slide} />;
+        case "hook":          return <HookSlide slide={slide} />;
+        case "demo-stage":    return <DemoStageSlide slide={slide} />;
+        case "faculty-resources": return <FacultyResourcesSlide slide={slide} />;
+        case "pivot":         return <PivotSlide slide={slide} />;
+        case "medium-claim":  return <MediumClaimSlide slide={slide} />;
+        case "ai-limits":     return <AiLimitsSlide slide={slide} />;
+        case "move-claim":    return <MoveClaimSlide slide={slide} />;
+        case "move-practice": return <MovePracticeSlide slide={slide} />;
+        case "breaker":       return <BreakerSlide slide={slide} />;
+        case "synthesis":     return <SynthesisSlide slide={slide} />;
+        case "intro":         return <IntroSlide />;
+        case "cover":         return <CoverSlide slide={slide} />;
+        case "outcome":       return <OutcomeSlide slide={slide} exColor={exColor} />;
+        case "scene":         return <SceneSlide slide={slide} exColor={exColor} />;
+        case "groups":        return <GroupsSlide slide={slide} exColor={exColor} />;
+        case "scaffold-3":    return <Scaffold3Slide slide={slide} exColor={exColor} />;
+        case "scaffold-5":    return <Scaffold5Slide slide={slide} exColor={exColor} />;
+        case "sketch":        return <SketchSlide slide={slide} exColor={exColor} />;
+        case "gallery":       return <GallerySlide slide={slide} exColor={exColor} />;
+        case "success":       return <SuccessSlide slide={slide} exColor={exColor} />;
+        case "rescue":        return <RescueSlide slide={slide} exColor={exColor} />;
+        case "ib-cover":      return <IbCoverSlide slide={slide} exColor={exColor} />;
+        case "ib-why":        return <IbWhySlide slide={slide} exColor={exColor} />;
+        case "ib-setup":      return <IbSetupSlide slide={slide} exColor={exColor} />;
+        case "ib-script":     return <IbScriptSlide slide={slide} exColor={exColor} />;
+        case "ib-reveal":     return <IbRevealSlide slide={slide} exColor={exColor} />;
+        case "ib-callbacks":  return <IbCallbacksSlide slide={slide} exColor={exColor} />;
+        case "compare":       return <CompareSlide />;
+        default:              return null;
+      }
+    }
+
+    // ─── Slide layouts ───────────────────────────────────────────────────────
+    function IntroSlide() {
+      return (
+        <div className="grid grid-cols-12 gap-7 pt-4">
+          <div className="col-span-12 flex items-center gap-3 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1" style={{ border: "1px solid var(--ink)" }}>
+              Internal · Facilitator only
+            </span>
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: "var(--muted)" }}>
+              Not for student audience
+            </span>
+          </div>
+
+          <h1 className="col-span-12 display-serif font-light leading-[0.96]"
+              style={{ fontSize: "clamp(48px, 6.5vw, 92px)", letterSpacing: "-0.03em" }}>
+            Three activities.<br />
+            <em style={{ color: "var(--accent)", fontStyle: "italic" }}>One we always run. Two we choose between.</em>
+          </h1>
+
+          <div className="col-span-7 mt-4">
+            <p className="text-[17px] leading-[1.55] mb-4">
+              The icebreaker runs every workshop — no exceptions. Then Mess Queue OR Open Day,
+              picked on the day based on the room. This deck is the pilot's checklist for all
+              three: minute by minute, script by script, rescue by rescue.
+            </p>
+            <p className="text-[15px] leading-[1.55]" style={{ color: "var(--muted)" }}>
+              The accent colour at the top of every slide tells you which activity you're in —
+              moss green for the icebreaker, clay red for Mess Queue, ink blue for Open Day.
+            </p>
+          </div>
+
+          <div className="col-span-5 mt-4 grid grid-cols-1 gap-2">
+            <div className="p-3" style={{ background: "#FFF", border: "1px solid var(--line)", borderLeft: "4px solid #5C7A3A" }}>
+              <div className="flex items-baseline justify-between mb-1">
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em]" style={{ color: "#5C7A3A" }}>Always run · 12 min</div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em]" style={{ color: "var(--muted)" }}>Min 15–27</div>
+              </div>
+              <div className="display-serif text-[22px] leading-[1.05]">Broken Telephone, Drawn</div>
+              <div className="text-[12px] mt-1" style={{ color: "var(--muted)" }}>Icebreaker · forms the trios</div>
+            </div>
+            <div className="p-3" style={{ background: "#FFF", border: "1px solid var(--line)", borderLeft: "4px solid #B0341E" }}>
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-1" style={{ color: "#B0341E" }}>Pick one of two · 25 min</div>
+              <div className="display-serif text-[22px] leading-[1.05]">The Mess Queue</div>
+              <div className="text-[12px] mt-1" style={{ color: "var(--muted)" }}>Lower difficulty · safer pick</div>
+            </div>
+            <div className="p-3" style={{ background: "#FFF", border: "1px solid var(--line)", borderLeft: "4px solid #1F4E8C" }}>
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-1" style={{ color: "#1F4E8C" }}>Pick one of two · 25 min</div>
+              <div className="display-serif text-[22px] leading-[1.05]">The Open Day</div>
+              <div className="text-[12px] mt-1" style={{ color: "var(--muted)" }}>Higher difficulty · higher ceiling</div>
+            </div>
+          </div>
+
+          <div className="col-span-12 mt-2 font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: "var(--muted)" }}>
+            → / Space  advance · ←  back · F  toggle notes · 1–9  jump
+          </div>
+        </div>
+      );
+    }
+
+    // ─── Icebreaker slides ───────────────────────────────────────────────────
+    function IbCoverSlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-8">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+
+          <h2 className="col-span-12 display-serif font-light leading-[0.96]"
+              style={{ fontSize: "clamp(54px, 6.8vw, 96px)", letterSpacing: "-0.028em" }}>
+            {slide.name}
+          </h2>
+
+          <p className="col-span-9 text-[22px] leading-[1.4] mt-2" style={{ color: "var(--ink-soft)" }}>
+            {slide.summary}
+          </p>
+
+          <div className="col-span-12 grid grid-cols-3 gap-6 mt-8">
+            <div className="pt-4" style={{ borderTop: `2px solid ${exColor}` }}>
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--muted)" }}>Duration</div>
+              <div className="text-[16px] leading-[1.45]">{slide.duration}</div>
+            </div>
+            <div className="pt-4" style={{ borderTop: `2px solid ${exColor}` }}>
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--muted)" }}>When in the workshop</div>
+              <div className="text-[16px] leading-[1.45]">{slide.when}</div>
+            </div>
+            <div className="pt-4" style={{ borderTop: `2px solid ${exColor}` }}>
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--muted)" }}>Core lesson</div>
+              <div className="text-[16px] leading-[1.45]">{slide.lesson}</div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function IbWhySlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-6">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+          <h2 className="col-span-12 display-serif font-light leading-[1] mb-2"
+              style={{ fontSize: "clamp(36px, 4.5vw, 60px)", letterSpacing: "-0.022em" }}>
+            {slide.title}
+          </h2>
+          <p className="col-span-12 text-[15px]" style={{ color: "var(--muted)" }}>
+            Why a 12-minute drawing game earns 12 minutes of a 90-minute workshop.
+          </p>
+
+          <div className="col-span-12 grid grid-cols-3 gap-5 mt-4">
+            {slide.points.map((p) => (
+              <div key={p.n} className="p-5 h-full"
+                   style={{ background: "#FFF", border: "1px solid var(--line)", borderTop: `3px solid ${exColor}` }}>
+                <div className="font-mono text-[11px] tracking-[0.2em] mb-2" style={{ color: exColor }}>{p.n}</div>
+                <div className="display-serif text-[20px] leading-[1.15] mb-3">{p.h}</div>
+                <p className="text-[14px] leading-[1.55]" style={{ color: "var(--ink-soft)" }}>{p.b}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function IbSetupSlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-5">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+          <h2 className="col-span-12 display-serif font-light leading-[1] mb-2"
+              style={{ fontSize: "clamp(36px, 4.5vw, 60px)", letterSpacing: "-0.022em" }}>
+            {slide.title}
+          </h2>
+
+          <div className="col-span-12 grid grid-cols-2 gap-4 mt-3">
+            {slide.items.map((it, i) => (
+              <div key={i} className="p-5"
+                   style={{ background: i % 2 === 0 ? "#FFF" : "var(--paper-2)", border: i % 2 === 0 ? "1px solid var(--line)" : "none", borderLeft: `3px solid ${exColor}` }}>
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--muted)" }}>
+                  {it.h}
+                </div>
+                <p className="text-[16px] leading-[1.5]">{it.b}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function IbScriptSlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-5">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+
+          <h2 className="col-span-12 display-serif font-light leading-[1] mb-1"
+              style={{ fontSize: "clamp(28px, 3.6vw, 46px)", letterSpacing: "-0.018em" }}>
+            {slide.segment}
+          </h2>
+          <p className="col-span-12 font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: "var(--muted)" }}>
+            {slide.scriptIntro}
+          </p>
+
+          <div className="col-span-12 script lg mt-3" style={{ borderLeftColor: exColor }}>
+            "{slide.script}"
+          </div>
+
+          <div className="col-span-12 mt-4 grid grid-cols-3 gap-4">
+            {slide.why.map((w, i) => (
+              <div key={i} className="p-4" style={{ background: "var(--paper-2)" }}>
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-1" style={{ color: exColor }}>
+                  Why
+                </div>
+                <div className="display-serif text-[17px] leading-[1.2] mb-2">{w.h}</div>
+                <p className="text-[13px] leading-[1.5]" style={{ color: "var(--ink-soft)" }}>{w.b}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="col-span-12 mt-4 p-4 text-[16px] leading-[1.45] font-medium"
+               style={slide.followupCritical
+                 ? { background: "var(--ink)", color: "var(--paper)" }
+                 : { background: "#FFF", border: "1px solid var(--line)", borderLeft: `3px solid ${exColor}` }}>
+            <span className="font-mono not-italic uppercase tracking-[0.2em] text-[10px] mr-2 opacity-70">Then</span>
+            {slide.followup}
+          </div>
+        </div>
+      );
+    }
+
+    function IbRevealSlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-5">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+          <h2 className="col-span-12 display-serif font-light leading-[1] mb-1"
+              style={{ fontSize: "clamp(28px, 3.6vw, 46px)", letterSpacing: "-0.018em" }}>
+            {slide.segment}
+          </h2>
+          <p className="col-span-12 text-[14px] italic" style={{ color: "var(--muted)" }}>
+            {slide.intro}
+          </p>
+
+          <div className="col-span-12 script lg mt-2" style={{ borderLeftColor: exColor }}>
+            "{slide.script}"
+          </div>
+
+          <div className="col-span-7 mt-4 p-4" style={{ background: "#FFF", border: "1px solid var(--line)" }}>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--muted)" }}>
+              What happens
+            </div>
+            <p className="text-[16px] leading-[1.5]">{slide.whatHappens}</p>
+          </div>
+
+          <div className="col-span-5 mt-4 p-4" style={{ background: "var(--paper-2)", borderLeft: `3px solid ${exColor}` }}>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: exColor }}>
+              {slide.edgeCase.h}
+            </div>
+            <p className="text-[14px] leading-[1.5]">{slide.edgeCase.b}</p>
+          </div>
+
+          <div className="col-span-12 mt-3 p-4 text-[15px] leading-[1.5]"
+               style={{ background: "var(--ink)", color: "var(--paper)" }}>
+            <span className="font-mono not-italic uppercase tracking-[0.2em] text-[10px] mr-2 opacity-60">After the reveal</span>
+            {slide.afterTheReveal}
+          </div>
+        </div>
+      );
+    }
+
+    function IbCallbacksSlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-5">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+          <h2 className="col-span-12 display-serif font-light leading-[1] mb-2"
+              style={{ fontSize: "clamp(36px, 4.5vw, 60px)", letterSpacing: "-0.022em" }}>
+            Two callbacks. Memorise both.
+          </h2>
+          <p className="col-span-12 text-[15px]" style={{ color: "var(--muted)" }}>
+            {slide.intro}
+          </p>
+
+          <div className="col-span-12 mt-3 grid grid-cols-2 gap-5">
+            {slide.callbacks.map((c, i) => (
+              <div key={i} className="p-5" style={{ background: "#FFF", border: "1px solid var(--line)", borderTop: `3px solid ${exColor}` }}>
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-1" style={{ color: exColor }}>
+                  {c.when}
+                </div>
+                <div className="text-[13px] mb-3 italic" style={{ color: "var(--muted)" }}>
+                  {c.trigger}
+                </div>
+                <div className="script" style={{ borderLeftColor: exColor, fontSize: "17px" }}>
+                  "{c.line}"
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function PivotSlide({ slide }) {
+      return (
+        <div className="w-full max-w-[1200px]">
+          <div className="font-mono text-[11px] uppercase tracking-[0.22em] mb-10"
+               style={{ color: "var(--muted)" }}>
+            {slide.eyebrow}
+          </div>
+          <h2 className="display-serif font-light leading-[0.94]"
+              style={{ fontSize: "clamp(72px, 9.5vw, 156px)", letterSpacing: "-0.04em" }}>
+            AI is the<br/>
+            <em style={{ color: "var(--accent)", fontStyle: "italic" }}>new-age pencil.</em>
+          </h2>
+          {slide.subtitle && (
+            <p className="mt-12 text-[20px] leading-[1.45] max-w-[680px]"
+               style={{ color: "var(--ink-soft)" }}>
+              {slide.subtitle}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    function MediumClaimSlide({ slide }) {
+      return (
+        <div className="w-full max-w-[1200px]">
+          <div className="font-mono text-[11px] uppercase tracking-[0.22em] mb-10"
+               style={{ color: "var(--muted)" }}>
+            {slide.eyebrow}
+          </div>
+          <h2 className="display-serif font-light leading-[0.94] whitespace-pre-line"
+              style={{ fontSize: "clamp(64px, 8vw, 124px)", letterSpacing: "-0.035em" }}>
+            {slide.title}
+          </h2>
+          <p className="display-serif italic mt-4 leading-[1.05]"
+             style={{ fontSize: "clamp(28px, 3.6vw, 48px)", color: "var(--accent)", letterSpacing: "-0.02em" }}>
+            {slide.subtitle}
+          </p>
+          <p className="mt-10 text-[18px] leading-[1.55] max-w-[720px]"
+             style={{ color: "var(--ink-soft)" }}>
+            {slide.body}
+          </p>
+        </div>
+      );
+    }
+
+    function SynthesisSlide({ slide }) {
+      return (
+        <div className="w-full max-w-[1280px]">
+          <div className="font-mono text-[11px] uppercase tracking-[0.22em] mb-10"
+               style={{ color: "var(--muted)" }}>
+            {slide.eyebrow}
+          </div>
+          <h2 className="display-serif font-light leading-[0.96] whitespace-pre-line mb-12"
+              style={{ fontSize: "clamp(48px, 6vw, 92px)", letterSpacing: "-0.03em" }}>
+            {slide.title}
+          </h2>
+
+          <div className="space-y-5">
+            {slide.pairs.map((p, i) => (
+              <div key={i}
+                   className="grid grid-cols-12 items-baseline gap-6 pb-4"
+                   style={{ borderBottom: "1px solid var(--line)" }}>
+                <div className="col-span-1 font-mono text-[12px]"
+                     style={{ color: "var(--muted)" }}>
+                  {p.n}
+                </div>
+                <div className="col-span-5 display-serif"
+                     style={{ fontSize: "clamp(22px, 2.8vw, 38px)", color: "var(--ink)", letterSpacing: "-0.015em" }}>
+                  {p.faculty}
+                </div>
+                <div className="col-span-1 font-mono text-[18px] text-center"
+                     style={{ color: "var(--accent)" }}>
+                  {p.arrow}
+                </div>
+                <div className="col-span-5 display-serif italic"
+                     style={{ fontSize: "clamp(22px, 2.8vw, 38px)", color: "var(--accent)", letterSpacing: "-0.015em" }}>
+                  {p.student}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function BreakerSlide({ slide }) {
+      return (
+        <div className="w-full max-w-[1320px]">
+          <div className="flex items-center gap-4 mb-14">
+            <div className="h-[2px] w-16" style={{ background: "var(--accent)" }} />
+            <span className="font-mono text-[11px] uppercase tracking-[0.22em]"
+                  style={{ color: "var(--accent)" }}>
+              {slide.eyebrow}
+            </span>
+          </div>
+          <h2 className="display-serif font-light leading-[0.92] whitespace-pre-line"
+              style={{ fontSize: "clamp(80px, 11vw, 196px)", letterSpacing: "-0.04em" }}>
+            {renderHighlightedTitle(slide)}
+          </h2>
+          {slide.instruction && (
+            <p className="mt-14 display-serif italic leading-[1.25] max-w-[860px]"
+               style={{
+                 fontSize: "clamp(20px, 2.4vw, 32px)",
+                 color: "var(--ink-soft)",
+                 letterSpacing: "-0.015em"
+               }}>
+              {slide.instruction}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    function MoveClaimSlide({ slide }) {
+      return (
+        <div className="w-full max-w-[1200px]">
+          <div className="flex items-baseline gap-4 mb-10 flex-wrap">
+            <span className="font-mono text-[11px] uppercase tracking-[0.22em]"
+                  style={{ color: "var(--muted)" }}>
+              {slide.eyebrow}
+            </span>
+            <span className="font-mono text-[11px] uppercase tracking-[0.22em]"
+                  style={{ color: "var(--accent)" }}>
+              {slide.unlock}
+            </span>
+          </div>
+          <h2 className="display-serif font-light leading-[0.96] whitespace-pre-line"
+              style={{ fontSize: "clamp(56px, 7vw, 116px)", letterSpacing: "-0.03em" }}>
+            {renderHighlightedTitle(slide)}
+          </h2>
+          <p className="mt-10 text-[18px] leading-[1.55] max-w-[720px]"
+             style={{ color: "var(--ink-soft)" }}>
+            {slide.body}
+          </p>
+        </div>
+      );
+    }
+
+    function MovePracticeSlide({ slide }) {
+      return (
+        <div className="w-full max-w-[1200px]">
+          <div className="font-mono text-[11px] uppercase tracking-[0.22em] mb-10"
+               style={{ color: "var(--muted)" }}>
+            {slide.eyebrow}
+          </div>
+          <p className="display-serif font-light leading-[1.1] mb-10"
+             style={{ fontSize: "clamp(32px, 4vw, 56px)", letterSpacing: "-0.02em" }}>
+            {slide.habit}
+          </p>
+          {slide.followup && (
+            <p className="text-[18px] leading-[1.5] max-w-[680px]"
+               style={{ color: "var(--ink-soft)" }}>
+              {slide.followup}
+            </p>
+          )}
+          {slide.quote && (
+            <blockquote className="mt-6 display-serif italic leading-[1.15] max-w-[900px]"
+                        style={{
+                          fontSize: "clamp(28px, 3.4vw, 44px)",
+                          color: "var(--accent)",
+                          letterSpacing: "-0.02em",
+                          borderLeft: "3px solid var(--accent)",
+                          paddingLeft: "24px",
+                          margin: 0
+                        }}>
+              {slide.quote}
+            </blockquote>
+          )}
+          {slide.closer && (
+            <p className="mt-10 text-[16px] leading-[1.5] max-w-[640px]"
+               style={{ color: "var(--ink-soft)" }}>
+              {slide.closer}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    function renderHighlightedTitle(slide) {
+      if (!slide.highlight || !slide.title.includes("{HIGHLIGHT}")) {
+        return slide.title;
+      }
+      const parts = slide.title.split("{HIGHLIGHT}");
+      return (
+        <>
+          {parts[0]}
+          <em style={{ color: "var(--accent)", fontStyle: "italic" }}>
+            {slide.highlight}
+          </em>
+          {parts[1]}
+        </>
+      );
+    }
+
+    function AiLimitsSlide({ slide }) {
+      const limits = [
+        {
+          n: "01",
+          word: "Judgement",
+          body: "AI is always confident. It will happily generate a beautiful checkout that tanks your conversion.",
+          exercise: "Knowing the answer is wrong requires having designed bad things before. AI skips that step. You can't."
+        },
+        {
+          n: "02",
+          word: "Framing",
+          body: "'Design me a banking app' vs 'design for a 55-year-old kirana owner in Jaipur, scammed once, doesn't trust digital payments.'",
+          exercise: "Outputs are galaxies apart. Prompting is problem-framing, not typing."
+        },
+        {
+          n: "03",
+          word: "Taste",
+          body: "AI makes 100 logos. It cannot tell you which is right for this brand, this moment. Taste is accumulated judgment.",
+          exercise: "Show two AI posters. Ask the room to vote. Make the point: the tool made both. You chose."
+        }
+      ];
+      return (
+        <div className="w-full max-w-[1280px]">
+          <div className="flex items-center gap-4 mb-8">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: "var(--muted)" }}>
+              {slide.eyebrow}
+            </span>
+          </div>
+
+          <h2 className="display-serif font-light leading-[1] whitespace-pre-line mb-12"
+              style={{ fontSize: "clamp(44px, 5.5vw, 84px)", letterSpacing: "-0.025em" }}>
+            {renderHighlightedTitle(slide)}
+          </h2>
+
+          <div className="grid grid-cols-3 gap-8">
+            {limits.map((l) => (
+              <div key={l.n} className="relative pt-5" style={{ borderTop: "2px solid var(--accent)" }}>
+                <div className="font-mono text-[11px] tracking-[0.2em] mb-2" style={{ color: "var(--muted)" }}>{l.n}</div>
+                <div className="display-serif italic text-[56px] leading-[1] mb-5"
+                     style={{ fontStyle: "italic", color: "var(--ink)" }}>
+                  {l.word}.
+                </div>
+                <p className="text-[15px] leading-[1.5] mb-4">{l.body}</p>
+                <p className="text-[13px] leading-[1.5] font-mono" style={{ color: "var(--muted)" }}>→ {l.exercise}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Hand-curated high-quality brand logos (full color, real internet URLs).
+    // Fall back to Google's favicon API at 128px for any domain not in this map.
+    const BRAND_LOGOS = {
+      "chatgpt.com":       "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg",
+      "openai.com":        "https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg",
+      "claude.ai":         "https://claude.ai/favicon.ico",
+      "gemini.google.com": "https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg",
+      "labs.google":       "https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg",
+      "chrome.google.com": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28February_2022%29.svg",
+      "gamma.app":         "https://gamma.app/favicon.ico"
+    };
+
+    function ToolAvatar({ tool, offset, size = 56 }) {
+      const curatedUrl = BRAND_LOGOS[tool.domain];
+      const faviconUrl = `https://www.google.com/s2/favicons?domain=${tool.domain}&sz=128`;
+      const urls = [curatedUrl, faviconUrl].filter(Boolean);
+      const [stage, setStage] = useState(0);
+      const errored = stage >= urls.length;
+      const url = urls[stage];
+      return (
+        <div
+          style={{
+            width: size,
+            height: size,
+            borderRadius: "50%",
+            background: "#FFFFFF",
+            border: "2px solid var(--paper)",
+            boxShadow: "0 0 0 1px var(--line), 0 2px 6px rgba(18,22,40,0.05)",
+            marginLeft: offset > 0 ? `-${Math.round(size * 0.32)}px` : "0",
+            zIndex: 100 - offset,
+            position: "relative",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0
+          }}
+        >
+          {errored ? (
+            <span
+              className="display-serif"
+              style={{
+                fontSize: size * 0.42,
+                fontWeight: 500,
+                color: "var(--ink)",
+                letterSpacing: "-0.02em"
+              }}
+            >
+              {tool.fallback || tool.name[0]}
+            </span>
+          ) : (
+            <img
+              src={url}
+              alt=""
+              onError={() => setStage((s) => s + 1)}
+              style={{
+                width: size * 0.58,
+                height: size * 0.58,
+                display: "block",
+                objectFit: "contain"
+              }}
+            />
+          )}
+        </div>
+      );
+    }
+
+    function joinTools(tools) {
+      const names = tools.map((t) => t.name);
+      if (names.length === 1) return names[0];
+      if (names.length === 2) return names.join(" & ");
+      return names.slice(0, -1).join(", ") + ", and " + names[names.length - 1];
+    }
+
+    function FacultyResourcesSlide({ slide }) {
+      const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=10&data=${encodeURIComponent(slide.url)}`;
+      return (
+        <div className="w-full max-w-[1320px] grid grid-cols-12 gap-10 items-start">
+          <div className="col-span-12 flex items-center gap-4 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em]"
+                  style={{ color: "var(--muted)" }}>
+              {slide.eyebrow}
+            </span>
+          </div>
+
+          {/* LEFT: Title + horizontal category rows */}
+          <div className="col-span-8">
+            <h2 className="display-serif font-light leading-[0.96] whitespace-pre-line"
+                style={{ fontSize: "clamp(34px, 4.2vw, 56px)", letterSpacing: "-0.025em" }}>
+              Tools by what <em style={{ color: "var(--accent)", fontStyle: "italic" }}>you actually do.</em>
+            </h2>
+            <p className="mt-3 text-[14px] leading-[1.45] max-w-[560px]"
+               style={{ color: "var(--ink-soft)" }}>
+              {slide.subtitle}
+            </p>
+
+            <div className="mt-8">
+              {slide.categories.map((cat, i) => (
+                <div key={i}
+                     className="flex items-center gap-7 py-5"
+                     style={{ borderTop: i === 0 ? "1px solid var(--line)" : "none", borderBottom: "1px solid var(--line)" }}>
+                  {/* Overlapping logo circles */}
+                  <div className="flex items-center" style={{ flexShrink: 0, minWidth: 240 }}>
+                    {cat.tools.map((tool, j) => (
+                      <ToolAvatar key={j} tool={tool} offset={j} size={56} />
+                    ))}
+                  </div>
+                  {/* Title + tool list */}
+                  <div style={{ minWidth: 0 }}>
+                    <div className="display-serif"
+                         style={{
+                           fontSize: "clamp(18px, 1.9vw, 24px)",
+                           fontWeight: 500,
+                           lineHeight: 1.15,
+                           letterSpacing: "-0.012em",
+                           color: "var(--ink)"
+                         }}>
+                      {cat.label}
+                    </div>
+                    <div className="mt-1"
+                         style={{
+                           fontSize: "13.5px",
+                           lineHeight: 1.45,
+                           color: "var(--muted)"
+                         }}>
+                      {joinTools(cat.tools)}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT: QR card */}
+          <div className="col-span-4 flex flex-col items-center pt-6">
+            <div className="p-5 bg-white"
+                 style={{
+                   border: "1px solid var(--line)",
+                   borderRadius: "8px",
+                   boxShadow: "0 8px 30px rgba(18,22,40,0.08)"
+                 }}>
+              <img src={qrSrc} alt="QR code linking to the faculty resources page"
+                   style={{ width: "280px", height: "280px", display: "block" }} />
+            </div>
+            <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.22em]"
+                 style={{ color: "var(--muted)" }}>
+              Scan with your phone camera
+            </div>
+            <a href={slide.url} target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()}
+               className="mt-2 font-mono text-[11px] hover:opacity-70 transition"
+               style={{ color: "var(--ink-soft)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+              {slide.url.replace(/^https?:\/\//, "")}
+            </a>
+          </div>
+        </div>
+      );
+    }
+
+    function QuickCheckSlide({ slide }) {
+      const lines = slide.question.split("\n");
+      const renderLine = (line) => {
+        if (slide.highlight && line.includes("{HIGHLIGHT}")) {
+          const parts = line.split("{HIGHLIGHT}");
+          return (
+            <>
+              {parts[0]}
+              <em style={{ color: "var(--accent)", fontStyle: "italic" }}>
+                {slide.highlight}
+              </em>
+              {parts[1]}
+            </>
+          );
+        }
+        return line;
+      };
+      return (
+        <div className="w-full h-full flex items-center">
+          <div className="w-full max-w-[1240px]">
+            <h2 className="display-serif font-light leading-[0.96]"
+                style={{ fontSize: "clamp(64px, 9vw, 156px)", letterSpacing: "-0.035em" }}>
+              {lines.map((line, i) => (
+                <React.Fragment key={i}>
+                  {renderLine(line)}
+                  {i < lines.length - 1 && <br />}
+                </React.Fragment>
+              ))}
+            </h2>
+          </div>
+        </div>
+      );
+    }
+
+    function HookSlide({ slide }) {
+      const renderTitle = () => {
+        if (!slide.highlight || !slide.title.includes("{HIGHLIGHT}")) {
+          return slide.title;
+        }
+        const parts = slide.title.split("{HIGHLIGHT}");
+        return (
+          <>
+            {parts[0]}
+            <em style={{ color: "var(--accent)", fontStyle: "italic", fontSize: "1.15em" }}>
+              {slide.highlight}
+            </em>
+            {parts[1]}
+          </>
+        );
+      };
+      return (
+        <div className="w-full max-w-[1200px]">
+          <div className="font-mono text-[11px] uppercase tracking-[0.22em] mb-10"
+               style={{ color: "var(--muted)" }}>
+            {slide.eyebrow}
+          </div>
+          <h2 className="display-serif font-light leading-[0.94] whitespace-pre-line"
+              style={{ fontSize: "clamp(64px, 8.5vw, 132px)", letterSpacing: "-0.035em" }}>
+            {renderTitle()}
+          </h2>
+          {slide.subtitle && (
+            <p className="mt-10 text-[20px] leading-[1.45] max-w-[680px]"
+               style={{ color: "var(--ink-soft)" }}>
+              {slide.subtitle}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    function DemoStageSlide({ slide }) {
+      const renderTitle = () => {
+        if (!slide.highlight || !slide.title.includes("{HIGHLIGHT}")) {
+          return slide.title;
+        }
+        const parts = slide.title.split("{HIGHLIGHT}");
+        return (
+          <>
+            {parts[0]}
+            <em style={{ color: "var(--accent)", fontStyle: "italic" }}>
+              {slide.highlight}
+            </em>
+            {parts[1]}
+          </>
+        );
+      };
+      return (
+        <div className="w-full max-w-[1200px]">
+          <div className="font-mono text-[11px] uppercase tracking-[0.22em] mb-10"
+               style={{ color: "var(--muted)" }}>
+            {slide.eyebrow}
+          </div>
+          <h2 className="display-serif font-light leading-[0.94] whitespace-pre-line"
+              style={{ fontSize: "clamp(56px, 7.5vw, 116px)", letterSpacing: "-0.03em" }}>
+            {renderTitle()}
+          </h2>
+          {slide.subtitle && (
+            <p className="mt-10 text-[20px] leading-[1.45] max-w-[640px]"
+               style={{ color: "var(--ink-soft)" }}>
+              {slide.subtitle}
+            </p>
+          )}
+          {slide.cue && (
+            <div className="mt-16 font-mono text-[11px] uppercase tracking-[0.22em]"
+                 style={{ color: "var(--muted)" }}>
+              {slide.cue}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function HandsUpSlide({ slide, subStep = 0 }) {
+      const lines = [
+        "Hands up if you are aware of AI.",
+        "Hands up if you are actively using AI.",
+        "Hands up if you are teaching with AI.",
+        "Hands up if you feel too busy to learn or teach it."
+      ];
+      return (
+        <div className="w-full max-w-[1200px]">
+          <div className="font-mono text-[11px] uppercase tracking-[0.22em] mb-12"
+               style={{ color: "var(--muted)" }}>
+            {slide.eyebrow}
+          </div>
+          <h2 className="display-serif font-light leading-[0.96] mb-16"
+              style={{ fontSize: "clamp(56px, 7vw, 108px)", letterSpacing: "-0.03em" }}>
+            Quick <em style={{ color: "var(--accent)", fontStyle: "italic" }}>check</em>.
+          </h2>
+          <div className="space-y-7">
+            {lines.map((line, i) => (
+              <p key={i}
+                 className="display-serif transition-opacity duration-500"
+                 style={{
+                   fontSize: "clamp(22px, 2.6vw, 36px)",
+                   lineHeight: 1.25,
+                   opacity: i <= subStep ? 1 : 0,
+                   color: "var(--ink)"
+                 }}
+                 aria-hidden={i > subStep}>
+                {line}
+              </p>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function CoverSlide({ slide }) {
+      const team = slide.team || [];
+      const initialsOf = (n) => n.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
+      return (
+        <div className="w-full max-w-[1320px] h-full flex flex-col justify-between pb-4">
+          {/* Top: eyebrow + Hello, NIFT */}
+          <div className="pt-12">
+            <div className="font-mono text-[11px] uppercase tracking-[0.22em] mb-12"
+                 style={{ color: "var(--muted)" }}>
+              {slide.eyebrow}
+            </div>
+            <h1 className="display-serif font-light leading-[0.85]"
+                style={{ fontSize: "clamp(96px, 14vw, 240px)", letterSpacing: "-0.04em" }}>
+              Hello,<br />
+              <em style={{ color: "var(--accent)", fontStyle: "italic" }}>NIFT.</em>
+            </h1>
+          </div>
+
+          {/* Bottom: team grid */}
+          <div className="grid grid-cols-3 gap-10 mt-12 pt-8"
+               style={{ borderTop: "1px solid var(--line)" }}>
+            {team.map((p, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <div style={{
+                       width: 88,
+                       height: 88,
+                       borderRadius: "50%",
+                       background: "#A8DDD0",
+                       display: "flex",
+                       alignItems: "center",
+                       justifyContent: "center",
+                       flexShrink: 0,
+                       overflow: "hidden"
+                     }}>
+                  {p.photo ? (
+                    <img src={p.photo} alt={p.name}
+                         style={{
+                           width: "100%",
+                           height: "100%",
+                           objectFit: "cover",
+                           objectPosition: "center 18%"
+                         }} />
+                  ) : (
+                    <span className="display-serif"
+                          style={{
+                            fontSize: 26,
+                            fontWeight: 500,
+                            color: "var(--ink)",
+                            letterSpacing: "-0.02em"
+                          }}>
+                      {initialsOf(p.name)}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <div className="display-serif"
+                       style={{
+                         fontSize: 22,
+                         fontWeight: 500,
+                         lineHeight: 1.1,
+                         letterSpacing: "-0.01em",
+                         color: "var(--ink)"
+                       }}>
+                    {p.name}
+                  </div>
+                  <div style={{ fontSize: 14, color: "var(--ink)", marginTop: 2 }}>
+                    {p.title}
+                  </div>
+                  <div className="font-mono mt-1"
+                       style={{
+                         fontSize: 10,
+                         letterSpacing: "0.2em",
+                         textTransform: "uppercase",
+                         color: "var(--muted)"
+                       }}>
+                    {p.department}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function OutcomeSlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-8">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+
+          <h2 className="col-span-12 display-serif font-light leading-[1] mb-4"
+              style={{ fontSize: "clamp(38px, 4.5vw, 60px)", letterSpacing: "-0.022em" }}>
+            What they actually walk away with.
+          </h2>
+
+          <div className="col-span-12 script lg" style={{ borderLeftColor: exColor }}>
+            "{slide.oneLine}"
+          </div>
+
+          <div className="col-span-7 mt-6">
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: "var(--muted)" }}>
+              Skills practised
+            </div>
+            <ul className="space-y-2">
+              {slide.skills.map((s, i) => (
+                <li key={i} className="flex gap-3 text-[16px] leading-[1.5]">
+                  <span className="font-mono text-[12px] mt-1" style={{ color: exColor }}>{String(i + 1).padStart(2, "0")}</span>
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="col-span-5 mt-6">
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: "var(--muted)" }}>
+              What they understand at the end
+            </div>
+            <blockquote className="display-serif italic text-[20px] leading-[1.4] p-4"
+                        style={{ background: "var(--paper-2)", borderLeft: `3px solid ${exColor}` }}>
+              "{slide.endQuote}"
+            </blockquote>
+          </div>
+        </div>
+      );
+    }
+
+    function SceneSlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-6">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+
+          <h2 className="col-span-12 display-serif font-light leading-[1] mb-2"
+              style={{ fontSize: "clamp(32px, 4vw, 52px)", letterSpacing: "-0.02em" }}>
+            Minute 0–2 · Set the scene
+          </h2>
+          <div className="col-span-12 font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: "var(--muted)" }}>
+            Verbatim — read it as written
+          </div>
+
+          <div className="col-span-12 script lg mt-2" style={{ borderLeftColor: exColor }}>
+            "{slide.say}"
+          </div>
+
+          <div className="col-span-12 mt-6">
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--muted)" }}>
+              The constraint — deliver slowly, with eye contact
+            </div>
+            <div className="p-5 text-[20px] leading-[1.45] font-medium"
+                 style={{ background: "var(--ink)", color: "var(--paper)" }}>
+              {slide.constraint}
+            </div>
+          </div>
+
+          <div className="col-span-12 mt-4 text-[14px] leading-[1.5] italic" style={{ color: "var(--muted)" }}>
+            <span className="font-mono not-italic uppercase tracking-[0.2em] text-[10px] mr-2">Delivery</span>
+            {slide.delivery}
+          </div>
+        </div>
+      );
+    }
+
+    function GroupsSlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-6">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+
+          <h2 className="col-span-12 display-serif font-light leading-[1] mb-3"
+              style={{ fontSize: "clamp(32px, 4vw, 52px)", letterSpacing: "-0.02em" }}>
+            Minute 2–3 · Form groups (the count-off)
+          </h2>
+
+          <div className="col-span-7 p-5" style={{ background: "#FFF", border: "1px solid var(--line)" }}>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: exColor }}>
+              Method
+            </div>
+            <p className="text-[18px] leading-[1.5]">{slide.method}</p>
+          </div>
+
+          <div className="col-span-5 p-5" style={{ background: "var(--paper-2)" }}>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--muted)" }}>
+              Why not self-select
+            </div>
+            <p className="text-[16px] leading-[1.5] italic display-serif">{slide.why}</p>
+          </div>
+
+          <div className="col-span-7 mt-4 p-5" style={{ border: "1px dashed var(--line-strong)" }}>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--muted)" }}>Group size</div>
+            <p className="text-[16px] leading-[1.45]">{slide.sizes}</p>
+          </div>
+          <div className="col-span-5 mt-4 p-5" style={{ border: "1px dashed var(--line-strong)" }}>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--muted)" }}>Materials per group</div>
+            <p className="text-[16px] leading-[1.45]">{slide.materials}</p>
+          </div>
+        </div>
+      );
+    }
+
+    function Scaffold3Slide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-6">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+          <h2 className="col-span-12 display-serif font-light leading-[1]"
+              style={{ fontSize: "clamp(32px, 4vw, 52px)", letterSpacing: "-0.02em" }}>
+            Minute 3–5 · The three observation prompts
+          </h2>
+          <div className="col-span-12 font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: "var(--muted)" }}>
+            {slide.title}
+          </div>
+
+          <div className="col-span-12 grid grid-cols-3 gap-5 mt-4">
+            {slide.prompts.map((p) => (
+              <div key={p.n} className="p-5 h-full" style={{ background: "#FFF", border: "1px solid var(--line)", borderTop: `3px solid ${exColor}` }}>
+                <div className="font-mono text-[11px] tracking-[0.2em] mb-2" style={{ color: exColor }}>{p.n}</div>
+                <div className="display-serif text-[22px] leading-[1.15] mb-3">{p.q}</div>
+                <p className="text-[14px] leading-[1.55]" style={{ color: "var(--ink-soft)" }}>{p.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function Scaffold5Slide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-5">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+          <h2 className="col-span-12 display-serif font-light leading-[1]"
+              style={{ fontSize: "clamp(32px, 4vw, 52px)", letterSpacing: "-0.02em" }}>
+            Minute 3–5 · The five moments
+          </h2>
+          <div className="col-span-12 font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: "var(--muted)" }}>
+            {slide.title}
+          </div>
+
+          <div className="col-span-12 mt-3 divide-y" style={{ borderTop: "1px solid var(--line)" }}>
+            {slide.moments.map((m, i) => (
+              <div key={i} className="grid grid-cols-12 gap-4 py-3" style={{ borderColor: "var(--line)" }}>
+                <div className="col-span-2 font-mono text-[12px]" style={{ color: exColor }}>{m.t}</div>
+                <div className="col-span-3 display-serif text-[22px] leading-[1.1]">{m.h}</div>
+                <div className="col-span-7 text-[15px] leading-[1.45]">{m.q}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function SketchSlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-6">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+          <h2 className="col-span-12 display-serif font-light leading-[1] mb-2"
+              style={{ fontSize: "clamp(32px, 4vw, 52px)", letterSpacing: "-0.02em" }}>
+            Minute 5–20 · Sketch time
+          </h2>
+
+          {/* LEFT: phases */}
+          <div className="col-span-7">
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: "var(--muted)" }}>
+              Phase breakdown
+            </div>
+            <div className="divide-y" style={{ borderTop: "1px solid var(--line)" }}>
+              {slide.phases.map((p, i) => (
+                <div key={i} className="grid grid-cols-12 gap-3 py-3 items-baseline" style={{ borderColor: "var(--line)" }}>
+                  <div className="col-span-2 font-mono text-[12px]" style={{ color: exColor }}>{p.t}</div>
+                  <div className="col-span-3 display-serif text-[20px] leading-[1.1]">{p.h}</div>
+                  <div className="col-span-7 text-[14px] leading-[1.5]">{p.b}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT: coaching questions */}
+          <div className="col-span-5">
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: "var(--muted)" }}>
+              Coaching questions to plant during the walk
+            </div>
+            <ul className="space-y-2">
+              {slide.coaching.map((q, i) => (
+                <li key={i} className="p-3 text-[15px] leading-[1.45] italic display-serif"
+                    style={{ background: "var(--paper-2)", borderLeft: `3px solid ${exColor}` }}>
+                  "{q}"
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
+    function GallerySlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-6">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+          <h2 className="col-span-12 display-serif font-light leading-[1]"
+              style={{ fontSize: "clamp(32px, 4vw, 52px)", letterSpacing: "-0.02em" }}>
+            Minute 20–25 · Gallery walk
+          </h2>
+
+          <div className="col-span-12 mt-2 p-5"
+               style={{ background: "var(--ink)", color: "var(--paper)" }}>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2 opacity-60">The rule</div>
+            <p className="text-[20px] leading-[1.45] font-medium">{slide.rule}</p>
+          </div>
+
+          <div className="col-span-7 mt-2 p-5" style={{ background: "#FFF", border: "1px solid var(--line)" }}>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--muted)" }}>
+              Instruction to students
+            </div>
+            <p className="text-[17px] leading-[1.5]">{slide.instruction}</p>
+          </div>
+
+          <div className="col-span-5 mt-2 p-5" style={{ background: "var(--paper-2)", borderLeft: `3px solid ${exColor}` }}>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--muted)" }}>
+              90-second recognition round
+            </div>
+            <p className="text-[15px] leading-[1.5]">{slide.recognition}</p>
+          </div>
+        </div>
+      );
+    }
+
+    function SuccessSlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-5">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+          <h2 className="col-span-12 display-serif font-light leading-[1] mb-2"
+              style={{ fontSize: "clamp(32px, 4vw, 52px)", letterSpacing: "-0.02em" }}>
+            What success looks like.
+          </h2>
+          <p className="col-span-12 text-[16px]" style={{ color: "var(--muted)" }}>
+            If you see two of these by minute 18, you've nailed it.
+          </p>
+
+          <div className="col-span-12 mt-3 grid grid-cols-2 gap-4">
+            {slide.markers.map((m, i) => (
+              <div key={i} className="p-5" style={{ background: "#FFF", border: "1px solid var(--line)" }}>
+                <div className="flex gap-3">
+                  <div className="font-mono text-[12px] mt-1" style={{ color: exColor }}>✓ {String(i + 1).padStart(2, "0")}</div>
+                  <p className="text-[15px] leading-[1.55]">{m}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function RescueSlide({ slide, exColor }) {
+      return (
+        <div className="grid grid-cols-12 gap-5">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ background: exColor, color: "var(--paper)" }}>
+              {slide.ex}
+            </span>
+          </div>
+          <h2 className="col-span-12 display-serif font-light leading-[1] mb-2"
+              style={{ fontSize: "clamp(32px, 4vw, 52px)", letterSpacing: "-0.02em" }}>
+            Rescue scenarios.
+          </h2>
+          <p className="col-span-12 text-[15px] italic" style={{ color: "var(--muted)" }}>
+            If they say X → you say Y. Don't improvise — these have been tested.
+          </p>
+
+          <div className="col-span-12 mt-3 divide-y" style={{ borderTop: "2px solid var(--ink)" }}>
+            {slide.cases.map((c, i) => (
+              <div key={i} className="grid grid-cols-12 gap-5 py-4" style={{ borderColor: "var(--line)" }}>
+                <div className="col-span-5">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-1" style={{ color: "var(--muted)" }}>
+                    If they say
+                  </div>
+                  <div className="display-serif italic text-[20px] leading-[1.3]">"{c.if}"</div>
+                </div>
+                <div className="col-span-7 pl-5" style={{ borderLeft: `3px solid ${exColor}` }}>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.2em] mb-1" style={{ color: exColor }}>
+                    You say
+                  </div>
+                  <div className="text-[16px] leading-[1.5] font-medium">{c.then}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function CompareSlide() {
+      const rows = [
+        { dim: "Difficulty",         e1: "Lower — visceral, universal",       e2: "Higher — abstract, choreographic" },
+        { dim: "Best for",           e1: "Low energy, mid-afternoon slot",    e2: "High energy, alert room" },
+        { dim: "Time-pressure feel", e1: "High — 'real problem, fix it'",     e2: "Medium — 'design a feeling'" },
+        { dim: "Failure mode",       e1: "Settling for surface fixes",        e2: "Drifting into vibes-only" },
+        { dim: "Teaches",            e1: "Observation, constraint, friction", e2: "Journey, persona, choreography" },
+        { dim: "Output type",        e1: "Diagrams, flows, system sketches",  e2: "Storyboards, scenes, scripts" },
+        { dim: "Verbal demand",      e1: "Low — sketches speak",              e2: "High — moments need narration" }
+      ];
+      return (
+        <div className="grid grid-cols-12 gap-5">
+          <div className="col-span-12 mb-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{ border: "1px solid var(--ink)" }}>
+              Decision matrix
+            </span>
+          </div>
+          <h2 className="col-span-12 display-serif font-light leading-[1] mb-1"
+              style={{ fontSize: "clamp(38px, 4.5vw, 64px)", letterSpacing: "-0.025em" }}>
+            Which one to pick.
+          </h2>
+          <p className="col-span-12 text-[15px]" style={{ color: "var(--muted)" }}>
+            Decide by minute 30 of the workshop, based on the room — not before.
+          </p>
+
+          <div className="col-span-12 mt-4">
+            <table className="compare">
+              <thead>
+                <tr>
+                  <th style={{ width: "22%" }}>Dimension</th>
+                  <th style={{ width: "39%", color: "#B0341E" }}>Exercise 1 · Mess Queue</th>
+                  <th style={{ width: "39%", color: "#1F4E8C" }}>Exercise 2 · Open Day</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r, i) => (
+                  <tr key={i}>
+                    <td style={{ color: "var(--muted)" }}>{r.dim}</td>
+                    <td>{r.e1}</td>
+                    <td>{r.e2}</td>
+                  </tr>
+                ))}
+                <tr className="recommend">
+                  <td style={{ color: "var(--accent)", fontWeight: 700 }}>Default</td>
+                  <td colSpan="2">
+                    <strong>Pick Mess Queue unless the first 30 min of the workshop tells you the room is verbal, confident, and engaged.</strong>
+                    <span className="block mt-1 text-[14px] italic" style={{ color: "var(--muted)" }}>
+                      Mess Queue is harder to fail. Open Day is higher ceiling but needs the room to meet it.
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      );
+    }
+
+    // ─── Mount ───────────────────────────────────────────────────────────────
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<Faculty />);
+    const boot = document.getElementById("boot");
+    if (boot) {
+      requestAnimationFrame(() => {
+        boot.classList.add("hidden");
+        setTimeout(() => boot.remove(), 350);
+      });
+    }
+  </script>
+</body>
+</html>
